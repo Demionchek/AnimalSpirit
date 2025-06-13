@@ -132,16 +132,20 @@ namespace Player
                 case Shape.Dog:
                     capsuleCollider.size = dogColliderSize;
                     capsuleCollider.direction = CapsuleDirection2D.Horizontal;
+                    capsuleCollider.offset = new Vector2(0, 0.11f) ;
                     rb.gravityScale = 3f;
                     break;
                 case Shape.Rat:
                     capsuleCollider.size = ratColliderSize;
                     capsuleCollider.direction = CapsuleDirection2D.Horizontal;
+                    capsuleCollider.offset = new Vector2(0, 0.07f) ;
+
                     rb.gravityScale = 3f;
                     break;
                 case Shape.Bird:
                     capsuleCollider.size = birdColliderSize;
                     capsuleCollider.direction = CapsuleDirection2D.Vertical;
+                    capsuleCollider.offset = new Vector2(0, 0.11f) ;
                     rb.gravityScale = 0f;
                     rb.velocity = Vector2.zero;
                     break;
@@ -160,8 +164,6 @@ namespace Player
 
         private void OnCollisionStay2D(Collision2D collision)
         {
-            if (CurrentShape == Shape.Bird) return;
-
             foreach (ContactPoint2D contact in collision.contacts)
             {
                 if (contact.normal.y > 0.5f)
