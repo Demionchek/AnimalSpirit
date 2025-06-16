@@ -1,5 +1,5 @@
 using System.Collections;
-using Pathfinding;
+//using Pathfinding;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -20,15 +20,15 @@ namespace DefaultNamespace
 
         private Transform target;
         private bool canSeeTarget = false;
-        private AIDestinationSetter aiDestinationSetter;
+        //private AIDestinationSetter aiDestinationSetter;
 
         public bool CanSeeTarget => canSeeTarget;
         public Transform Target => target;
 
         private void Start()
         {
-            aiDestinationSetter = GetComponent<AIDestinationSetter>();
-            aiDestinationSetter.enabled = false;
+            // aiDestinationSetter = GetComponent<AIDestinationSetter>();
+            // aiDestinationSetter.enabled = false;
             StartCoroutine(DetectionRoutine());
         }
 
@@ -41,7 +41,7 @@ namespace DefaultNamespace
             }
         }
 
-        private void SetDestinationEnable() => aiDestinationSetter.enabled = true;
+        private void SetDestinationEnable() {} //aiDestinationSetter.enabled = true;
 
         private void DetectTarget()
         {

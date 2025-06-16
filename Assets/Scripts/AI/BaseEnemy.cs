@@ -19,6 +19,7 @@ namespace AI
     {
         [SerializeField] public float speed;
         [SerializeField] private bool isRange = false;
+        [SerializeField] AIState startState = AIState.idle;
         [Space(5)]
         [Header("Spotting")]
         [SerializeField] private float sightRange;
@@ -30,7 +31,6 @@ namespace AI
         [Header("Patroll")]
         [SerializeField] public List<Transform> patrolPoints;
         [SerializeField] public float waitTimeAtPoint;
-
         public int currentPointIndex = 0;
         public int reachedPointDistance = 0;
 
@@ -40,9 +40,9 @@ namespace AI
         protected List<BaseStateAI> createdStates;
         protected Transform target;
         protected bool canSeeTarget = false;
-        public EnemyAnimationController AnimationController { get; protected set; }
         public Rigidbody2D rb { get; protected set; }
-
+        public EnemyAnimationController AnimationController { get; protected set; }
+        [Header("StateOverride")]
         [SerializeField] public bool loopOverrideState = false;
         [SerializeField] protected AIState overrideAIState;
 

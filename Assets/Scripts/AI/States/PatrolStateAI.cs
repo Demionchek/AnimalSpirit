@@ -6,13 +6,26 @@ namespace AI.States
 {
     public class PatrolStateAI : BaseStateAI
     {
+        public override void EnterState()
+        {
+            base.EnterState();
+        }
+
         public override void StateFixedUpdate()
         {
-            if (baseEnemy.patrolPoints.Count < 2 || baseEnemy.isWaiting) return;
+            if (baseEnemy.patrolPoints.Count < 2)
             {
-
+                baseEnemy.ChangeState<IdleStateAI>();
             }
+
+            if(baseEnemy.isWaiting) return;
+
             MoveToPosition();
+        }
+
+        public override void ExitState()
+        {
+            base.ExitState();
         }
 
         private void MoveToPosition()
@@ -22,6 +35,7 @@ namespace AI.States
 
             // Двигаемся с помощью Rigidbody
             baseEnemy.rb.velocity = moveDirection * baseEnemy.speed;
+            baseEnemy.AnimationController.SetAnimatorFloat("Speed", 1);
 
             // Проверяем, достигли ли точки
             if (Vector2.Distance(baseEnemy.rb.position, targetPosition) < baseEnemy.reachedPointDistance)
@@ -34,6 +48,7 @@ namespace AI.States
         {
             baseEnemy.isWaiting = true;
             baseEnemy.rb.velocity = Vector2.zero;
+            baseEnemy.AnimationController.SetAnimatorFloat("Speed", 0);
 
             yield return new WaitForSeconds(baseEnemy.waitTimeAtPoint);
 
