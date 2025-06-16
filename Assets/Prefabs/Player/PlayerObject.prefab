@@ -71,8 +71,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.11}
-  m_Size: {x: 0.3, y: 0.2}
+  m_Offset: {x: 0, y: 0.09}
+  m_Size: {x: 0.25, y: 0.18}
   m_Direction: 1
 --- !u!50 &448497847852466353
 Rigidbody2D:
@@ -155,14 +155,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6cfdf9a7e6043f787b857f7212f0901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dogSpeed: 2
+  dogSpeed: 1.5
   ratSpeed: 1
-  birdFlySpeed: 2
+  birdFlySpeed: 1.8
   birdAscendSpeed: 2
-  jumpForce: 2
-  dogColliderSize: {x: 0.3, y: 0.2}
-  ratColliderSize: {x: 0.2, y: 0.1}
-  birdColliderSize: {x: 0.2, y: 0.2}
+  jumpForce: 5
+  dogColliderSize: {x: 0.25, y: 0.18}
+  dogColliderOffset: {x: 0, y: 0.1}
+  ratColliderSize: {x: 0.13, y: 0.06}
+  ratColliderOffset: {x: 0, y: 0.04}
+  birdColliderSize: {x: 0.11, y: 0.15}
+  birdColliderOffset: {x: 0, y: 0.08}
 --- !u!95 &2904070559391826651
 Animator:
   serializedVersion: 5

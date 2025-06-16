@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 80
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -134,7 +134,91 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Fire_attack_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 5
+        width: 85
+        height: 22
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 423e03ab8540a954789ef6964865e6f4
+      internalID: -471663397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_attack_1
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 5
+        width: 85
+        height: 21
+      alignment: 9
+      pivot: {x: 0, y: 0.5240206}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e65cbdd7f79c0645b405bb3486e8346
+      internalID: -1964633659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_attack_3
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 3
+        width: 83
+        height: 24
+      alignment: 9
+      pivot: {x: 0, y: 0.53637844}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7bf46aa471805964b91081ff55770814
+      internalID: -507440482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Fire_attack_4
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 2
+        width: 84
+        height: 26
+      alignment: 9
+      pivot: {x: 0, y: 0.52928185}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14e0f2faee4a8504c8fb9f0d9c0ca50f
+      internalID: -689569530
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -145,7 +229,14 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Fire_attack_0: -471663397
+      Fire_attack_1: -1964633659
+      Fire_attack_2: -1766629430
+      Fire_attack_3: -507440482
+      Fire_attack_4: -689569530
+      Fire_attack_5: -189315426
+      Fire_attack_6: -1771685306
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

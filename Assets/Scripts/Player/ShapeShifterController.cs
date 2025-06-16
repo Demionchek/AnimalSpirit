@@ -16,13 +16,16 @@ namespace Player
 
         [Header("Collider Settings")]
         [SerializeField] private Vector2 dogColliderSize = new Vector2(1f, 2f);
+        [SerializeField] private Vector2 dogColliderOffset = new Vector2(0, 0.09f);
         [SerializeField] private Vector2 ratColliderSize = new Vector2(0.8f, 0.6f);
+        [SerializeField] private Vector2 ratColliderOffset = new Vector2(0, 0.09f);
         [SerializeField] private Vector2 birdColliderSize = new Vector2(0.8f, 0.5f);
+        [SerializeField] private Vector2 birdColliderOffset = new Vector2(0, 0.09f);
 
         private Rigidbody2D rb;
         private CapsuleCollider2D capsuleCollider;
         private InputHandler inputHandler;
-        private AnimationController animationController;
+        private PlayerAnimationController playerAnimationController;
 
         public enum Shape { Dog, Rat, Bird }
         public Shape CurrentShape { get; private set; } = Shape.Dog;
@@ -36,7 +39,7 @@ namespace Player
             rb = GetComponent<Rigidbody2D>();
             capsuleCollider = GetComponent<CapsuleCollider2D>();
             inputHandler = GetComponent<InputHandler>();
-            animationController = GetComponent<AnimationController>();
+            playerAnimationController = GetComponent<PlayerAnimationController>();
 
             ChangeShape(Shape.Dog);
         }
@@ -132,31 +135,30 @@ namespace Player
                 case Shape.Dog:
                     capsuleCollider.size = dogColliderSize;
                     capsuleCollider.direction = CapsuleDirection2D.Horizontal;
-                    capsuleCollider.offset = new Vector2(0, 0.11f) ;
-                    rb.gravityScale = 3f;
+                    capsuleCollider.offset = dogColliderOffset;
+                    rb.gravityScale = 2.5f;
                     break;
                 case Shape.Rat:
                     capsuleCollider.size = ratColliderSize;
                     capsuleCollider.direction = CapsuleDirection2D.Horizontal;
-                    capsuleCollider.offset = new Vector2(0, 0.07f) ;
-
-                    rb.gravityScale = 3f;
+                    capsuleCollider.offset = ratColliderOffset;
+                    rb.gravityScale = 2.5f;
                     break;
                 case Shape.Bird:
                     capsuleCollider.size = birdColliderSize;
                     capsuleCollider.direction = CapsuleDirection2D.Vertical;
-                    capsuleCollider.offset = new Vector2(0, 0.11f) ;
+                    capsuleCollider.offset = birdColliderOffset;
                     rb.gravityScale = 0f;
                     rb.velocity = Vector2.zero;
                     break;
             }
 
-            animationController.OnShapeChanged(CurrentShape);
+            playerAnimationController.OnShapeChanged(CurrentShape);
         }
 
         private void UpdateAnimationParameters()
         {
-            animationController.SetMovementParameters(
+            playerAnimationController.SetMovementParameters(
                 Mathf.Abs(inputHandler.MoveInput.x),
                 IsGrounded
             );
