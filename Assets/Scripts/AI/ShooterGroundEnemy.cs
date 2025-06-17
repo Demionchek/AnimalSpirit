@@ -1,20 +1,56 @@
 using System;
 using AI.States;
+using ObjectPool;
+using UnityEngine;
 
 namespace AI
 {
     public class ShooterGroundEnemy : BaseEnemy
     {
+
+        [SerializeField] private GameObject bulletPrefab;
+        [SerializeField] private Transform shootPosLeft;
+        [SerializeField] private Transform shootPosRight;
+        private GameObjectPool pool;
+
         private void Start()
         {
             Init();
-            ChangeState<PatrolStateAI>();
+            pool = new GameObjectPool(bulletPrefab, 10);
             StartCoroutine(DetectionRoutine());
+            ChangeState<PatrolStateAI>();
+
         }
 
         private void Update()
         {
+            bool isAttackState = currState is AttackStateAI;
 
+            if (canSeeTarget && !isAttackState )
+            {
+                ChangeState<AttackStateAI>();
+            }
+
+            currState?.StateUpdate();
+            currentTime = Time.time;
+        }
+        private void FixedUpdate()
+        {
+            currState?.StateFixedUpdate();
+        }
+
+        public void OnFire()
+        {
+            if (target == null) return;
+
+            GameObject bullet = pool.Get();
+            bullet.transform.position = AnimationController.GetSpriteRenderer().flipX ? shootPosLeft.position : shootPosRight.position;
+            // Направление к цели
+            Vector2 direction = target.position - bullet.transform.position;
+            // Вычисляем угол в радианах и конвертируем в градусы
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            // Поворачиваем объект (для 2D обычно используется ось Z)
+            bullet.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
     }
 }

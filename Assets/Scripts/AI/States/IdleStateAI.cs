@@ -14,10 +14,7 @@ namespace AI
 
         public override void StateUpdate()
         {
-            if (baseEnemy.canSeeTarget)
-            {
-                baseEnemy.ChangeState<AttackStateAI>();
-            }
+
         }
 
         public override void ExitState()
