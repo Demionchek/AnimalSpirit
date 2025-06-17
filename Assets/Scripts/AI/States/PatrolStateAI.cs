@@ -6,10 +6,7 @@ namespace AI.States
 {
     public class PatrolStateAI : BaseStateAI
     {
-        public override void EnterState()
-        {
-            base.EnterState();
-        }
+        private Coroutine coroutine;
 
         public override void StateFixedUpdate()
         {
@@ -25,13 +22,16 @@ namespace AI.States
 
         public override void ExitState()
         {
-            base.ExitState();
+            if (coroutine != null)
+                baseEnemy.StopCoroutine(coroutine);
         }
 
         private void MoveToPosition()
         {
             Vector2 targetPosition = baseEnemy.patrolPoints[baseEnemy.currentPointIndex].position;
             Vector2 moveDirection = (targetPosition - baseEnemy.rb.position).normalized;
+
+            animatonController.GetSpriteRenderer().flipX = moveDirection.x < 0;
 
             // Двигаемся с помощью Rigidbody
             baseEnemy.rb.velocity = moveDirection * baseEnemy.speed;
@@ -40,7 +40,7 @@ namespace AI.States
             // Проверяем, достигли ли точки
             if (Vector2.Distance(baseEnemy.rb.position, targetPosition) < baseEnemy.reachedPointDistance)
             {
-                baseEnemy.StartCoroutine(WaitAtPoint());
+                coroutine = baseEnemy.StartCoroutine(WaitAtPoint());
             }
         }
 

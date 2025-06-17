@@ -38,8 +38,8 @@ namespace AI
         protected bool isAlive = true;
         protected BaseStateAI currState;
         protected List<BaseStateAI> createdStates;
-        protected Transform target;
-        protected bool canSeeTarget = false;
+        public Transform target;
+        public bool canSeeTarget = false;
         public Rigidbody2D rb { get; protected set; }
         public EnemyAnimationController AnimationController { get; protected set; }
         [Header("StateOverride")]
@@ -90,6 +90,7 @@ namespace AI
                     {
                         target = potentialTarget;
                         canSeeTarget = true;
+
                         break; // Выходим из цикла после обнаружения первой видимой цели
                     }
                 }

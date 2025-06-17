@@ -23,11 +23,7 @@ namespace Animations
 
         public void OnShapeChanged(ShapeShifterController.Shape newShape)
         {
-            if (animator == null)
-            {
-                Debug.LogError("Animator is null");
-                return;
-            }
+            if (animator == null) return;
 
             animator.SetInteger("Shape", (int)newShape);
         }

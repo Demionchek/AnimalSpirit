@@ -8,7 +8,7 @@ namespace Animations
     public class EnemyAnimationController : AnimationController
     {
         public bool isAttacking = false;
-        private BaseEnemy baseEnemy;
+        public BaseEnemy baseEnemy;
 
         private void Awake()
         {
@@ -20,6 +20,7 @@ namespace Animations
         public void SetAnimatorTrigger(string trigger) => animator.SetTrigger(trigger);
         public void SetAnimatorBool(string trigger, bool value) => animator.SetBool(trigger, value);
         public void SetAnimatorFloat(string trigger, float value) => animator.SetFloat(trigger, value);
+        public SpriteRenderer GetSpriteRenderer() => spriteRenderer;
 
         public void OnEnableFire()
         {
