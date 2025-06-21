@@ -36,7 +36,7 @@ namespace AI
         public float reachedPointDistance = 0;
 
         [HideInInspector]public bool isWaiting = false;
-        protected bool isAlive = true;
+        protected bool isDead = true;
         protected BaseStateAI currState;
         protected List<BaseStateAI> createdStates;
         public Transform target;

@@ -1533,7 +1533,7 @@ Tilemap:
       - {fileID: 2047429429, guid: 788436f92291c8547bdd2630ced1483b, type: 3}
       - {fileID: -1680160658, guid: 788436f92291c8547bdd2630ced1483b, type: 3}
       - {fileID: 1674905399, guid: 788436f92291c8547bdd2630ced1483b, type: 3}
-      m_AnimationSpeed: 10
+      m_AnimationSpeed: 10.000001
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 33, y: -3, z: 0}
@@ -1611,7 +1611,7 @@ Tilemap:
       - {fileID: -224976724, guid: 4262147ee099ccc44a3837223a262e6e, type: 3}
       - {fileID: -1506084410, guid: 4262147ee099ccc44a3837223a262e6e, type: 3}
       - {fileID: -653657070, guid: 4262147ee099ccc44a3837223a262e6e, type: 3}
-      m_AnimationSpeed: 10.000001
+      m_AnimationSpeed: 10
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 39, y: -3, z: 0}
@@ -2574,6 +2574,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1553269953604478613, guid: 4f1e4af4fb4e58c4a9b6e239d7ea816c, type: 3}
+      propertyPath: canHit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553269953604478613, guid: 4f1e4af4fb4e58c4a9b6e239d7ea816c, type: 3}
       propertyPath: canAttack
       value: 1
       objectReference: {fileID: 0}
@@ -2616,6 +2620,10 @@ PrefabInstance:
     - target: {fileID: 8762333681887836922, guid: 4f1e4af4fb4e58c4a9b6e239d7ea816c, type: 3}
       propertyPath: m_Offset.y
       value: 0.23148665
+      objectReference: {fileID: 0}
+    - target: {fileID: 8762333681887836922, guid: 4f1e4af4fb4e58c4a9b6e239d7ea816c, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8762333681887836922, guid: 4f1e4af4fb4e58c4a9b6e239d7ea816c, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
@@ -4476,6 +4484,37 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 5775750131552136794, guid: 6bfb741d54dd46e40b2371ee058a3576, type: 3}
   m_PrefabInstance: {fileID: 7383401888980700328}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1900355950
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1900355951}
+  m_Layer: 0
+  m_Name: CheckPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1900355951
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900355950}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.358, y: -0.956, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1996150829
 GameObject:
   m_ObjectHideFlags: 0
@@ -5126,6 +5165,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 6715081745703648263, guid: 339a0db8c5b430c49a983759e13528b9, type: 3}
+      propertyPath: checkPoint
+      value: 
+      objectReference: {fileID: 1900355951}
     - target: {fileID: 9128745979972590720, guid: 339a0db8c5b430c49a983759e13528b9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.568
@@ -5407,3 +5450,4 @@ SceneRoots:
   - {fileID: 610322570}
   - {fileID: 7235740612598085108}
   - {fileID: 509761323}
+  - {fileID: 1900355951}

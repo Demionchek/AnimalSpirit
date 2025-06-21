@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Animations;
 using Interfaces;
 using UnityEngine;
+using UnityEngine.XR.WSA;
 using Zenject;
 
 namespace Player
@@ -35,6 +36,10 @@ namespace Player
         private Rigidbody2D rb;
         private CapsuleCollider2D capsuleCollider;
         private PlayerAnimationController playerAnimationController;
+        private bool isDead = false;
+        private bool isFlip = false;
+
+        public Transform checkPoint;
 
         public enum Shape { Dog, Rat, Bird }
         public Shape CurrentShape { get; private set; } = Shape.Dog;
@@ -54,7 +59,8 @@ namespace Player
 
         private void Update()
         {
-            if (playerAnimationController.isAttacking) return;
+            isFlip = playerAnimationController.IsSpriteFliped();
+            if (playerAnimationController.isAttacking || isDead) return;
 
             HandleShapeChange();
 
@@ -76,6 +82,9 @@ namespace Player
 
         private void FixedUpdate()
         {
+            if (isDead)
+                rb.gravityScale = 3;
+
             if (playerAnimationController.isAttacking) return;
 
             switch (CurrentShape)
@@ -123,11 +132,9 @@ namespace Player
                 playerAnimationController.isAttacking = true;
 
                 Vector2 origin = transform.position + new Vector3(0, 0.15f, 0);
-                float radius = 0.3f;
-                float distance = 0.2f;
-                Vector2 direction = playerAnimationController.IsSpriteFliped() ? Vector2.left : Vector2.right * distance;
-                int layerNumber = LayerMask.NameToLayer("Interact");
-                LayerMask layerMask = 1 << layerNumber;
+                float radius = 0.2f;
+                float distance = 0.02f;
+                Vector2 direction = (isFlip ? new Vector2(-0.1f,0) : new Vector2(0.1f,0));
                 origin += direction;
 
                 // Выполняем CircleCast
@@ -158,10 +165,14 @@ namespace Player
         // Отрисовка радиуса в редакторе
         private void OnDrawGizmos()
         {
-            Vector2 origin = transform.position + new Vector3(0.3f, 0.2f, 0);
+            Vector2 origin = transform.position + new Vector3(0, 0.15f, 0);
+            float radius = 0.2f;
+            float distance = 0.02f;
+            Vector2 direction = (isFlip ? new Vector2(-0.25f,0) : new Vector2(0.25f,0));
+            origin += direction;
 
             Gizmos.color = Color.cyan;
-            Gizmos.DrawWireSphere(origin, 0.1f);
+            Gizmos.DrawWireSphere(origin, radius);
         }
 
         private IEnumerator DisableCollidersWithDelay(float delay)
@@ -243,9 +254,22 @@ namespace Player
             IsGrounded = false;
         }
 
+
+
         public void Hit()
         {
-            playerAnimationController.SetTrigger("Death");
+            playerAnimationController.SetTrigger(AnimationController.IS_DEAD_S);
+            isDead = true;
+
+            StartCoroutine(ReviveCoroutine());
+        }
+
+        private IEnumerator ReviveCoroutine()
+        {
+            yield return new WaitForSeconds(3f);
+
+            transform.position = checkPoint.position;
+            playerAnimationController.SetTrigger(AnimationController.REVIVE_S);
         }
     }
 }

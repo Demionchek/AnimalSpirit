@@ -1,4 +1,5 @@
 using System;
+using AI.States;
 using Interfaces;
 using UnityEngine;
 
@@ -21,7 +22,8 @@ namespace AI
         private void Update()
         {
             bool isAttackState = currState is AttackStateAI;
-            if (loopOverrideState && !isAttackState)
+
+            if (loopOverrideState && !isAttackState && !isDead)
             {
                 ChangeState<AttackStateAI>();
             }
@@ -36,7 +38,8 @@ namespace AI
 
         public void Hit()
         {
-            isAlive = false;
+            isDead = false;
+            ChangeState<DeathState>();
         }
     }
 }
