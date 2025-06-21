@@ -7,7 +7,6 @@ namespace Animations
     [RequireComponent(typeof(Animator), typeof(SpriteRenderer))]
     public class EnemyAnimationController : AnimationController
     {
-        public bool isAttacking = false;
         public BaseEnemy baseEnemy;
 
         private void Awake()

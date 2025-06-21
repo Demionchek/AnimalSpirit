@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AI
 {
-    public class LoopedFireManEnemy : BaseEnemy, IEnemy
+    public class LoopedFireManEnemy : BaseEnemy, IHittable
     {
         [SerializeField] private GameObject fireGO;
 

@@ -7,13 +7,13 @@ namespace Animations
     [RequireComponent(typeof(Animator), typeof(SpriteRenderer))]
     public class PlayerAnimationController : AnimationController
     {
-        private ShapeShifterController shapeShifter;
+        private PlayerController player;
 
         private void Awake()
         {
             animator = GetComponent<Animator>();
             spriteRenderer = GetComponent<SpriteRenderer>();
-            shapeShifter = GetComponent<ShapeShifterController>();
+            player = GetComponent<PlayerController>();
         }
 
         private void Update()
@@ -21,7 +21,7 @@ namespace Animations
             UpdateSpriteDirection();
         }
 
-        public void OnShapeChanged(ShapeShifterController.Shape newShape)
+        public void OnShapeChanged(PlayerController.Shape newShape)
         {
             if (animator == null) return;
 
@@ -34,16 +34,20 @@ namespace Animations
             animator.SetBool("IsGrounded", isGrounded);
         }
 
+        public void SetTrigger(string trigger) => animator.SetTrigger(trigger);
+
         private void UpdateSpriteDirection()
         {
-            if (shapeShifter.Velocity.x > 0.1f)
+            if (player.Velocity.x > 0.1f)
             {
                 spriteRenderer.flipX = false;
             }
-            else if (shapeShifter.Velocity.x < -0.1f)
+            else if (player.Velocity.x < -0.1f)
             {
                 spriteRenderer.flipX = true;
             }
         }
+
+        public bool IsSpriteFliped() => spriteRenderer.flipX;
     }
 }

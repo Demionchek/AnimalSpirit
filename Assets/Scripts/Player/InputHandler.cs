@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 namespace Player
 {
 
-    [RequireComponent(typeof(PlayerInput))]
     public class InputHandler : MonoBehaviour
     {
         public Vector2 MoveInput { get; private set; }
@@ -54,19 +53,5 @@ namespace Player
         {
             if (context.isPressed) ChangeShapePressed = true;
         }
-
-        // private void OnEnable()
-        // {
-        //     jumpAction.performed += OnJump;
-        //     barkAction.performed += OnBark;
-        //     changeShapeAction.performed += OnChangeShape;
-        // }
-        //
-        // private void OnDisable()
-        // {
-        //     jumpAction.performed -= OnJump;
-        //     barkAction.performed -= OnBark;
-        //     changeShapeAction.performed -= OnChangeShape;
-        // }
     }
 }
