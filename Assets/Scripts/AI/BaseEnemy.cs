@@ -36,12 +36,13 @@ namespace AI
         public float reachedPointDistance = 0;
 
         [HideInInspector]public bool isWaiting = false;
-        protected bool isDead = true;
+        protected bool isDead = false;
         protected BaseStateAI currState;
         protected List<BaseStateAI> createdStates;
         public Transform target;
         public bool canSeeTarget = false;
         public Rigidbody2D rb { get; protected set; }
+        public CapsuleCollider2D capsule { get; protected set; }
         public EnemyAnimationController AnimationController { get; protected set; }
         [Header("StateOverride")]
         [SerializeField] public bool loopOverrideState = false;
@@ -57,6 +58,7 @@ namespace AI
         {
             AnimationController = GetComponent<EnemyAnimationController>();
             rb = GetComponent<Rigidbody2D>();
+            capsule = GetComponent<CapsuleCollider2D>();
             createdStates = new List<BaseStateAI>();
         }
 

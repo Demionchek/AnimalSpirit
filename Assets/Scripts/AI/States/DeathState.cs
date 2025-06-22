@@ -7,6 +7,7 @@ namespace AI.States
         public override void EnterState()
         {
             animatonController.SetAnimatorTrigger(AnimationController.IS_DEAD_S);
+            baseEnemy.capsule.enabled = false;
         }
     }
 }

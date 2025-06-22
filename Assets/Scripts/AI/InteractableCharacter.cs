@@ -1,6 +1,7 @@
 using System;
 using DefaultNamespace;
 using Interfaces;
+using Player;
 using UnityEngine;
 using Zenject;
 
@@ -12,6 +13,8 @@ namespace AI
         public bool hasDialog = false;
         public bool canAttack = false;
         public bool canHit = false;
+        public bool unlocksShape = false;
+        public PlayerController.Shape shape;
 
         public float interactDelay = 0.5f;
 
@@ -19,6 +22,9 @@ namespace AI
 
         [Inject]
         private DialogueSystem dialogueSystem;
+
+        [Inject]
+        private PlayerController playerController;
 
         private Animator animator;
         private SpriteRenderer spriteRenderer;
@@ -60,9 +66,10 @@ namespace AI
                 animator.SetTrigger("Attack");
 
             if (canHit)
-            {
                 CircleCastAll();
-            }
+
+            if(unlocksShape)
+                playerController.UnlockShape(PlayerController.Shape.Bird);
         }
 
         private void CircleCastAll()
@@ -94,6 +101,11 @@ namespace AI
                     hittable.Hit(); // Взаимодействуем
                 }
             }
+        }
+
+        public void SwitchLine(int lineIndex)
+        {
+            type = (DialogType)lineIndex;
         }
 
         private void OnDrawGizmos()

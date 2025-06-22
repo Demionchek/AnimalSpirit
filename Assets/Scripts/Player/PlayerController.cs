@@ -9,7 +9,7 @@ using Zenject;
 
 namespace Player
 {
-    [RequireComponent(typeof(CapsuleCollider2D), typeof(Rigidbody2D))]
+    [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour, IHittable
     {
         [Header("Movement Settings")]
@@ -30,8 +30,22 @@ namespace Player
         [SerializeField] private Collider2D interactCollider_R;
         [SerializeField] private Collider2D interactCollider_L;
 
+        [Header("Other Settings")]
+        [SerializeField] private RandomSoundPlayer randomWoofPlayer;
+
         [Inject]
         private InputHandler inputHandler;
+
+        [System.Serializable]
+        public class ShapeSettings
+        {
+            public Shape shapeType;
+            public bool isUnlocked = false;
+        }
+
+        [Header("Shape Settings")]
+        [SerializeField] private ShapeSettings[] shapes;
+        [SerializeField] private Shape startingShape = Shape.Dog;
 
         private Rigidbody2D rb;
         private CapsuleCollider2D capsuleCollider;
@@ -54,7 +68,23 @@ namespace Player
             capsuleCollider = GetComponent<CapsuleCollider2D>();
             playerAnimationController = GetComponent<PlayerAnimationController>();
 
-            ChangeShape(Shape.Dog);
+            // Инициализация начальной формы
+            CurrentShape = startingShape;
+            ChangeShape(startingShape);
+        }
+
+        public void UnlockShape(Shape shapeToUnlock)
+        {
+            foreach (var shape in shapes)
+            {
+                if (shape.shapeType == shapeToUnlock)
+                {
+                    shape.isUnlocked = true;
+                    Debug.Log($"Форма {shapeToUnlock} теперь доступна!");
+                    return;
+                }
+            }
+            Debug.LogWarning($"Форма {shapeToUnlock} не найдена в настройках!");
         }
 
         private void Update()
@@ -131,6 +161,8 @@ namespace Player
                 playerAnimationController.SetTrigger("Attack");
                 playerAnimationController.isAttacking = true;
 
+                StartCoroutine(PlayWoofWithDelay());
+
                 Vector2 origin = transform.position + new Vector3(0, 0.15f, 0);
                 float radius = 0.2f;
                 float distance = 0.02f;
@@ -162,6 +194,13 @@ namespace Player
             }
         }
 
+        private IEnumerator PlayWoofWithDelay()
+        {
+            yield return new WaitForSeconds(0.1f);
+            if (randomWoofPlayer != null)
+                randomWoofPlayer.PlayRandomSoundNow();
+        }
+
         // Отрисовка радиуса в редакторе
         private void OnDrawGizmos()
         {
@@ -184,18 +223,42 @@ namespace Player
 
         private void HandleShapeChange()
         {
-            if (inputHandler.ChangeShapePressed)
-            {
-                Shape newShape = CurrentShape switch
-                {
-                    Shape.Dog => Shape.Rat,
-                    Shape.Rat => Shape.Bird,
-                    Shape.Bird => Shape.Dog,
-                    _ => Shape.Dog
-                };
+            if (!inputHandler.ChangeShapePressed) return;
 
-                ChangeShape(newShape);
+            Shape newShape = GetNextAvailableShape();
+            ChangeShape(newShape);
+        }
+
+        private Shape GetNextAvailableShape()
+        {
+            int currentIndex = (int)CurrentShape;
+            int nextIndex = (currentIndex + 1) % System.Enum.GetValues(typeof(Shape)).Length;
+
+            // Поиск следующей открытой формы
+            for (int i = 0; i < System.Enum.GetValues(typeof(Shape)).Length; i++)
+            {
+                Shape potentialShape = (Shape)nextIndex;
+                if (IsShapeUnlocked(potentialShape))
+                {
+                    return potentialShape;
+                }
+
+                nextIndex = (nextIndex + 1) % System.Enum.GetValues(typeof(Shape)).Length;
             }
+
+            return CurrentShape; // Если нет других открытых форм
+        }
+
+        private bool IsShapeUnlocked(Shape shape)
+        {
+            foreach (var shapeSetting in shapes)
+            {
+                if (shapeSetting.shapeType == shape)
+                {
+                    return shapeSetting.isUnlocked;
+                }
+            }
+            return false;
         }
 
         public void ChangeShape(Shape newShape)
@@ -236,6 +299,32 @@ namespace Player
             );
         }
 
+        public void Hit()
+        {
+            playerAnimationController.SetTrigger(AnimationController.IS_DEAD_S);
+            isDead = true;
+
+            StartCoroutine(ReviveCoroutine());
+        }
+
+        private IEnumerator ReviveCoroutine()
+        {
+            yield return new WaitForSeconds(3f);
+
+            transform.position = checkPoint.position;
+            playerAnimationController.SetTrigger(AnimationController.REVIVE_S);
+        }
+
+        private void OnCollisionEnter(Collision other)
+        {
+            if (other.collider.gameObject.layer == LayerMask.NameToLayer("Enemy") ||
+                other.collider.gameObject.layer == LayerMask.NameToLayer("Bullet"))
+            {
+                if (!isDead)
+                    Hit();
+            }
+        }
+
         private void OnCollisionStay2D(Collision2D collision)
         {
             foreach (ContactPoint2D contact in collision.contacts)
@@ -255,21 +344,14 @@ namespace Player
         }
 
 
-
-        public void Hit()
+        private void OnTriggerEnter(Collider other)
         {
-            playerAnimationController.SetTrigger(AnimationController.IS_DEAD_S);
-            isDead = true;
-
-            StartCoroutine(ReviveCoroutine());
-        }
-
-        private IEnumerator ReviveCoroutine()
-        {
-            yield return new WaitForSeconds(3f);
-
-            transform.position = checkPoint.position;
-            playerAnimationController.SetTrigger(AnimationController.REVIVE_S);
+            if (other.gameObject.layer == LayerMask.NameToLayer("Enemy") ||
+                other.gameObject.layer == LayerMask.NameToLayer("Bullet"))
+            {
+                if (!isDead)
+                    Hit();
+            }
         }
     }
 }

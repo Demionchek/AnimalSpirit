@@ -2,12 +2,16 @@ using System;
 using AI.States;
 using Interfaces;
 using UnityEngine;
+using Zenject;
 
 namespace AI
 {
     public class LoopedFireManEnemy : BaseEnemy, IHittable
     {
         [SerializeField] private GameObject fireGO;
+
+        [Inject]
+        private TimelineManager timelineManager;
 
         private void Awake()
         {
@@ -38,8 +42,9 @@ namespace AI
 
         public void Hit()
         {
-            isDead = false;
+            isDead = true;
             ChangeState<DeathState>();
+            timelineManager.PlayCutscene(2);
         }
     }
 }
