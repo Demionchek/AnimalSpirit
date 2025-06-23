@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Animations;
 using UnityEngine;
 
 namespace AI.States
@@ -48,7 +49,7 @@ namespace AI.States
         {
             baseEnemy.isWaiting = true;
             baseEnemy.rb.velocity = Vector2.zero;
-            baseEnemy.AnimationController.SetAnimatorFloat("Speed", 0);
+            baseEnemy.AnimationController.SetAnimatorFloat(AnimationController.SPEED_S, 0);
 
             yield return new WaitForSeconds(baseEnemy.waitTimeAtPoint);
 

@@ -13,7 +13,7 @@ namespace AI
 
         public override void StateUpdate()
         {
-            if (baseEnemy.currentTime > baseEnemy.lastTime + baseEnemy.attackDelay)
+            if (baseEnemy.currentAttackTime > baseEnemy.lastAttackTime + baseEnemy.attackDelay)
             {
                 AttackTrigger();
             }
@@ -28,7 +28,7 @@ namespace AI
         {
             animatonController.SetAnimatorTrigger(AnimationController.ATTACK_S);
             animatonController.isAttacking = true;
-            baseEnemy.lastTime = Time.time;
+            baseEnemy.lastAttackTime = Time.time;
             if (baseEnemy.target != null && baseEnemy.canSeeTarget)
             {
                 Vector2 dir = baseEnemy.transform.position - baseEnemy.target.transform.position;

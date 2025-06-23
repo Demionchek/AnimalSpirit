@@ -20,27 +20,34 @@ namespace AI
         [SerializeField] public float speed;
         [SerializeField] private bool isRange = false;
         [SerializeField] AIState startState = AIState.idle;
+
         [Space(5)]
         [Header("Spotting")]
-        [SerializeField] private float sightRange;
-        [SerializeField] private float sightAngle;
-        [SerializeField] private float checkFrequency;
+        [SerializeField] private float sightRange = 2f;
+        [SerializeField] private float sightAngle = 90f;
+        [SerializeField] private float checkFrequency = 0.2f;
         [SerializeField] protected LayerMask targetMask;
         [SerializeField] protected LayerMask obstacleMask;
         [SerializeField] public float attackDelay = 0.3f;
+        [HideInInspector] public bool canSeeTarget = false;
+
         [Space(5)]
         [Header("Patroll")]
         [SerializeField] public List<Transform> patrolPoints;
-        [SerializeField] public float waitTimeAtPoint;
+        [SerializeField] public float waitTimeAtPoint = 2f;
+         public float reachedPointDistance = 0.1f;
         [HideInInspector] public int currentPointIndex = 0;
-        public float reachedPointDistance = 0;
+        [HideInInspector] public bool isWaiting = false;
 
-        [HideInInspector]public bool isWaiting = false;
+        [Space(5)]
+        [Header("Chasing")]
+        [SerializeField] public float stoppingDistance = 1f;
+        [HideInInspector] public bool canAttack = false;
+
         protected bool isDead = false;
         protected BaseStateAI currState;
         protected List<BaseStateAI> createdStates;
         public Transform target;
-        public bool canSeeTarget = false;
         public Rigidbody2D rb { get; protected set; }
         public CapsuleCollider2D capsule { get; protected set; }
         public EnemyAnimationController AnimationController { get; protected set; }
@@ -48,11 +55,11 @@ namespace AI
         [SerializeField] public bool loopOverrideState = false;
         [SerializeField] protected AIState overrideAIState;
 
-        [HideInInspector] public float currentTime = 0f;
-        [HideInInspector] public float lastTime = 0f;
+        [HideInInspector] public float currentAttackTime = 0f;
+        [HideInInspector] public float lastAttackTime = 0f;
 
-        private static float SIGHT_OFFSET = 0.2f;
-        private static float TARGET_OFFSET = 0.05f;
+        private static float SIGHT_OFFSET = 0.1f;
+        private static float TARGET_OFFSET = 0.1f;
 
         protected virtual void Init()
         {
@@ -79,7 +86,7 @@ namespace AI
             canSeeTarget = false;
             target = null;
 
-            Vector2 sightPoint = new Vector2(transform.position.x, transform.position.y + SIGHT_OFFSET);
+            Vector2 sightPoint = new Vector2(transform.position.x, transform.position.y - SIGHT_OFFSET);
 
             // Ищем все цели в радиусе через SphereCast
             Collider2D[] targetsInViewRadius = Physics2D.OverlapCircleAll(sightPoint, sightRange, targetMask);
@@ -90,10 +97,14 @@ namespace AI
                 Vector2 potentialTargetPos = new Vector2(potentialTarget.position.x, potentialTarget.position.y + TARGET_OFFSET);
                 Vector2 directionToTarget = (potentialTargetPos - sightPoint).normalized;
 
+                Vector2 sightDirection = AnimationController.GetSpriteRenderer().flipX ? -transform.right : transform.right;
+
                 // Проверяем, находится ли цель в угле обзора
-                if (Vector2.Angle(transform.right, directionToTarget) < sightAngle / 2)
+                if (Vector2.Angle(sightDirection, directionToTarget) < sightAngle / 2)
                 {
                     float distanceToTarget = Vector2.Distance(sightPoint, potentialTargetPos);
+
+                    sightPoint = new Vector2(transform.position.x, transform.position.y + SIGHT_OFFSET);
 
                     // Делаем Raycast для проверки препятствий
                     RaycastHit2D hit = Physics2D.Raycast(sightPoint, directionToTarget, distanceToTarget, obstacleMask);

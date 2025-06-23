@@ -30,7 +30,7 @@ namespace Animations
 
         public void SetMovementParameters(float speed, bool isGrounded)
         {
-            animator.SetFloat("Speed", speed);
+            animator.SetFloat(SPEED_S, speed);
             animator.SetBool("IsGrounded", isGrounded);
         }
 

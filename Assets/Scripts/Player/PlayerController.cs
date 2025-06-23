@@ -113,7 +113,10 @@ namespace Player
         private void FixedUpdate()
         {
             if (isDead)
+            {
                 rb.gravityScale = 3;
+                return;
+            }
 
             if (playerAnimationController.isAttacking) return;
 
@@ -311,6 +314,7 @@ namespace Player
         {
             yield return new WaitForSeconds(3f);
 
+            isDead = false;
             transform.position = checkPoint.position;
             playerAnimationController.SetTrigger(AnimationController.REVIVE_S);
         }

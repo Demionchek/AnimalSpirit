@@ -6,20 +6,10 @@ namespace AI
     {
         public override void EnterState()
         {
-            if (baseEnemy.patrolPoints.Count >= 2)
+            if (baseEnemy.patrolPoints.Count > 1)
             {
                 baseEnemy.ChangeState<PatrolStateAI>();
             }
-        }
-
-        public override void StateUpdate()
-        {
-
-        }
-
-        public override void ExitState()
-        {
-            base.ExitState();
         }
     }
 }

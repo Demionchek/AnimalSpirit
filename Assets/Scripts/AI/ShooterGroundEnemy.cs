@@ -19,7 +19,6 @@ namespace AI
             pool = new GameObjectPool(bulletPrefab, 10);
             StartCoroutine(DetectionRoutine());
             ChangeState<PatrolStateAI>();
-
         }
 
         private void Update()
@@ -32,7 +31,7 @@ namespace AI
             }
 
             currState?.StateUpdate();
-            currentTime = Time.time;
+            currentAttackTime = Time.time;
         }
         private void FixedUpdate()
         {

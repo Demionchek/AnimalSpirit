@@ -9,13 +9,13 @@ namespace AI
 {
     public class InteractableCharacter : MonoBehaviour, IInteractable
     {
-        public DialogType type;
-        public bool hasDialog = false;
         public bool canAttack = false;
         public bool canHit = false;
+        public float hitDistance = 0.2f;
+        public bool hasDialog = false;
+        public DialogType dialogType;
         public bool unlocksShape = false;
         public PlayerController.Shape shape;
-
         public float interactDelay = 0.5f;
 
         [SerializeField] private GameObject interactSign;
@@ -60,7 +60,7 @@ namespace AI
             interactSign.SetActive(false);
 
             if(hasDialog)
-                dialogueSystem.InitDialogue(type);
+                dialogueSystem.InitDialogue(dialogType);
 
             if (canAttack)
                 animator.SetTrigger("Attack");
@@ -76,7 +76,7 @@ namespace AI
         {
             Vector2 origin = transform.position + new Vector3(0, 0.15f, 0);
             float radius = 0.2f;
-            Vector2 direction = (isFlip ? new Vector2(-0.25f,0) : new Vector2(0.25f,0));
+            Vector2 direction = (isFlip ? new Vector2(-hitDistance,0) : new Vector2(hitDistance,0));
             origin += direction;
 
             // Выполняем CircleCast
@@ -105,7 +105,7 @@ namespace AI
 
         public void SwitchLine(int lineIndex)
         {
-            type = (DialogType)lineIndex;
+            dialogType = (DialogType)lineIndex;
         }
 
         private void OnDrawGizmos()
@@ -113,7 +113,7 @@ namespace AI
             Vector2 origin = transform.position + new Vector3(0, 0.15f, 0);
             float radius = 0.2f;
             float distance = 0.02f;
-            Vector2 direction = (isFlip ? new Vector2(-0.1f,0) : new Vector2(0.1f,0));
+            Vector2 direction = (isFlip ? new Vector2(-hitDistance,0) : new Vector2(hitDistance,0));
             origin += direction;
 
             Gizmos.color = Color.cyan;
