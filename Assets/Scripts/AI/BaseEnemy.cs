@@ -77,6 +77,22 @@ namespace AI
             {
                 yield return new WaitForSeconds(checkFrequency);
                 DetectTarget();
+
+                if (canSeeTarget)
+                {
+                    CanAttack();
+                }
+            }
+        }
+
+        private void CanAttack()
+        {
+            Vector2 direction = target.position - transform.position;
+            float distance = direction.magnitude;
+
+            if (distance < stoppingDistance)
+            {
+                canAttack = true;
             }
         }
 

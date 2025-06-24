@@ -1,3 +1,4 @@
+using AI.States;
 using Animations;
 using UnityEngine;
 
@@ -13,10 +14,26 @@ namespace AI
 
         public override void StateUpdate()
         {
+            if (baseEnemy.target != null)
+            {
+                Vector2 direction = baseEnemy.target.position - baseEnemy.transform.position;
+                float distance = direction.magnitude;
+
+                if (distance > baseEnemy.stoppingDistance)
+                {
+                    direction.Normalize();
+                    baseEnemy.rb.velocity = direction * baseEnemy.speed;
+                    baseEnemy.canAttack = false;
+                    baseEnemy.ChangeState<ChaseStateAI>();
+                    return;
+                }
+            }
+
             if (baseEnemy.currentAttackTime > baseEnemy.lastAttackTime + baseEnemy.attackDelay)
             {
                 AttackTrigger();
             }
+
 
             if (!animatonController.isAttacking && !baseEnemy.canSeeTarget)
             {
@@ -31,8 +48,8 @@ namespace AI
             baseEnemy.lastAttackTime = Time.time;
             if (baseEnemy.target != null && baseEnemy.canSeeTarget)
             {
-                Vector2 dir = baseEnemy.transform.position - baseEnemy.target.transform.position;
-                animatonController.GetSpriteRenderer().flipX = dir.x > 0;
+                Vector2 dir = baseEnemy.target.transform.position - baseEnemy.transform.position;
+                animatonController.GetSpriteRenderer().flipX = dir.x < 0;
             }
         }
 
