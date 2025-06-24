@@ -67,7 +67,7 @@ MonoBehaviour:
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
   m_ScreenY: 0.65
-  m_CameraDistance: 10
+  m_CameraDistance: 0.01
   m_DeadZoneWidth: 0.17
   m_DeadZoneHeight: 0
   m_DeadZoneDepth: 0
@@ -592,8 +592,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialoguePanel: {fileID: 8418687766029798183}
   dialogueText: {fileID: 661223712076724000}
-  textSpeed: 0.1
-  delayAfterLines: 2
+  textSpeed: 0.075
+  delayAfterLines: 1.5
+  isDialogRunning: 0
 --- !u!114 &2434711321749531375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -607,15 +608,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   introLines:
-  - Oh might Spirit of the Forest, hear me!
+  - Oh mighty Spirit of the Forest, hear me!
   - Come and save our home!
+  - 'Note: use F to interact'
   interactionLine1:
   - Please save our home!
   interactionLine2:
   - The only way to get across is from above...
+  - 'Note: Press Q to switch form'
   interactionLine3:
-  - Don't make them see you!
-  - ' If you were small enough, you could fit through here...'
+  - Thank you for stopping him, but more of them will come
+  - There is a facility that you should destroy before it's too late!
 --- !u!1 &6646778752504994947
 GameObject:
   m_ObjectHideFlags: 0

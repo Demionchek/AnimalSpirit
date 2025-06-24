@@ -133,4 +133,6 @@ public class TimelineManager : MonoBehaviour
     {
         return _currentCutscene != null && _currentCutscene.state == PlayState.Playing;
     }
+
+    public PlayableDirector GetCutscene() => _currentCutscene;
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Animations;
+using DefaultNamespace;
 using Interfaces;
 using UnityEngine;
 using UnityEngine.XR.WSA;
@@ -53,7 +54,8 @@ namespace Player
         private bool isDead = false;
         private bool isFlip = false;
 
-        public Transform checkPoint;
+        [Inject]
+        private CheckPoints checkPoints;
 
         public enum Shape { Dog, Rat, Bird }
         public Shape CurrentShape { get; private set; } = Shape.Dog;
@@ -113,10 +115,7 @@ namespace Player
         private void FixedUpdate()
         {
             if (isDead)
-            {
-                rb.gravityScale = 3;
                 return;
-            }
 
             if (playerAnimationController.isAttacking) return;
 
@@ -304,8 +303,11 @@ namespace Player
 
         public void Hit()
         {
+            if (isDead) return;
+
             playerAnimationController.SetTrigger(AnimationController.IS_DEAD_S);
             isDead = true;
+            rb.gravityScale = 1;
 
             StartCoroutine(ReviveCoroutine());
         }
@@ -315,11 +317,12 @@ namespace Player
             yield return new WaitForSeconds(3f);
 
             isDead = false;
-            transform.position = checkPoint.position;
+            transform.position = checkPoints.CurrentCheckPoint.position;
             playerAnimationController.SetTrigger(AnimationController.REVIVE_S);
+            ChangeShape(CurrentShape);
         }
 
-        private void OnCollisionEnter(Collision other)
+        private void OnCollisionEnter2D(Collision2D other)
         {
             if (other.collider.gameObject.layer == LayerMask.NameToLayer("Enemy") ||
                 other.collider.gameObject.layer == LayerMask.NameToLayer("Bullet"))
@@ -347,8 +350,7 @@ namespace Player
             IsGrounded = false;
         }
 
-
-        private void OnTriggerEnter(Collider other)
+        private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.gameObject.layer == LayerMask.NameToLayer("Enemy") ||
                 other.gameObject.layer == LayerMask.NameToLayer("Bullet"))

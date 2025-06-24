@@ -16,6 +16,7 @@ namespace DefaultNamespace.DependencyInjection
             Container.Bind<CameraController>().FromComponentInHierarchy().AsSingle();
             Container.Bind<InputHandler>().FromComponentInHierarchy().AsSingle();
             Container.Bind<DialogueSystem>().FromComponentInHierarchy().AsSingle();
+            Container.Bind<CheckPoints>().FromComponentInHierarchy().AsSingle();
         }
     }
 }

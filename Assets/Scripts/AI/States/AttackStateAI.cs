@@ -34,7 +34,6 @@ namespace AI
                 AttackTrigger();
             }
 
-
             if (!animatonController.isAttacking && !baseEnemy.canSeeTarget)
             {
                 baseEnemy.ChangeState<IdleStateAI>();

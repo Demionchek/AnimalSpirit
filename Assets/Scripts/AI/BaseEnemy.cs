@@ -55,6 +55,11 @@ namespace AI
         [SerializeField] public bool loopOverrideState = false;
         [SerializeField] protected AIState overrideAIState;
 
+        [Header("Audio")]
+        [SerializeField] protected AudioSource audioSource;
+        [SerializeField] protected AudioClip attackSound;
+        [SerializeField] protected AudioClip deathSound;
+
         [HideInInspector] public float currentAttackTime = 0f;
         [HideInInspector] public float lastAttackTime = 0f;
 

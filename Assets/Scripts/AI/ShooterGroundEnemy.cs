@@ -1,11 +1,12 @@
 using System;
 using AI.States;
+using Interfaces;
 using ObjectPool;
 using UnityEngine;
 
 namespace AI
 {
-    public class ShooterGroundEnemy : BaseEnemy
+    public class ShooterGroundEnemy : BaseEnemy, IHittable
     {
 
         [SerializeField] private GameObject bulletPrefab;
@@ -50,6 +51,12 @@ namespace AI
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             // Поворачиваем объект (для 2D обычно используется ось Z)
             bullet.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        }
+
+        public void Hit()
+        {
+            isDead = true;
+            ChangeState<DeathState>();
         }
     }
 }

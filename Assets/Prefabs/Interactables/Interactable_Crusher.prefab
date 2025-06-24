@@ -26,15 +26,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 254427811198136234, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 254427811198136234, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 254427811198136234, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 254427811198136234, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -80,9 +80,25 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3332926534659608392, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
+      propertyPath: rolloffMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3332926534659608392, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
+      propertyPath: spreadCustomCurve.m_Curve.Array.data[0].value
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3332926534659608392, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341010696799793570, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 41fdbed34792528428ce3831bef221fe, type: 2}
     - target: {fileID: 6179015931501245930, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
       propertyPath: m_Name
-      value: Interactable_Hammer Variant Variant
+      value: Interactable_Crusher
       objectReference: {fileID: 0}
     - target: {fileID: 7761946952349302971, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
       propertyPath: hitDistance

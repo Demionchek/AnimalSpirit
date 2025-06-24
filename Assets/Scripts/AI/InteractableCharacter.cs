@@ -9,22 +9,34 @@ namespace AI
 {
     public class InteractableCharacter : MonoBehaviour, IInteractable
     {
-        public bool canAttack = false;
-        public bool canHit = false;
-        public float hitDistance = 0.2f;
-        public bool hasDialog = false;
-        public DialogType dialogType;
-        public bool unlocksShape = false;
-        public PlayerController.Shape shape;
-        public float interactDelay = 0.5f;
-
+        [SerializeField] private bool canAttack = false;
+        [SerializeField] private bool canHit = false;
+        [SerializeField] private float hitDistance = 0.2f;
+        [Space(5)]
+        [SerializeField] private bool hasDialog = false;
+        [SerializeField] private DialogType dialogType;
+        [Space(5)]
+        [SerializeField] private bool unlocksShape = false;
+        [SerializeField] private PlayerController.Shape shape;
+        [Space(5)]
+        [SerializeField] private float interactDelay = 0.5f;
+        [Space(5)]
+        [SerializeField] private bool isCheckPoint = false;
+        [SerializeField] private int checkPointIndex;
+        [Space(5)]
         [SerializeField] private GameObject interactSign;
+        [Space(5)]
+        [Header("Audio")]
+        [SerializeField] private AudioSource audioSource;
+        [SerializeField] private AudioClip attackSound;
+        [SerializeField] private AudioClip deathSound;
 
         [Inject]
         private DialogueSystem dialogueSystem;
-
         [Inject]
         private PlayerController playerController;
+        [Inject]
+        private CheckPoints checkPoints;
 
         private Animator animator;
         private SpriteRenderer spriteRenderer;
@@ -65,11 +77,19 @@ namespace AI
             if (canAttack)
                 animator.SetTrigger("Attack");
 
-            if (canHit)
-                CircleCastAll();
+            // if (canHit)
+            //     CircleCastAll();
 
             if(unlocksShape)
                 playerController.UnlockShape(PlayerController.Shape.Bird);
+
+            if (isCheckPoint)
+                checkPoints.SetCurrentCheckpoint(checkPointIndex);
+        }
+
+        public void PlayAttackSound()
+        {
+            audioSource?.PlayOneShot(attackSound);
         }
 
         private void CircleCastAll()

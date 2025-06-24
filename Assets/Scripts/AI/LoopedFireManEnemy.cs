@@ -44,7 +44,13 @@ namespace AI
         {
             isDead = true;
             ChangeState<DeathState>();
+            PlaySound(deathSound);
             timelineManager.PlayCutscene(2);
+        }
+
+        private void PlaySound(AudioClip clip)
+        {
+            audioSource?.PlayOneShot(clip);
         }
     }
 }

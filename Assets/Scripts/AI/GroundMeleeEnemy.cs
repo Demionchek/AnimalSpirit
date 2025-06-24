@@ -4,12 +4,9 @@ using UnityEngine;
 
 namespace AI
 {
-    public class GroundMeleeEnemy : BaseEnemy
+    public class GroundMeleeEnemy : BaseEnemy , IHittable
     {
-
         public float attackDistance = 0.3f;
-
-
 
         private void Start()
         {
@@ -72,15 +69,29 @@ namespace AI
             // Перебираем все найденные коллайдеры
             foreach (Collider2D collider in hitColliders)
             {
+                if (collider == capsule) continue;
+
                 Debug.Log($"Обнаружен объект: {collider.name}");
 
                 // Проверяем, есть ли у него компонент для взаимодействия
                 IHittable hittable = collider.GetComponent<IHittable>();
                 if (hittable != null)
                 {
-                    hittable.Hit(); // Взаимодействуем
+                    hittable.Hit();
                 }
             }
+
+            PlaySound(attackSound);
+        }
+
+        private void PlaySound(AudioClip clip)
+        {
+            audioSource?.PlayOneShot(clip);
+        }
+
+        public void PlayAttackSound()
+        {
+            audioSource?.PlayOneShot(attackSound);
         }
 
         private void OnDrawGizmos()
@@ -97,6 +108,12 @@ namespace AI
 
             Gizmos.color = Color.cyan;
             Gizmos.DrawWireSphere(origin, radius);
+        }
+
+        public void Hit()
+        {
+            isDead = true;
+            ChangeState<DeathState>();
         }
     }
 }

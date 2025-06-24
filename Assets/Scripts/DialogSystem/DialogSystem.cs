@@ -32,6 +32,8 @@ namespace DefaultNamespace
 
         [Inject]
         private InputHandler _inputHandler;
+        [Inject]
+        private TimelineManager _timelineManager;
 
         void Start()
         {
@@ -41,6 +43,8 @@ namespace DefaultNamespace
 
         public void InitDialogue( DialogType type )
         {
+            if(isDialogRunning) return;
+
             ClearLines();
             switch (type)
             {
@@ -73,7 +77,6 @@ namespace DefaultNamespace
 
         public void StartDialogue()
         {
-
             dialoguePanel.SetActive(true);
             currentLine = 0;
             StartCoroutine(TypeLine());
@@ -92,7 +95,17 @@ namespace DefaultNamespace
                 yield return new WaitForSeconds(textSpeed);
             }
 
-            yield return new WaitForSeconds(delayAfterLines);
+            bool isPlayingCutscene = _timelineManager.IsCutscenePlaying();
+
+            if (isPlayingCutscene)
+                if (_timelineManager.GetCutscene() != null)
+                    _timelineManager.GetCutscene().Pause();
+
+            while (!_inputHandler.JumpPressed)
+                yield return null;
+
+            if (isPlayingCutscene && _timelineManager.GetCutscene() != null)
+                _timelineManager.GetCutscene().Play();
 
             // Переходим к следующей строке или закрываем диалог
             currentLine++;
@@ -102,8 +115,9 @@ namespace DefaultNamespace
             }
             else
             {
-                // Задержка перед закрытием панели
-                yield return new WaitForSeconds(delayAfterLines);
+                while (!_inputHandler.JumpPressed)
+                    yield return null;
+
                 EndDialogue();
             }
         }
