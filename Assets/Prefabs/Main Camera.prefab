@@ -592,7 +592,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialoguePanel: {fileID: 8418687766029798183}
   dialogueText: {fileID: 661223712076724000}
-  textSpeed: 0.075
+  textSpeed: 0.05
   delayAfterLines: 1.5
   isDialogRunning: 0
 --- !u!114 &2434711321749531375
