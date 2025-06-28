@@ -13,5 +13,7 @@ namespace Animations
         public static string SPEED_S = "Speed";
         public static string IS_DEAD_S = "isDead";
         public static string REVIVE_S = "Revive";
+        public static string IS_OPEN_S = "isOpen";
+        public static string IS_ACTIVE_S = "isActive";
     }
 }

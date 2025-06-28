@@ -234,8 +234,8 @@ MonoBehaviour:
   speed: 1
   isRange: 1
   startState: 4
-  sightRange: 1
-  sightAngle: 360
+  sightRange: 2
+  sightAngle: 180
   checkFrequency: 0.2
   targetMask:
     serializedVersion: 2
@@ -244,20 +244,25 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   attackDelay: 0.5
+  canSeeTarget: 0
   patrolPoints:
   - {fileID: 0}
   - {fileID: 0}
   waitTimeAtPoint: 2
-  currentPointIndex: 0
   reachedPointDistance: 0.05
+  currentPointIndex: 0
   isWaiting: 0
+  stoppingDistance: 1
+  canAttack: 0
   target: {fileID: 0}
-  canSeeTarget: 0
   loopOverrideState: 0
   overrideAIState: 0
-  currentTime: 0
-  lastTime: 0
-  bulletPrefab: {fileID: 0}
+  audioSource: {fileID: 0}
+  attackSound: {fileID: 0}
+  deathSound: {fileID: 0}
+  currentAttackTime: 0
+  lastAttackTime: 0
+  bulletPrefab: {fileID: 110642126484020617, guid: 6e25903de88ab6b4daa97fa83c07a423, type: 3}
   shootPosLeft: {fileID: 521793642026773291}
   shootPosRight: {fileID: 129663927873775263}
 --- !u!1 &6850724420790574544

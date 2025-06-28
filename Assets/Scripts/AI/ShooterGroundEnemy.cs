@@ -31,6 +31,11 @@ namespace AI
                 ChangeState<AttackStateAI>();
             }
 
+            if (!canSeeTarget && !isAttackState )
+            {
+                ChangeState<PatrolStateAI>();
+            }
+
             currState?.StateUpdate();
             currentAttackTime = Time.time;
         }

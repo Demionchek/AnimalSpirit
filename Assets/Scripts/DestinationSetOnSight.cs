@@ -1,4 +1,7 @@
 using System.Collections;
+using Animations;
+using Pathfinding;
+using Player;
 //using Pathfinding;
 using UnityEngine;
 
@@ -20,28 +23,34 @@ namespace DefaultNamespace
 
         private Transform target;
         private bool canSeeTarget = false;
-        //private AIDestinationSetter aiDestinationSetter;
+        private AIDestinationSetter aiDestinationSetter;
+        private SpriteRenderer spriteRenderer;
+
+        private Transform homeTransform;
 
         public bool CanSeeTarget => canSeeTarget;
         public Transform Target => target;
 
         private void Start()
         {
-            // aiDestinationSetter = GetComponent<AIDestinationSetter>();
-            // aiDestinationSetter.enabled = false;
+            aiDestinationSetter = GetComponent<AIDestinationSetter>();
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            homeTransform = Instantiate(new GameObject($"home pos {gameObject.name}")).transform;
+            homeTransform.position = transform.position;
+            aiDestinationSetter.enabled = true;
             StartCoroutine(DetectionRoutine());
         }
 
         private IEnumerator DetectionRoutine()
         {
-            while (!canSeeTarget)
+            while (true)
             {
                 yield return new WaitForSeconds(checkFrequency);
                 DetectTarget();
             }
         }
 
-        private void SetDestinationEnable() {} //aiDestinationSetter.enabled = true;
+        private void SetDestinationEnable() => aiDestinationSetter.enabled = true;
 
         private void DetectTarget()
         {
@@ -49,32 +58,51 @@ namespace DefaultNamespace
             canSeeTarget = false;
             target = null;
 
+            Vector2 sightPoint = new Vector2(transform.position.x, transform.position.y);
+
             // Ищем все цели в радиусе через SphereCast
-            Collider2D[] targetsInViewRadius = Physics2D.OverlapCircleAll(transform.position, sightRange, targetMask);
+            Collider2D[] targetsInViewRadius = Physics2D.OverlapCircleAll(sightPoint, sightRange, targetMask);
 
             foreach (Collider2D targetCollider in targetsInViewRadius)
             {
+                if (!canSeeTarget && targetCollider.TryGetComponent(out PlayerController player))
+                {
+                    if (player.CurrentShape == PlayerController.Shape.Rat)
+                    {
+                        continue;
+                    }
+                }
                 Transform potentialTarget = targetCollider.transform;
-                Vector2 directionToTarget = (potentialTarget.position - transform.position).normalized;
+                Vector2 potentialTargetPos = new Vector2(potentialTarget.position.x, potentialTarget.position.y);
+                Vector2 directionToTarget = (potentialTargetPos - sightPoint).normalized;
+
+                spriteRenderer.flipX = directionToTarget.x < 0;
+
+                Vector2 sightDirection = spriteRenderer.flipX ? -transform.right : transform.right;
 
                 // Проверяем, находится ли цель в угле обзора
-                if (Vector2.Angle(transform.right, directionToTarget) < sightAngle / 2)
+                if (Vector2.Angle(sightDirection, directionToTarget) < sightAngle / 2)
                 {
-                    float distanceToTarget = Vector2.Distance(transform.position, potentialTarget.position);
+                    float distanceToTarget = Vector2.Distance(sightPoint, potentialTargetPos);
+
+                    sightPoint = new Vector2(transform.position.x, transform.position.y);
 
                     // Делаем Raycast для проверки препятствий
-                    RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstacleMask);
+                    RaycastHit2D hit = Physics2D.Raycast(sightPoint, directionToTarget, distanceToTarget, obstacleMask);
 
                     // Если не попали в препятствие - цель видна
                     if (hit.collider == null)
                     {
                         target = potentialTarget;
+                        aiDestinationSetter.target = target;
                         canSeeTarget = true;
-                        SetDestinationEnable();
+
                         break; // Выходим из цикла после обнаружения первой видимой цели
                     }
                 }
             }
+
+            if (!canSeeTarget) aiDestinationSetter.target = homeTransform;
         }
     }
 }

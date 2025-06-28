@@ -54,6 +54,10 @@ namespace Player
         private bool isDead = false;
         private bool isFlip = false;
 
+        private LayerMask ratMask;
+        private LayerMask dogMask;
+        private LayerMask birdMask;
+
         [Inject]
         private CheckPoints checkPoints;
 
@@ -274,12 +278,14 @@ namespace Player
                     capsuleCollider.direction = CapsuleDirection2D.Horizontal;
                     capsuleCollider.offset = dogColliderOffset;
                     rb.gravityScale = 2.5f;
+                    gameObject.layer = LayerMask.NameToLayer("Player");
                     break;
                 case Shape.Rat:
                     capsuleCollider.size = ratColliderSize;
                     capsuleCollider.direction = CapsuleDirection2D.Horizontal;
                     capsuleCollider.offset = ratColliderOffset;
                     rb.gravityScale = 2.5f;
+                    gameObject.layer = LayerMask.NameToLayer("Rat");
                     break;
                 case Shape.Bird:
                     capsuleCollider.size = birdColliderSize;
@@ -287,6 +293,7 @@ namespace Player
                     capsuleCollider.offset = birdColliderOffset;
                     rb.gravityScale = 0f;
                     rb.velocity = Vector2.zero;
+                    gameObject.layer = LayerMask.NameToLayer("Bird");
                     break;
             }
 

@@ -81,7 +81,7 @@ namespace AI
             //     CircleCastAll();
 
             if(unlocksShape)
-                playerController.UnlockShape(PlayerController.Shape.Bird);
+                playerController.UnlockShape(shape);
 
             if (isCheckPoint)
                 checkPoints.SetCurrentCheckpoint(checkPointIndex);
