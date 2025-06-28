@@ -9,6 +9,7 @@ namespace AI
         public override void EnterState()
         {
             AttackTrigger();
+            animatonController.SetAnimatorFloat(AnimationController.SPEED_S, 0);
         }
         public override void ExitState() { }
 

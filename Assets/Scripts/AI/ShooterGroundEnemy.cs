@@ -31,7 +31,7 @@ namespace AI
                 ChangeState<AttackStateAI>();
             }
 
-            if (!canSeeTarget && !isAttackState )
+            if (!canSeeTarget )
             {
                 ChangeState<PatrolStateAI>();
             }
@@ -50,8 +50,9 @@ namespace AI
 
             GameObject bullet = pool.Get();
             bullet.transform.position = AnimationController.GetSpriteRenderer().flipX ? shootPosLeft.position : shootPosRight.position;
+            Vector2 targetPosition = new Vector2(target.transform.position.x, target.transform.position.y + 0.15f);
             // Направление к цели
-            Vector2 direction = target.position - bullet.transform.position;
+            Vector2 direction = targetPosition - (Vector2)bullet.transform.position;
             // Вычисляем угол в радианах и конвертируем в градусы
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             // Поворачиваем объект (для 2D обычно используется ось Z)

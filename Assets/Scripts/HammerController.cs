@@ -36,26 +36,23 @@ namespace DefaultNamespace
         {
             timer += Time.deltaTime;
 
-            if (!isActive && timer >= inactiveTime)
+            if (isActive && timer >= inactiveTime)
             {
-                // Активируем молот
-                isActive = true;
-                timer = 0f;
-                animator.SetBool(AnimationController.ATTACK_S, true);
-                PerformAttack();
-                hammerCollider.enabled = true;
-            }
-            else if (isActive && timer >= activeTime)
-            {
-                // Деактивируем молот
                 isActive = false;
                 timer = 0f;
                 animator.SetBool(AnimationController.ATTACK_S, false);
+                hammerCollider.enabled = true;
+            }
+            else if (!isActive && timer >= activeTime)
+            {
+                isActive = true;
+                timer = 0f;
+                animator.SetBool(AnimationController.ATTACK_S, true);
                 hammerCollider.enabled = false;
             }
         }
 
-        private void PerformAttack()
+        private void Attack()
         {
             // Получаем центр и поворот коллайдера
             Vector3 center = hammerCollider.bounds.center;

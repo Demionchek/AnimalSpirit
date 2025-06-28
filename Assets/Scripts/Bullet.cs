@@ -30,14 +30,16 @@ namespace DefaultNamespace
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy")) return;
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy") ||
+                collision.gameObject.layer == LayerMask.NameToLayer("Ignore Raycast")) return;
 
             Destroy(gameObject);
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy")) return;
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy") ||
+                collision.gameObject.layer == LayerMask.NameToLayer("Ignore Raycast")) return;
 
             Destroy(gameObject);
         }

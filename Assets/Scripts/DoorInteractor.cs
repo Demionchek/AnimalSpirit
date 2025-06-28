@@ -7,7 +7,7 @@ namespace DefaultNamespace
 {
     public class DoorInteractor : MonoBehaviour
     {
-        [SerializeField] private ButtonInteractor buttonInteractor;
+        [SerializeField] public Opener opener;
 
         private BoxCollider2D boxCollider2D;
 
@@ -21,9 +21,9 @@ namespace DefaultNamespace
 
         private void Update()
         {
-            if (buttonInteractor == null) return;
+            if (opener == null) return;
 
-            if (buttonInteractor.IsPressed)
+            if (opener.isActive)
             {
                 animator.SetBool(AnimationController.IS_OPEN_S, true);
                 boxCollider2D.enabled = false;

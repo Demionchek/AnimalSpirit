@@ -25,6 +25,7 @@ namespace AI.States
         {
             if (coroutine != null)
                 baseEnemy.StopCoroutine(coroutine);
+            baseEnemy.isWaiting = false;
         }
 
         private void MoveToPosition()

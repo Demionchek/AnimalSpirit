@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace DefaultNamespace
 {
-    public class ButtonInteractor : MonoBehaviour
+    public class ButtonInteractor : Opener
     {
         [SerializeField] private LayerMask[] interactLayers;
-        public bool IsPressed { get; private set; }
+
         private int collidingObjectsCount = 0; // Счетчик объектов в триггере
         private Animator animator;
 
@@ -39,10 +39,10 @@ namespace DefaultNamespace
         private void UpdateButtonState()
         {
             bool newState = collidingObjectsCount > 0;
-            if (newState != IsPressed)
+            if (newState != isActive)
             {
-                IsPressed = newState;
-                animator.SetBool(AnimationController.IS_ACTIVE_S, IsPressed);
+                isActive = newState;
+                animator.SetBool(AnimationController.IS_ACTIVE_S, isActive);
             }
         }
 
@@ -58,5 +58,6 @@ namespace DefaultNamespace
             }
             return false;
         }
+
     }
 }
