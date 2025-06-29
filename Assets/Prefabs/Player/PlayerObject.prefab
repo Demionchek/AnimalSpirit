@@ -219,9 +219,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soundClips:
-  - {fileID: 8300000, guid: 92901e316fa820140988825e810748f0, type: 3}
-  - {fileID: 8300000, guid: e4e15f7461895e640b9ee84f195af22a, type: 3}
-  - {fileID: 8300000, guid: d344f4d756941284da7fc4c1a966a764, type: 3}
+  - {fileID: 8300000, guid: 5ac40dec1558c884a827079b1200ef76, type: 3}
+  - {fileID: 8300000, guid: 02976de4f0dc7a34498fc54f01521d15, type: 3}
+  - {fileID: 8300000, guid: 465799a27e16d4946b75326cb809d6be, type: 3}
+  - {fileID: 8300000, guid: dcc72497da2af844cbdc7ffa25ed7125, type: 3}
+  - {fileID: 8300000, guid: d9a95d2fb041b884484cdee983a75096, type: 3}
   audioSource: {fileID: 9197048069466158785}
 --- !u!1 &2987376101297755894
 GameObject:
@@ -326,7 +328,6 @@ MonoBehaviour:
   - shapeType: 2
     isUnlocked: 0
   startingShape: 0
-  checkPoint: {fileID: 0}
 --- !u!95 &2904070559391826651
 Animator:
   serializedVersion: 5

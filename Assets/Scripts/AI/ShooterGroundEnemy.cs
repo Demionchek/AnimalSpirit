@@ -20,6 +20,7 @@ namespace AI
             pool = new GameObjectPool(bulletPrefab, 10);
             StartCoroutine(DetectionRoutine());
             ChangeState<PatrolStateAI>();
+            audioSource = GetComponent<AudioSource>();
         }
 
         private void Update()
@@ -57,6 +58,7 @@ namespace AI
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             // Поворачиваем объект (для 2D обычно используется ось Z)
             bullet.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            audioSource.Play();
         }
 
         public void Hit()

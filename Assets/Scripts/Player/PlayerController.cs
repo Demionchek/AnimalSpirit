@@ -36,6 +36,8 @@ namespace Player
 
         [Inject]
         private InputHandler inputHandler;
+        [Inject]
+        private DialogueSystem dialogueSystem;
 
         [System.Serializable]
         public class ShapeSettings
@@ -45,7 +47,7 @@ namespace Player
         }
 
         [Header("Shape Settings")]
-        [SerializeField] private ShapeSettings[] shapes;
+        [SerializeField] private List<ShapeSettings> shapes;
         [SerializeField] private Shape startingShape = Shape.Dog;
 
         private Rigidbody2D rb;
@@ -96,7 +98,8 @@ namespace Player
         private void Update()
         {
             isFlip = playerAnimationController.IsSpriteFliped();
-            if (playerAnimationController.isAttacking || isDead) return;
+            if (playerAnimationController.isAttacking ||
+                isDead || dialogueSystem.isDialogRunning) return;
 
             HandleShapeChange();
 
@@ -118,7 +121,7 @@ namespace Player
 
         private void FixedUpdate()
         {
-            if (isDead)
+            if (isDead || dialogueSystem.isDialogRunning)
                 return;
 
             if (playerAnimationController.isAttacking) return;
@@ -229,10 +232,31 @@ namespace Player
 
         private void HandleShapeChange()
         {
-            if (!inputHandler.ChangeShapePressed) return;
+            if (inputHandler.ShapeDog && CheckAvailableShape(Shape.Dog))
+            {
+                ChangeShape(Shape.Dog);
+            }
 
-            Shape newShape = GetNextAvailableShape();
-            ChangeShape(newShape);
+            if (inputHandler.ShapeBird && CheckAvailableShape(Shape.Bird))
+            {
+                ChangeShape(Shape.Bird);
+            }
+
+            if (inputHandler.ShapeRat && CheckAvailableShape(Shape.Rat))
+            {
+                ChangeShape(Shape.Rat);
+            }
+        }
+
+        private bool CheckAvailableShape(Shape shape)
+        {
+            foreach (var shapeSettings in shapes)
+            {
+                if(shapeSettings.shapeType == shape && shapeSettings.isUnlocked == true)
+                    return true;
+            }
+
+            return false;
         }
 
         private Shape GetNextAvailableShape()
@@ -310,7 +334,7 @@ namespace Player
 
         public void Hit()
         {
-            if (isDead) return;
+            if (isDead || dialogueSystem.isDialogRunning) return;
 
             playerAnimationController.SetTrigger(AnimationController.IS_DEAD_S);
             isDead = true;

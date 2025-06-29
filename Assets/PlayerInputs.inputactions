@@ -58,6 +58,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ShapeDog",
+                    "type": "Button",
+                    "id": "71151f4d-6d58-40a9-922e-fab7b6a7612b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ShapeBird",
+                    "type": "Button",
+                    "id": "d53713ad-4793-448c-af9a-d8d733669f98",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ShapeRat",
+                    "type": "Button",
+                    "id": "c8778b67-ec07-481a-9f6b-9ce57e16188b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -311,6 +338,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "ChangeShape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e1b8e5e1-0a6e-4de3-a0ca-e2f3f1580931",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ShapeDog",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a2875706-5349-44bf-96b8-65677df5bbe4",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ShapeBird",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8cbc04e4-bb84-40aa-8cd4-a434ee46c5b5",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ShapeRat",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
