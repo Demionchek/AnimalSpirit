@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Animations;
 using Pathfinding;
@@ -16,6 +17,10 @@ namespace DefaultNamespace
         [SerializeField] private float checkFrequency = 0.2f; // Частота проверок в секундах
         [SerializeField] private LayerMask targetMask; // Маска целей
         [SerializeField] private LayerMask obstacleMask; // Маска препятствий
+        [SerializeField] private bool ignoreWalls = false;
+        [SerializeField] private bool ignoreOutOfRange = false;
+        [SerializeField] private bool respawnAfterEliminated = false;
+        [SerializeField] private bool ignorePlayerShape = false;
 
         [Header("Debug")]
         [SerializeField] private bool drawGizmos = true;
@@ -25,8 +30,8 @@ namespace DefaultNamespace
         private bool canSeeTarget = false;
         private AIDestinationSetter aiDestinationSetter;
         private SpriteRenderer spriteRenderer;
-
         private Transform homeTransform;
+        private PlayerController playerController;
 
         public bool CanSeeTarget => canSeeTarget;
         public Transform Target => target;
@@ -52,6 +57,19 @@ namespace DefaultNamespace
 
         private void SetDestinationEnable() => aiDestinationSetter.enabled = true;
 
+        private void OnDisable()
+        {
+            if (playerController != null)
+                playerController.OnRevive -= ResetOnRevive;
+        }
+
+        private void ResetOnRevive()
+        {
+            transform.position = homeTransform.position;
+            target = homeTransform;
+            aiDestinationSetter.target = target;
+        }
+
         private void DetectTarget()
         {
             // Сбрасываем состояние перед проверкой
@@ -65,13 +83,24 @@ namespace DefaultNamespace
 
             foreach (Collider2D targetCollider in targetsInViewRadius)
             {
-                if (!canSeeTarget && targetCollider.TryGetComponent(out PlayerController player))
+
+                if (playerController == null)
                 {
-                    if (player.CurrentShape == PlayerController.Shape.Rat)
+                    if (targetCollider.TryGetComponent(out PlayerController player))
+                    {
+                        playerController = player;
+                        playerController.OnRevive += ResetOnRevive;
+                    }
+                }
+
+                if (!ignorePlayerShape && !canSeeTarget && playerController != null)
+                {
+                    if ( playerController.CurrentShape == PlayerController.Shape.Rat)
                     {
                         continue;
                     }
                 }
+
                 Transform potentialTarget = targetCollider.transform;
                 Vector2 potentialTargetPos = new Vector2(potentialTarget.position.x, potentialTarget.position.y);
                 Vector2 directionToTarget = (potentialTargetPos - sightPoint).normalized;
@@ -91,7 +120,7 @@ namespace DefaultNamespace
                     RaycastHit2D hit = Physics2D.Raycast(sightPoint, directionToTarget, distanceToTarget, obstacleMask);
 
                     // Если не попали в препятствие - цель видна
-                    if (hit.collider == null)
+                    if (ignoreWalls || hit.collider == null)
                     {
                         target = potentialTarget;
                         aiDestinationSetter.target = target;
@@ -102,7 +131,7 @@ namespace DefaultNamespace
                 }
             }
 
-            if (!canSeeTarget) aiDestinationSetter.target = homeTransform;
+            if (!canSeeTarget && !ignoreOutOfRange) aiDestinationSetter.target = homeTransform;
         }
     }
 }

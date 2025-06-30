@@ -70,6 +70,8 @@ namespace Player
         public float CurrentSpeed { get; private set; }
         public Vector2 Velocity => rb.velocity;
 
+        public event Action OnRevive;
+
         private void Awake()
         {
             rb = GetComponent<Rigidbody2D>();
@@ -351,6 +353,8 @@ namespace Player
             transform.position = checkPoints.CurrentCheckPoint.position;
             playerAnimationController.SetTrigger(AnimationController.REVIVE_S);
             ChangeShape(CurrentShape);
+
+            OnRevive?.Invoke();
         }
 
         private void OnCollisionEnter2D(Collision2D other)
