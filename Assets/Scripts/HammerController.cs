@@ -55,23 +55,50 @@ namespace DefaultNamespace
         private void Attack()
         {
             // Получаем центр и поворот коллайдера
-            Vector3 center = hammerCollider.bounds.center;
-            Quaternion rotation = transform.rotation;
+            Vector2 center = hammerCollider.bounds.center;
+            float angle = -transform.eulerAngles.z; // Получаем угол поворота по оси Z
 
-            int layers = 1 << hitLayers;
+            Collider2D[] results = new Collider2D[5];
 
-            // Делаем CubeCast
-            Collider2D hitCollider = Physics2D.OverlapBox(center, castSize, layers);
+            // Делаем OverlapBox с учетом поворота
+            var size = Physics2D.OverlapBoxNonAlloc(center, castSize, angle, results);
 
-            if (hitCollider != null)
+            foreach (var collider in results)
             {
-                // Проверяем, реализует ли объект интерфейс IHittable
-                IHittable hittable = hitCollider.GetComponent<IHittable>();
-                if (hittable != null)
+                if(collider != null)
                 {
-                    hittable.Hit();
+                    // Проверяем, реализует ли объект интерфейс IHittable
+                    IHittable hittable = collider.GetComponent<IHittable>();
+                    if (hittable != null)
+                    {
+                        hittable.Hit();
+                    }
                 }
             }
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (!hammerCollider) return;
+
+            Gizmos.color = Color.blue;
+
+            // Получаем позицию и поворот
+            Vector2 center = hammerCollider.bounds.center;
+            float angle = -transform.eulerAngles.z;
+            Matrix4x4 rotationMatrix = Matrix4x4.TRS(center, Quaternion.Euler(0, 0, angle), Vector3.one);
+
+            // Сохраняем текущую матрицу
+            Matrix4x4 oldMatrix = Gizmos.matrix;
+
+            // Применяем поворот
+            Gizmos.matrix = rotationMatrix;
+
+            // Рисуем проволочный куб с учетом поворота
+            Gizmos.DrawWireCube(Vector3.zero, castSize);
+
+            // Восстанавливаем матрицу
+            Gizmos.matrix = oldMatrix;
         }
     }
 }

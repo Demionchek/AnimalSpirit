@@ -7,7 +7,7 @@ namespace DefaultNamespace
 {
     public class DoorInteractor : MonoBehaviour
     {
-        [SerializeField] public Opener opener;
+        [SerializeField] public Opener[] openers;
 
         private BoxCollider2D boxCollider2D;
 
@@ -21,9 +21,16 @@ namespace DefaultNamespace
 
         private void Update()
         {
-            if (opener == null) return;
+            if (openers == null) return;
 
-            if (opener.isActive)
+            int count = openers.Length;
+            int activeCount = 0;
+            foreach (var opener in openers)
+            {
+                if (opener.isActive) activeCount++;
+            }
+
+            if (count == activeCount)
             {
                 animator.SetBool(AnimationController.IS_OPEN_S, true);
                 boxCollider2D.enabled = false;
@@ -32,6 +39,12 @@ namespace DefaultNamespace
                 animator.SetBool(AnimationController.IS_OPEN_S, false);
                 boxCollider2D.enabled = true;
             }
+        }
+
+        public void OpenManual()
+        {
+            animator.SetBool(AnimationController.IS_OPEN_S, true);
+            boxCollider2D.enabled = false;
         }
     }
 }

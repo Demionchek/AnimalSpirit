@@ -25,11 +25,15 @@ namespace AI
         [SerializeField] private int checkPointIndex;
         [Space(5)]
         [SerializeField] private GameObject interactSign;
+        [SerializeField] private DoorInteractor doorInteractor;
+        public bool doorCondition = false;
         [Space(5)]
         [Header("Audio")]
         [SerializeField] private AudioSource audioSource;
         [SerializeField] private AudioClip attackSound;
         [SerializeField] private AudioClip deathSound;
+        [SerializeField] private AudioClip InteractSound_1;
+        [SerializeField] private AudioClip InteractSound_2;
 
         [Inject]
         private DialogueSystem dialogueSystem;
@@ -71,7 +75,7 @@ namespace AI
             canInteract = false;
             interactSign.SetActive(false);
 
-            if(hasDialog)
+            if(hasDialog && !doorCondition)
                 dialogueSystem.InitDialogue(dialogType);
 
             if (canAttack)
@@ -85,6 +89,18 @@ namespace AI
 
             if (isCheckPoint)
                 checkPoints.SetCurrentCheckpoint(checkPointIndex);
+
+            if (doorInteractor != null)
+            {
+                if (doorCondition)
+                {
+                    audioSource.PlayOneShot(InteractSound_1);
+                    doorInteractor.OpenManual();
+                } else
+                {
+                    audioSource.PlayOneShot(InteractSound_2);
+                }
+            }
         }
 
         public void PlayAttackSound()
