@@ -21,7 +21,7 @@ namespace DefaultNamespace
 
         private void Update()
         {
-            if (openers == null) return;
+            if (openers == null || openers.Length == 0) return;
 
             int count = openers.Length;
             int activeCount = 0;
