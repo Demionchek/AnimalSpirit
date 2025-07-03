@@ -1,0 +1,1055 @@
+fileFormatVersion: 2
+guid: fc4565e13e59497428e7a13b4d808d94
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Up-Down-loading_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 40
+        height: 190
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba8e6bb20404b3a4e86c9d759d181af9
+      internalID: -1929179504
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_1
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 4
+        width: 40
+        height: 186
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 11f91e7640bf9c24f843e863712cef47
+      internalID: 353746965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_2
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 8
+        width: 40
+        height: 182
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bcaba7583cf0f614da0aae8c2714a8ac
+      internalID: 1908388239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_3
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 8
+        width: 40
+        height: 182
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cca5f49d3142bdf48bfcad5bc4186086
+      internalID: -53226701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_4
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 13
+        width: 40
+        height: 177
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4c0c2cc4b4662aa4288792155d080aec
+      internalID: -765021272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_5
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 20
+        width: 40
+        height: 170
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dbd3d6095f458334c9f991f3fe7381ff
+      internalID: -755231985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_6
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 26
+        width: 40
+        height: 164
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c41604fee1cdd348aabdb279505755c
+      internalID: -725786404
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_7
+      rect:
+        serializedVersion: 2
+        x: 301
+        y: 33
+        width: 40
+        height: 157
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d2ba1891a9ec2ee4086c04863d5cc28b
+      internalID: 1600666776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_8
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 39
+        width: 40
+        height: 151
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf179dff9f53b7b4694b3ef7567741e4
+      internalID: 267623133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_9
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 47
+        width: 40
+        height: 143
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b8dd9d0d61384147b7ba24fe7df4aa8
+      internalID: -1482665552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_10
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 54
+        width: 40
+        height: 136
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b110f290ca722cb4192e6cfa9cfe5bf4
+      internalID: -483732537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_11
+      rect:
+        serializedVersion: 2
+        x: 473
+        y: 62
+        width: 40
+        height: 128
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 37bed14d51dab8f479ed4b6bb5b97993
+      internalID: -956665166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_12
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 70
+        width: 40
+        height: 120
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3ced72d74177664b8288eb002630e85
+      internalID: -554816626
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_13
+      rect:
+        serializedVersion: 2
+        x: 559
+        y: 76
+        width: 40
+        height: 114
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 36b2694434ba3b341b66ce87c1c164f0
+      internalID: 7431965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_14
+      rect:
+        serializedVersion: 2
+        x: 602
+        y: 82
+        width: 40
+        height: 108
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1af914b7f36e8ff4eb1b2449ea8043dc
+      internalID: -1084214934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_15
+      rect:
+        serializedVersion: 2
+        x: 645
+        y: 84
+        width: 40
+        height: 106
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ff4780d776601444bdd96e4928cd65e
+      internalID: -1600689747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_16
+      rect:
+        serializedVersion: 2
+        x: 688
+        y: 84
+        width: 40
+        height: 106
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc5f6bda36026fc42ae6b1a5c965d3a9
+      internalID: 1733174460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_17
+      rect:
+        serializedVersion: 2
+        x: 731
+        y: 80
+        width: 40
+        height: 110
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0360d453f75c684db36a7ea3fad7de8
+      internalID: 885977727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_18
+      rect:
+        serializedVersion: 2
+        x: 774
+        y: 72
+        width: 40
+        height: 118
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e91d380d7b6600744b29836185299dec
+      internalID: 618519021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_19
+      rect:
+        serializedVersion: 2
+        x: 817
+        y: 64
+        width: 40
+        height: 126
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dae4b5478d6c4d342bd1ace8d9475aff
+      internalID: 1649022398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_20
+      rect:
+        serializedVersion: 2
+        x: 860
+        y: 60
+        width: 40
+        height: 130
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c8401e7d0a62c740a29305bf454d075
+      internalID: -1856454295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_21
+      rect:
+        serializedVersion: 2
+        x: 903
+        y: 54
+        width: 40
+        height: 136
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e02789a8bfa0a54eb41165fab42914e
+      internalID: 1055794841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_22
+      rect:
+        serializedVersion: 2
+        x: 946
+        y: 52
+        width: 40
+        height: 138
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6849708c4f95e1e4398ace189078d86d
+      internalID: 2078632548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_23
+      rect:
+        serializedVersion: 2
+        x: 989
+        y: 58
+        width: 40
+        height: 132
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3cf3e963b3ebf154da5377dcc5e104b3
+      internalID: 1834867665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_24
+      rect:
+        serializedVersion: 2
+        x: 1032
+        y: 62
+        width: 40
+        height: 128
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4160948cd5eb52945883a299f2001490
+      internalID: -950015057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_25
+      rect:
+        serializedVersion: 2
+        x: 1075
+        y: 70
+        width: 40
+        height: 120
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0dc0cdc6a65ad3b499b695406786f36b
+      internalID: 1582940121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_26
+      rect:
+        serializedVersion: 2
+        x: 1118
+        y: 78
+        width: 40
+        height: 112
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78e572c2af91e0c4da0bf60c0d92dd4d
+      internalID: 1069071056
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_27
+      rect:
+        serializedVersion: 2
+        x: 1161
+        y: 82
+        width: 40
+        height: 108
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84e78f0e91eeba44594d757f0a2d8412
+      internalID: -1354515864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_28
+      rect:
+        serializedVersion: 2
+        x: 1204
+        y: 80
+        width: 40
+        height: 110
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74cb85655835adb468d79ddfc849afe0
+      internalID: 1310246156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_29
+      rect:
+        serializedVersion: 2
+        x: 1247
+        y: 68
+        width: 40
+        height: 122
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3cdeae0dfa1e7534483790563cb536e3
+      internalID: 2118000255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_30
+      rect:
+        serializedVersion: 2
+        x: 1290
+        y: 60
+        width: 40
+        height: 130
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20474cffb1bc2d14685b785f2d2150db
+      internalID: -581309475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_31
+      rect:
+        serializedVersion: 2
+        x: 1333
+        y: 52
+        width: 40
+        height: 138
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a0734a9a7a7ac1479f045a1d4bf89eb
+      internalID: 300909435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_32
+      rect:
+        serializedVersion: 2
+        x: 1376
+        y: 45
+        width: 40
+        height: 145
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 221e5d7a6fd64fd4999ddaa0fceacdf0
+      internalID: -764871218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_33
+      rect:
+        serializedVersion: 2
+        x: 1419
+        y: 37
+        width: 40
+        height: 153
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d24406ee30e387488ed8df802510788
+      internalID: -1833312475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_34
+      rect:
+        serializedVersion: 2
+        x: 1462
+        y: 31
+        width: 40
+        height: 159
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c9ca44262da7f8a43ad5761baba3059e
+      internalID: -1301588229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_35
+      rect:
+        serializedVersion: 2
+        x: 1505
+        y: 24
+        width: 40
+        height: 166
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0493ea568ee861a46a25636953c2e424
+      internalID: -1949357213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_36
+      rect:
+        serializedVersion: 2
+        x: 1548
+        y: 18
+        width: 40
+        height: 172
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45c7412e35ef7d046b9f0f4ff67596e9
+      internalID: 885578134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_37
+      rect:
+        serializedVersion: 2
+        x: 1591
+        y: 11
+        width: 40
+        height: 179
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c41ebec55d8cb543971de631a7a75c1
+      internalID: 1974077814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_38
+      rect:
+        serializedVersion: 2
+        x: 1634
+        y: 6
+        width: 40
+        height: 184
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 96809e38f95ed024985786c9f975c3f1
+      internalID: 1179059152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_39
+      rect:
+        serializedVersion: 2
+        x: 1677
+        y: 2
+        width: 40
+        height: 188
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39434dfe02a837442afac190a673c9d0
+      internalID: 2050526175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Up-Down-loading_40
+      rect:
+        serializedVersion: 2
+        x: 1720
+        y: 0
+        width: 40
+        height: 190
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1756c3144e6a1304ab6233e12c56dc42
+      internalID: -2098967439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Up-Down-loading_0: -1929179504
+      Up-Down-loading_1: 353746965
+      Up-Down-loading_10: -483732537
+      Up-Down-loading_11: -956665166
+      Up-Down-loading_12: -554816626
+      Up-Down-loading_13: 7431965
+      Up-Down-loading_14: -1084214934
+      Up-Down-loading_15: -1600689747
+      Up-Down-loading_16: 1733174460
+      Up-Down-loading_17: 885977727
+      Up-Down-loading_18: 618519021
+      Up-Down-loading_19: 1649022398
+      Up-Down-loading_2: 1908388239
+      Up-Down-loading_20: -1856454295
+      Up-Down-loading_21: 1055794841
+      Up-Down-loading_22: 2078632548
+      Up-Down-loading_23: 1834867665
+      Up-Down-loading_24: -950015057
+      Up-Down-loading_25: 1582940121
+      Up-Down-loading_26: 1069071056
+      Up-Down-loading_27: -1354515864
+      Up-Down-loading_28: 1310246156
+      Up-Down-loading_29: 2118000255
+      Up-Down-loading_3: -53226701
+      Up-Down-loading_30: -581309475
+      Up-Down-loading_31: 300909435
+      Up-Down-loading_32: -764871218
+      Up-Down-loading_33: -1833312475
+      Up-Down-loading_34: -1301588229
+      Up-Down-loading_35: -1949357213
+      Up-Down-loading_36: 885578134
+      Up-Down-loading_37: 1974077814
+      Up-Down-loading_38: 1179059152
+      Up-Down-loading_39: 2050526175
+      Up-Down-loading_4: -765021272
+      Up-Down-loading_40: -2098967439
+      Up-Down-loading_5: -755231985
+      Up-Down-loading_6: -725786404
+      Up-Down-loading_7: 1600666776
+      Up-Down-loading_8: 267623133
+      Up-Down-loading_9: -1482665552
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
