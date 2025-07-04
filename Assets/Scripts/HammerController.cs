@@ -15,8 +15,11 @@ namespace DefaultNamespace
         [SerializeField] private Vector2 castSize;        // Размер CubeCast (должен соответствовать коллайдеру)
         [SerializeField] private LayerMask hitLayers;     // Слои для атаки
 
+        [SerializeField] private AudioClip hitSound;
+
         private Animator animator;
         private Collider2D hammerCollider;
+        private AudioSource hammerSoundSource;
         private float timer;
         private bool isActive;
 
@@ -24,6 +27,7 @@ namespace DefaultNamespace
         {
             animator = GetComponent<Animator>();
             hammerCollider = GetComponent<Collider2D>();
+            hammerSoundSource = GetComponent<AudioSource>();
 
             // Если размер не задан, используем размер коллайдера
             if (castSize == Vector2.zero && hammerCollider != null)
@@ -62,6 +66,8 @@ namespace DefaultNamespace
 
             // Делаем OverlapBox с учетом поворота
             var size = Physics2D.OverlapBoxNonAlloc(center, castSize, angle, results);
+
+            hammerSoundSource.PlayOneShot(hitSound);
 
             foreach (var collider in results)
             {

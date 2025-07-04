@@ -8,43 +8,69 @@ namespace DefaultNamespace
     public class DoorInteractor : MonoBehaviour
     {
         [SerializeField] public Opener[] openers;
+        [SerializeField] public AudioClip onOpenSound;
+        [SerializeField] public AudioClip onCloseSound;
 
         private BoxCollider2D boxCollider2D;
-
+        private AudioSource audioSource;
         private Animator animator;
+        private bool wasOpen;
 
         private void Start()
         {
             animator = GetComponent<Animator>();
             boxCollider2D = GetComponent<BoxCollider2D>();
+            audioSource = GetComponent<AudioSource>();
+            wasOpen = AreAllOpenersActive(); // Инициализируем начальное состояние
         }
 
         private void Update()
         {
             if (openers == null || openers.Length == 0) return;
 
-            int count = openers.Length;
-            int activeCount = 0;
+            bool isOpenNow = AreAllOpenersActive();
+
+            // Проверяем изменение состояния
+            if (isOpenNow != wasOpen)
+            {
+                UpdateDoorState(isOpenNow);
+                wasOpen = isOpenNow;
+            }
+        }
+
+        private bool AreAllOpenersActive()
+        {
             foreach (var opener in openers)
             {
-                if (opener.isActive) activeCount++;
+                if (opener == null || !opener.isActive)
+                    return false;
             }
+            return true;
+        }
 
-            if (count == activeCount)
+        private void UpdateDoorState(bool isOpen)
+        {
+            animator.SetBool(AnimationController.IS_OPEN_S, isOpen);
+            boxCollider2D.enabled = !isOpen;
+
+            // Воспроизводим соответствующий звук
+            if (audioSource != null)
             {
-                animator.SetBool(AnimationController.IS_OPEN_S, true);
-                boxCollider2D.enabled = false;
-            } else
-            {
-                animator.SetBool(AnimationController.IS_OPEN_S, false);
-                boxCollider2D.enabled = true;
+                AudioClip clip = isOpen ? onOpenSound : onCloseSound;
+                if (clip != null)
+                {
+                    audioSource.PlayOneShot(clip);
+                }
             }
         }
 
         public void OpenManual()
         {
-            animator.SetBool(AnimationController.IS_OPEN_S, true);
-            boxCollider2D.enabled = false;
+            if (!wasOpen) // Проверяем, не открыта ли уже дверь
+            {
+                UpdateDoorState(true);
+                wasOpen = true;
+            }
         }
     }
 }
