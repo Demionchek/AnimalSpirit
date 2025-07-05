@@ -55,6 +55,7 @@ namespace AI
         {
             animator = GetComponent<Animator>();
             spriteRenderer = GetComponent<SpriteRenderer>();
+            audioSource = GetComponent<AudioSource>();
         }
 
         private void Update()
@@ -95,7 +96,7 @@ namespace AI
                 if (doorCondition)
                 {
                     audioSource.PlayOneShot(InteractSound_1);
-                    doorInteractor.OpenManual();
+                    doorInteractor.OpenManual(true);
                 } else
                 {
                     audioSource.PlayOneShot(InteractSound_2);

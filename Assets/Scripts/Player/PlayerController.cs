@@ -53,7 +53,7 @@ namespace Player
         private Rigidbody2D rb;
         private CapsuleCollider2D capsuleCollider;
         private PlayerAnimationController playerAnimationController;
-        private bool isDead = false;
+        public bool isDead {get; private set;}
         private bool isFlip = false;
 
         private LayerMask ratMask;
@@ -69,6 +69,8 @@ namespace Player
         public bool IsGrounded { get; private set; }
         public float CurrentSpeed { get; private set; }
         public Vector2 Velocity => rb.velocity;
+
+        private Vector2 effectorVelocity = Vector2.zero;
 
         public event Action OnRevive;
 
@@ -145,7 +147,7 @@ namespace Player
         private void HandleGroundMovement()
         {
             CurrentSpeed = CurrentShape == Shape.Dog ? dogSpeed : ratSpeed;
-            rb.velocity = new Vector2(inputHandler.MoveInput.x * CurrentSpeed, rb.velocity.y);
+            rb.velocity = new Vector2(inputHandler.MoveInput.x * CurrentSpeed, rb.velocity.y) + effectorVelocity;
         }
 
         private void HandleFlyingMovement()
@@ -153,7 +155,7 @@ namespace Player
             rb.velocity = new Vector2(
                 inputHandler.MoveInput.x * birdFlySpeed,
                 inputHandler.MoveInput.y * birdAscendSpeed
-            );
+            ) + effectorVelocity;
         }
 
         private void HandleJump()
@@ -365,6 +367,11 @@ namespace Player
                 if (!isDead)
                     Hit();
             }
+
+            if (other.collider.gameObject.TryGetComponent(out SurfaceEffector2D surfaceEffector))
+            {
+                effectorVelocity = new Vector2(surfaceEffector.speed, 0);
+            }
         }
 
         private void OnCollisionStay2D(Collision2D collision)
@@ -383,6 +390,11 @@ namespace Player
         private void OnCollisionExit2D(Collision2D collision)
         {
             IsGrounded = false;
+
+            if (collision.collider.gameObject.TryGetComponent(out SurfaceEffector2D surfaceEffector))
+            {
+                effectorVelocity = Vector2.zero;
+            }
         }
 
         private void OnTriggerEnter2D(Collider2D other)

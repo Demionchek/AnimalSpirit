@@ -15,6 +15,7 @@ namespace DefaultNamespace
         private AudioSource audioSource;
         private Animator animator;
         private bool wasOpen;
+        private bool manuallyOpen;
 
         private void Start()
         {
@@ -31,7 +32,7 @@ namespace DefaultNamespace
             bool isOpenNow = AreAllOpenersActive();
 
             // Проверяем изменение состояния
-            if (isOpenNow != wasOpen)
+            if (isOpenNow != wasOpen && !manuallyOpen)
             {
                 UpdateDoorState(isOpenNow);
                 wasOpen = isOpenNow;
@@ -50,6 +51,8 @@ namespace DefaultNamespace
 
         private void UpdateDoorState(bool isOpen)
         {
+            if (animator == null) animator = GetComponent<Animator>();
+
             animator.SetBool(AnimationController.IS_OPEN_S, isOpen);
             boxCollider2D.enabled = !isOpen;
 
@@ -64,13 +67,11 @@ namespace DefaultNamespace
             }
         }
 
-        public void OpenManual()
+        public void OpenManual(bool isOpen)
         {
-            if (!wasOpen) // Проверяем, не открыта ли уже дверь
-            {
-                UpdateDoorState(true);
-                wasOpen = true;
-            }
+            UpdateDoorState(isOpen);
+            wasOpen = isOpen;
+            manuallyOpen = isOpen;
         }
     }
 }

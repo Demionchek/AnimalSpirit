@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Rendering.Universal;
 
 namespace DefaultNamespace
 {
@@ -19,12 +20,16 @@ namespace DefaultNamespace
 
         private SpriteRenderer spriteRenderer;
         private Collider2D objectCollider;
+        private Light2D light2D;
+        private AudioSource audioSource;
         private bool isActive;
 
         void Awake()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
             objectCollider = GetComponent<Collider2D>();
+            light2D = GetComponent<Light2D>();
+            audioSource = GetComponent<AudioSource>();
         }
 
         void Start()
@@ -95,6 +100,12 @@ namespace DefaultNamespace
 
             if (objectCollider != null)
                 objectCollider.enabled = active;
+
+            if (light2D != null)
+                light2D.enabled = active;
+
+            if (audioSource != null)
+                audioSource.enabled = active;
         }
 
         public void ToggleActive()
