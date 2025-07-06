@@ -15,5 +15,7 @@ namespace DefaultNamespace
                 SceneManager.LoadScene(sceneIndex);
             }
         }
+
+        public void Switch(int sceneIndex) => SceneManager.LoadScene(sceneIndex);
     }
 }
