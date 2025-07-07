@@ -45,7 +45,6 @@ namespace DefaultNamespace
                 isActive = false;
                 timer = 0f;
                 animator.SetBool(AnimationController.ATTACK_S, false);
-                hammerCollider.enabled = true;
             }
             else if (!isActive && timer >= activeTime)
             {
@@ -81,6 +80,8 @@ namespace DefaultNamespace
                     }
                 }
             }
+
+            hammerCollider.enabled = true;
         }
 
         private void OnDrawGizmos()

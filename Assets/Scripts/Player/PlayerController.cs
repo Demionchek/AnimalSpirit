@@ -52,6 +52,7 @@ namespace Player
 
         private Rigidbody2D rb;
         private CapsuleCollider2D capsuleCollider;
+        private BoxCollider2D boxTriggerCollider;
         private PlayerAnimationController playerAnimationController;
         public bool isDead {get; private set;}
         private bool isFlip = false;
@@ -78,6 +79,7 @@ namespace Player
         {
             rb = GetComponent<Rigidbody2D>();
             capsuleCollider = GetComponent<CapsuleCollider2D>();
+            boxTriggerCollider = GetComponent<BoxCollider2D>();
             playerAnimationController = GetComponent<PlayerAnimationController>();
 
             // Инициализация начальной формы
@@ -330,6 +332,8 @@ namespace Player
                     capsuleCollider.size = dogColliderSize;
                     capsuleCollider.direction = CapsuleDirection2D.Horizontal;
                     capsuleCollider.offset = dogColliderOffset;
+                    boxTriggerCollider.size = dogColliderSize;
+                    boxTriggerCollider.offset = dogColliderOffset;
                     rb.gravityScale = 2.5f;
                     gameObject.layer = LayerMask.NameToLayer("Player");
                     break;
@@ -337,6 +341,8 @@ namespace Player
                     capsuleCollider.size = ratColliderSize;
                     capsuleCollider.direction = CapsuleDirection2D.Horizontal;
                     capsuleCollider.offset = ratColliderOffset;
+                    boxTriggerCollider.size = ratColliderSize;
+                    boxTriggerCollider.offset = ratColliderOffset;
                     rb.gravityScale = 2.5f;
                     gameObject.layer = LayerMask.NameToLayer("Rat");
                     break;
@@ -344,6 +350,8 @@ namespace Player
                     capsuleCollider.size = birdColliderSize;
                     capsuleCollider.direction = CapsuleDirection2D.Vertical;
                     capsuleCollider.offset = birdColliderOffset;
+                    boxTriggerCollider.size = birdColliderSize;
+                    boxTriggerCollider.offset = birdColliderOffset;
                     rb.gravityScale = 0f;
                     rb.velocity = Vector2.zero;
                     gameObject.layer = LayerMask.NameToLayer("Bird");
