@@ -17,7 +17,7 @@ namespace AI
 
         private void Update()
         {
-            if (AnimationController.isAttacking) return;
+            if (AnimationController.isAttacking || isDead) return;
 
             bool isAttackState = currState is AttackStateAI;
 

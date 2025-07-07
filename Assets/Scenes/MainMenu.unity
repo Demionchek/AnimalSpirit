@@ -766,7 +766,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 365.55002}
+  m_AnchoredPosition: {x: 0, y: 273}
   m_SizeDelta: {x: -600, y: -537.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &424139547
@@ -1351,7 +1351,7 @@ Tilemap:
       - {fileID: -224976724, guid: 4262147ee099ccc44a3837223a262e6e, type: 3}
       - {fileID: -1506084410, guid: 4262147ee099ccc44a3837223a262e6e, type: 3}
       - {fileID: -653657070, guid: 4262147ee099ccc44a3837223a262e6e, type: 3}
-      m_AnimationSpeed: 10.000001
+      m_AnimationSpeed: 10
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 28, y: -3, z: 0}
@@ -1882,10 +1882,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 424139546}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3.2, y: 76.4}
-  m_SizeDelta: {x: 1185.5, y: 202.7}
+  m_AnchorMin: {x: 0.044529416, y: 0.42350852}
+  m_AnchorMax: {x: 0.96300006, y: 0.86250854}
+  m_AnchoredPosition: {x: 1.2000122, y: 50.4}
+  m_SizeDelta: {x: 561.5, y: 122.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &913103996
 MonoBehaviour:
@@ -1934,8 +1934,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 145.4
-  m_fontSizeBase: 145.4
+  m_fontSize: 64.5
+  m_fontSizeBase: 64.5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1970,7 +1970,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 282.2973, y: 10.0821, z: 282.29733, w: 112.582825}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2149,7 +2149,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -13530177, guid: 110c39bca41a4934d94ec815f3b62d74, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -2639,7 +2639,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: -410413315, guid: d234b17822ea0c7449ef8597635dc006, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -2998,10 +2998,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1280, y: 720}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -3257,7 +3257,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 892474823, guid: 67b61b26287c68d49b5ea23202e0386d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -3363,7 +3363,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_Sprite: {fileID: 1391761042, guid: 8997ec558d82cec4c95eb9056b4d3fac, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1

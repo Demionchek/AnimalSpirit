@@ -2,6 +2,7 @@ using System;
 using AI;
 using Interfaces;
 using UnityEngine;
+using Zenject;
 
 namespace DefaultNamespace
 {
@@ -9,8 +10,13 @@ namespace DefaultNamespace
     {
         public InteractableCharacter character;
         public GameObject sign;
+        public bool isTriggerDialog;
+        public DialogType dialogueType;
         private SpriteRenderer spriteRenderer;
         private AudioSource audioSource;
+
+        [Inject]
+        private DialogueSystem dialogueSystem;
 
         private void Awake()
         {
@@ -31,6 +37,7 @@ namespace DefaultNamespace
                 if (spriteRenderer != null) spriteRenderer.enabled = false;
                 if (audioSource != null) audioSource.Play();
                 if (sign != null) sign.SetActive(false);
+                if (isTriggerDialog) dialogueSystem.InitDialogue(dialogueType);
             }
         }
 

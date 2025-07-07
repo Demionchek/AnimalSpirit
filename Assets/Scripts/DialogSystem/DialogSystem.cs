@@ -13,7 +13,9 @@ namespace DefaultNamespace
         Intro,
         Dialog_1,
         Dialog_2,
-        Dialog_3
+        Dialog_3,
+        Dialog_4,
+        Dialog_5
     }
 
     public class DialogueSystem : MonoBehaviour
@@ -23,12 +25,17 @@ namespace DefaultNamespace
         [SerializeField] private float textSpeed = 0.05f; // Скорость появления текста
         [SerializeField] private float delayAfterLines = 1.5f; // Задержка после последней строки
 
+        [SerializeField] private bool isTriggerCutscene = false;
+        [SerializeField] private DialogType CutsceneTrigger = DialogType.Dialog_3;
+        [SerializeField] private int timelineIndex = 3;
+
         public bool isDialogRunning = false;
 
         private List<string> lines = new List<string>(); // Список строк диалога
         private int currentLine = 0; // Текущая строка
 
         private LinesContainer linesContainer;
+        private DialogType currentType;
 
         [Inject]
         private InputHandler _inputHandler;
@@ -38,29 +45,16 @@ namespace DefaultNamespace
         void Start()
         {
             linesContainer = GetComponent<LinesContainer>();
-            InputLines(linesContainer.introLines);
+            InputLines(linesContainer.dialogLines[(int)DialogType.Intro].lines);
         }
 
         public void InitDialogue( DialogType type )
         {
             if(isDialogRunning) return;
+            currentType = type;
 
             ClearLines();
-            switch (type)
-            {
-                case DialogType.Intro:
-                    InputLines(linesContainer.introLines);
-                    break;
-                case DialogType.Dialog_1:
-                    InputLines(linesContainer.interactionLine1);
-                    break;
-                case DialogType.Dialog_2:
-                    InputLines(linesContainer.interactionLine2);
-                    break;
-                case DialogType.Dialog_3:
-                    InputLines(linesContainer.interactionLine3);
-                    break;
-            }
+            InputLines(linesContainer.dialogLines[(int)type].lines);
 
             StartDialogue();
         }
@@ -126,6 +120,11 @@ namespace DefaultNamespace
         {
             dialoguePanel.SetActive(false);
             isDialogRunning = false;
+
+            if (isTriggerCutscene && currentType == CutsceneTrigger)
+            {
+                _timelineManager.PlayCutscene(timelineIndex);
+            }
         }
     }
 }
