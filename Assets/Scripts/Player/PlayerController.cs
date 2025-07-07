@@ -147,7 +147,32 @@ namespace Player
         private void HandleGroundMovement()
         {
             CurrentSpeed = CurrentShape == Shape.Dog ? dogSpeed : ratSpeed;
-            rb.velocity = new Vector2(inputHandler.MoveInput.x * CurrentSpeed, rb.velocity.y) + effectorVelocity;
+
+            // Проверяем, есть ли стена перед игроком в направлении движения
+            bool isWallInFront = false;
+            if (Mathf.Abs(inputHandler.MoveInput.x) > 0.1f)
+            {
+                float direction = Mathf.Sign(inputHandler.MoveInput.x);
+                float rayLength = capsuleCollider.size.x * 0.6f;
+                Vector2 rayOrigin = (Vector2)transform.position + capsuleCollider.offset;
+
+                float rayHeight = capsuleCollider.size.y * 0.4f;
+
+                RaycastHit2D hitLower = Physics2D.Raycast(
+                    rayOrigin + Vector2.up * (capsuleCollider.offset.y - rayHeight * 1.75f),
+                    Vector2.right * direction,
+                    rayLength,
+                    LayerMask.GetMask("Ground", "Wall", "Platform"));
+
+                isWallInFront = hitLower.collider != null;
+
+                Debug.DrawRay(rayOrigin + Vector2.up * (capsuleCollider.offset.y - rayHeight * 1.75f),
+                             Vector2.right * direction * rayLength, Color.red);
+            }
+
+            // Если есть стена перед нами, не применяем горизонтальное движение, но оставляем возможность прыжка
+            float horizontalVelocity = isWallInFront ? 0 : inputHandler.MoveInput.x * CurrentSpeed;
+            rb.velocity = new Vector2(horizontalVelocity, rb.velocity.y) + effectorVelocity;
         }
 
         private void HandleFlyingMovement()
