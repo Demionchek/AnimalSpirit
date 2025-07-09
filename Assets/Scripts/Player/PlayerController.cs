@@ -56,6 +56,7 @@ namespace Player
         private PlayerAnimationController playerAnimationController;
         public bool isDead {get; private set;}
         private bool isFlip = false;
+        private bool isEnoughtSpaceForShape = false;
 
         private LayerMask ratMask;
         private LayerMask dogMask;
@@ -74,6 +75,8 @@ namespace Player
         private Vector2 effectorVelocity = Vector2.zero;
 
         public event Action OnRevive;
+        public event Action<Shape> OnShapeUnlocked;
+        public event Action<Shape> OnShapeChanged;
 
         private void Awake()
         {
@@ -94,6 +97,7 @@ namespace Player
                 if (shape.shapeType == shapeToUnlock)
                 {
                     shape.isUnlocked = true;
+                    OnShapeUnlocked?.Invoke(shapeToUnlock);
                     Debug.Log($"Форма {shapeToUnlock} теперь доступна!");
                     return;
                 }
@@ -131,6 +135,8 @@ namespace Player
                 return;
 
             if (playerAnimationController.isAttacking) return;
+
+            CheckIfEnoughSpace();
 
             switch (CurrentShape)
             {
@@ -263,6 +269,8 @@ namespace Player
 
         private void HandleShapeChange()
         {
+            if (!isEnoughtSpaceForShape) return;
+
             if (inputHandler.ShapeDog && CheckAvailableShape(Shape.Dog))
             {
                 ChangeShape(Shape.Dog);
@@ -277,6 +285,24 @@ namespace Player
             {
                 ChangeShape(Shape.Rat);
             }
+        }
+
+        //Check if there is nothing above before change shape to avoid stuck
+        private void CheckIfEnoughSpace()
+        {
+            Vector2 origin = ratColliderOffset + (Vector2)transform.position;
+            int layerMask = 1 << LayerMask.NameToLayer("Ground");
+            float distance = (dogColliderOffset.y + transform.position.y + dogColliderSize.y / 2) - origin.y;
+
+            Debug.DrawRay(origin,
+                Vector2.up * distance, Color.red);
+
+            if (Physics2D.Raycast(origin, Vector2.up, distance, layerMask))
+            {
+                isEnoughtSpaceForShape = false;
+                return;
+            }
+            isEnoughtSpaceForShape = true;
         }
 
         private bool CheckAvailableShape(Shape shape)
@@ -357,7 +383,7 @@ namespace Player
                     gameObject.layer = LayerMask.NameToLayer("Bird");
                     break;
             }
-
+            OnShapeChanged?.Invoke(newShape);
             playerAnimationController.OnShapeChanged(CurrentShape);
         }
 
