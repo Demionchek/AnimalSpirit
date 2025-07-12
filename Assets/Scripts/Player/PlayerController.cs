@@ -68,6 +68,8 @@ namespace Player
         public enum Shape { Dog, Rat, Bird }
         public Shape CurrentShape { get; private set; } = Shape.Dog;
 
+        public List<ShapeSettings> Shapes { get => shapes; set => shapes = value; }
+
         public bool IsGrounded { get; private set; }
         public float CurrentSpeed { get; private set; }
         public Vector2 Velocity => rb.velocity;

@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LevelIndustrial.unity
     guid: 8e09cface2059e840b238649225cedb3
+  - enabled: 1
+    path: Assets/Scenes/LabScene.unity
+    guid: cfb419174f6e12e4f9fc5b66cb2850c7
   m_configObjects: {}

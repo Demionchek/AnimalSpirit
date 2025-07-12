@@ -24,6 +24,23 @@ namespace DefaultNamespace
 
             playerController.OnShapeChanged += OnShapeChanged;
             playerController.OnShapeUnlocked += OnShapeUnlocked;
+
+            foreach (PlayerController.ShapeSettings shape in playerController.Shapes)
+            {
+                    switch (shape.shapeType)
+                    {
+                        case PlayerController.Shape.Dog:
+                            DogImage.gameObject.SetActive(shape.isUnlocked);
+                            break;
+                        case PlayerController.Shape.Bird:
+                            BirdImage.gameObject.SetActive(shape.isUnlocked);
+                            break;
+                        case PlayerController.Shape.Rat:
+                            RatImage.gameObject.SetActive(shape.isUnlocked);
+                            break;
+                    }
+
+            }
         }
 
         private void OnDisable()
