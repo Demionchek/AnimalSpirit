@@ -55,7 +55,7 @@ namespace DefaultNamespace
             if (boxCollider2D == null) boxCollider2D = GetComponent<BoxCollider2D>();
 
             animator.SetBool(AnimationController.IS_OPEN_S, isOpen);
-            boxCollider2D.enabled = !isOpen;
+            if (boxCollider2D != null)boxCollider2D.enabled = !isOpen;
 
             // Воспроизводим соответствующий звук
             if (audioSource != null)

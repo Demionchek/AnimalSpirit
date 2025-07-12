@@ -134,7 +134,91 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Generator_0
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 0
+        width: 35
+        height: 28
+      alignment: 9
+      pivot: {x: 0.53051096, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c72218349d78131429f5c51daef725a0
+      internalID: 1374593485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Generator_1
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 0
+        width: 35
+        height: 28
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e28cb023df063740ad1a57db68fd58c
+      internalID: -1372754295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Generator_2
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 0
+        width: 35
+        height: 28
+      alignment: 9
+      pivot: {x: 0.47612, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1545f14699d7b12459000c9b76073b7e
+      internalID: -1080355894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Generator_3
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 0
+        width: 35
+        height: 28
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1a5c16789ff39d419da8427d8e00f88
+      internalID: -1862340314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -145,7 +229,11 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Generator_0: 1374593485
+      Generator_1: -1372754295
+      Generator_2: -1080355894
+      Generator_3: -1862340314
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

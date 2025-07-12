@@ -134,7 +134,154 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Acid1_0
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 12
+        width: 25
+        height: 59
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 07e1a046f5b9d8644b08d44fae32c4a3
+      internalID: -1541048767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acid1_1
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 9
+        width: 29
+        height: 62
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b14f4d47abe13b458f197ec1b0b73f1
+      internalID: 1620633739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acid1_3
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 8
+        width: 33
+        height: 63
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc5f5cc9fb9893f428e095102d51a5b2
+      internalID: -1239071644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acid1_5
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 6
+        width: 38
+        height: 65
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e24012d67a9cdf4790006436afae725
+      internalID: -2022187634
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acid1_7
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 5
+        width: 43
+        height: 66
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c7786a71d266e9349b303200f49487f8
+      internalID: -382759541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acid1_2
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 2
+        width: 47
+        height: 69
+      alignment: 2
+      pivot: {x: 0.5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2c4aee8cddca35e4d8a8efb21d118efd
+      internalID: -74387313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Acid1_4
+      rect:
+        serializedVersion: 2
+        x: 424
+        y: 36
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84c0c79c3c308d44c90b89313fa2bae4
+      internalID: 1627316644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -145,7 +292,29 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Acid1_0: -1541048767
+      Acid1_1: 1620633739
+      Acid1_10: 90909693
+      Acid1_11: -91058142
+      Acid1_12: 273407068
+      Acid1_13: -1685369258
+      Acid1_14: -55857088
+      Acid1_15: -2067092064
+      Acid1_16: 433217628
+      Acid1_17: 1100714397
+      Acid1_18: 849576331
+      Acid1_19: 1543618377
+      Acid1_2: -74387313
+      Acid1_20: 816071269
+      Acid1_21: -1008616234
+      Acid1_3: -1239071644
+      Acid1_4: 1627316644
+      Acid1_5: -2022187634
+      Acid1_6: 1972641161
+      Acid1_7: -382759541
+      Acid1_8: -1071948751
+      Acid1_9: -1991870682
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

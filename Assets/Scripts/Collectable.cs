@@ -37,7 +37,7 @@ namespace DefaultNamespace
                 if (spriteRenderer != null) spriteRenderer.enabled = false;
                 if (audioSource != null) audioSource.Play();
                 if (sign != null) sign.SetActive(false);
-                if (isTriggerDialog) dialogueSystem.InitDialogue(dialogueType);
+                if (isTriggerDialog) dialogueSystem.InitDialogue((int)dialogueType);
             }
         }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Player;
@@ -48,13 +49,13 @@ namespace DefaultNamespace
             InputLines(linesContainer.dialogLines[(int)DialogType.Intro].lines);
         }
 
-        public void InitDialogue( DialogType type )
+        public void InitDialogue( int index )
         {
             if(isDialogRunning) return;
-            currentType = type;
+            currentType = (DialogType)index;
 
             ClearLines();
-            InputLines(linesContainer.dialogLines[(int)type].lines);
+            InputLines(linesContainer.dialogLines[index].lines);
 
             StartDialogue();
         }
@@ -98,9 +99,6 @@ namespace DefaultNamespace
             while (!_inputHandler.JumpPressed)
                 yield return null;
 
-            if (isPlayingCutscene && _timelineManager.GetCutscene() != null)
-                _timelineManager.GetCutscene().Play();
-
             // Переходим к следующей строке или закрываем диалог
             currentLine++;
             if (currentLine < lines.Count)
@@ -111,6 +109,9 @@ namespace DefaultNamespace
             {
                 while (!_inputHandler.JumpPressed)
                     yield return null;
+
+                if (_timelineManager.IsCutscenePaused())
+                    _timelineManager.GetCutscene().Resume();
 
                 EndDialogue();
             }

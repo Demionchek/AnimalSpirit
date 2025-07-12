@@ -26,6 +26,7 @@ namespace AI
         [Space(5)]
         [SerializeField] private GameObject interactSign;
         [SerializeField] private DoorInteractor doorInteractor;
+        [SerializeField] private GameObject objToActivate;
         public bool doorCondition = false;
         [Space(5)]
         [Header("Audio")]
@@ -50,6 +51,8 @@ namespace AI
         private bool canInteract = true;
 
         private bool isFlip;
+
+        public event Action OnInteract;
 
         private void Start()
         {
@@ -76,8 +79,10 @@ namespace AI
             canInteract = false;
             interactSign.SetActive(false);
 
+            OnInteract?.Invoke();
+
             if(hasDialog && !doorCondition)
-                dialogueSystem.InitDialogue(dialogType);
+                dialogueSystem.InitDialogue((int)dialogType);
 
             if (canAttack)
                 animator.SetTrigger("Attack");
@@ -91,15 +96,20 @@ namespace AI
             if (isCheckPoint)
                 checkPoints.SetCurrentCheckpoint(checkPointIndex);
 
+            if (objToActivate != null) objToActivate.SetActive(true);
+
             if (doorInteractor != null)
             {
                 if (doorCondition)
                 {
-                    audioSource.PlayOneShot(InteractSound_1);
+                    if (InteractSound_1 != null)
+                        audioSource.PlayOneShot(InteractSound_1);
+
                     doorInteractor.OpenManual(true);
                 } else
                 {
-                    audioSource.PlayOneShot(InteractSound_2);
+                    if (InteractSound_2 != null)
+                        audioSource.PlayOneShot(InteractSound_2);
                 }
             }
         }

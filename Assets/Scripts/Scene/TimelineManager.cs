@@ -107,6 +107,7 @@ public class TimelineManager : MonoBehaviour
         if (_currentCutscene != null && _currentCutscene.state == PlayState.Playing)
         {
             _currentCutscene.Stop();
+            _currentCutscene = null;
         }
     }
 
@@ -133,6 +134,8 @@ public class TimelineManager : MonoBehaviour
     {
         return _currentCutscene != null && _currentCutscene.state == PlayState.Playing;
     }
+
+    public bool IsCutscenePaused() => _currentCutscene != null && _currentCutscene.state == PlayState.Paused;
 
     public PlayableDirector GetCutscene() => _currentCutscene;
 }
