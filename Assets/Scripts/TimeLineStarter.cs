@@ -18,7 +18,7 @@ namespace DefaultNamespace
         {
             if (playerController.isDead) return;
 
-            if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+            if (other.gameObject.layer == LayerMask.NameToLayer("Enemy") || other.gameObject.layer == LayerMask.NameToLayer("Bullet"))
             {
                 isActive = true;
                 director.Play();

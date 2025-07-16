@@ -1,20 +1,26 @@
-using System;
 using Animations;
 using Interfaces;
 using UnityEngine;
+using System.Collections;
+using System.Linq;
 
 namespace DefaultNamespace
 {
     public class ButtonInteractor : Opener
     {
         [SerializeField] private LayerMask[] interactLayers;
+        [SerializeField] private float checkInterval = 0.5f; // Интервал проверки в секундах
 
-        private int collidingObjectsCount = 0; // Счетчик объектов в триггере
+        private int collidingObjectsCount = 0;
         private Animator animator;
+        private Collider2D buttonCollider;
+        private Coroutine checkCollisionCoroutine;
 
         private void Start()
         {
             animator = GetComponent<Animator>();
+            buttonCollider = GetComponent<Collider2D>();
+            checkCollisionCoroutine = StartCoroutine(CheckCollisionsPeriodically());
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -31,8 +37,36 @@ namespace DefaultNamespace
             if (IsLayerInInteractLayers(other.gameObject.layer))
             {
                 collidingObjectsCount--;
-                if (collidingObjectsCount < 0) collidingObjectsCount = 0; // Защита от отрицательных значений
+                if (collidingObjectsCount < 0) collidingObjectsCount = 0;
                 UpdateButtonState();
+            }
+        }
+
+        private IEnumerator CheckCollisionsPeriodically()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(checkInterval);
+
+                // Получаем все коллайдеры, которые сейчас пересекаются с кнопкой
+                var colliders = Physics2D.OverlapBoxAll(
+                    buttonCollider.bounds.center,
+                    buttonCollider.bounds.size,
+                    0f
+                );
+
+                // Фильтруем только те, которые на нужных слоях
+                int actualCount = colliders.Count(c =>
+                    c != buttonCollider &&
+                    IsLayerInInteractLayers(c.gameObject.layer)
+                );
+
+                // Если расхождение с нашим счетчиком - корректируем
+                if (actualCount != collidingObjectsCount)
+                {
+                    collidingObjectsCount = actualCount;
+                    UpdateButtonState();
+                }
             }
         }
 
@@ -59,5 +93,12 @@ namespace DefaultNamespace
             return false;
         }
 
+        private void OnDestroy()
+        {
+            if (checkCollisionCoroutine != null)
+            {
+                StopCoroutine(checkCollisionCoroutine);
+            }
+        }
     }
 }

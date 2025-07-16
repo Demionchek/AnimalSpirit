@@ -15,14 +15,18 @@ namespace DefaultNamespace
         public int CheckPointIndex = 3;
         [Inject]
         private CheckPoints checkPoints;
+        private bool isActivated = false;
 
         private void OnTriggerEnter2D(Collider2D other)
         {
+            if (isActivated) return;
+
             if (other.TryGetComponent(out PlayerController player))
             {
                 door.OpenManual(false);
                 StartCoroutine(SoundOffSmooth());
                 checkPoints.SetCurrentCheckpoint(CheckPointIndex);
+                isActivated = true;
             }
         }
 
