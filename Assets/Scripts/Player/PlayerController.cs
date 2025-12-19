@@ -122,9 +122,11 @@ namespace Player
                     HandleJump();
                     break;
                 case Shape.Rat:
+                    HandleBarking();
                     HandleJump();
                     break;
                 case Shape.Bird:
+                    HandleBarking();
                     break;
             }
 
@@ -206,10 +208,12 @@ namespace Player
             bool collidersActive = interactCollider_R.enabled || interactCollider_L.enabled;
             if (inputHandler.BarkPressed && !collidersActive)
             {
-                playerAnimationController.SetTrigger("Attack");
-                playerAnimationController.isAttacking = true;
-
-                StartCoroutine(PlayWoofWithDelay());
+                if (CurrentShape == Shape.Dog)
+                {
+                    playerAnimationController.SetTrigger("Attack");
+                    playerAnimationController.isAttacking = true;
+                    StartCoroutine(PlayWoofWithDelay());
+                }
 
                 Vector2 origin = transform.position + new Vector3(0, 0.15f, 0);
                 float radius = 0.2f;
@@ -362,7 +366,7 @@ namespace Player
                     capsuleCollider.offset = dogColliderOffset;
                     boxTriggerCollider.size = dogColliderSize;
                     boxTriggerCollider.offset = dogColliderOffset;
-                    rb.gravityScale = 2.5f;
+                    rb.gravityScale = 1f;
                     gameObject.layer = LayerMask.NameToLayer("Player");
                     break;
                 case Shape.Rat:
@@ -371,7 +375,7 @@ namespace Player
                     capsuleCollider.offset = ratColliderOffset;
                     boxTriggerCollider.size = ratColliderSize;
                     boxTriggerCollider.offset = ratColliderOffset;
-                    rb.gravityScale = 2.5f;
+                    rb.gravityScale = 1f;
                     gameObject.layer = LayerMask.NameToLayer("Rat");
                     break;
                 case Shape.Bird:

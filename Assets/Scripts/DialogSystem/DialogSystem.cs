@@ -2,13 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Player;
+using TMPEffects.Components;
 using TMPro;
 using UnityEngine;
 using Zenject;
 
 namespace DefaultNamespace
 {
-
     public enum DialogType
     {
         Intro,
@@ -37,9 +37,11 @@ namespace DefaultNamespace
 
         private LinesContainer linesContainer;
         private DialogType currentType;
+        private TMPWriter writer;
 
         [Inject]
         private InputHandler _inputHandler;
+
         [Inject]
         private TimelineManager _timelineManager;
 
@@ -47,11 +49,12 @@ namespace DefaultNamespace
         {
             linesContainer = GetComponent<LinesContainer>();
             InputLines(linesContainer.dialogLines[(int)DialogType.Intro].lines);
+            writer = dialogueText.gameObject.GetComponent<TMPWriter>();
         }
 
-        public void InitDialogue( int index )
+        public void InitDialogue(int index)
         {
-            if(isDialogRunning) return;
+            if (isDialogRunning) return;
             currentType = (DialogType)index;
 
             ClearLines();
@@ -80,15 +83,6 @@ namespace DefaultNamespace
         IEnumerator TypeLine()
         {
             isDialogRunning = true;
-            // Очищаем текст перед началом новой строки
-            dialogueText.text = "";
-
-            // Постепенно выводим каждый символ текущей строки
-            foreach (char c in lines[currentLine].ToCharArray())
-            {
-                dialogueText.text += c;
-                yield return new WaitForSeconds(textSpeed);
-            }
 
             bool isPlayingCutscene = _timelineManager.IsCutscenePlaying();
 
@@ -96,19 +90,52 @@ namespace DefaultNamespace
                 if (_timelineManager.GetCutscene() != null)
                     _timelineManager.GetCutscene().Pause();
 
-            while (!_inputHandler.JumpPressed)
-                yield return null;
+            dialogueText.text = lines[currentLine];
 
-            // Переходим к следующей строке или закрываем диалог
+            // Сбрасываем состояние нажатия в начале каждой строки
+            // Ждем пока кнопка будет отпущена перед началом новой строки
+            yield return new WaitWhile(() => _inputHandler.JumpPressed);
+
+            // Постепенно выводим каждый символ текущей строки
+            writer.StartWriter();
+
+            // Ждем пока текст напечатается ИЛИ пока не нажмут прыжок для пропуска
+            yield return new WaitUntil(() => writer.IsWriting == false || _inputHandler.JumpPressed);
+
+            // Если текст еще печатался и была нажата кнопка - пропускаем анимацию
+            if (writer.IsWriting && _inputHandler.JumpPressed)
+            {
+                writer.SkipWriter();
+                // Ждем пока текст полностью не пропустится
+                yield return new WaitUntil(() => writer.IsWriting == false);
+            }
+
             currentLine++;
+
+            // Теперь ждем НОВОГО нажатия для продолжения
+            // Сначала убедимся что кнопка отпущена
+            yield return new WaitWhile(() => _inputHandler.JumpPressed);
+
+            // Затем ждем нового нажатия
+            if(currentLine < lines.Count)
+                yield return new WaitUntil(() => _inputHandler.JumpPressed);
+
+            // Короткая задержка чтобы убедиться что нажатие зарегистрировано
+            yield return null;
+
+            // Ждем отпускания кнопки
+            yield return new WaitWhile(() => _inputHandler.JumpPressed);
+
             if (currentLine < lines.Count)
             {
                 StartCoroutine(TypeLine());
-            }
-            else
+            } else
             {
-                while (!_inputHandler.JumpPressed)
-                    yield return null;
+                // Для последней строки тоже ждем нового нажатия
+                yield return new WaitWhile(() => _inputHandler.JumpPressed);
+                yield return new WaitUntil(() => _inputHandler.JumpPressed);
+                yield return null;
+                yield return new WaitWhile(() => _inputHandler.JumpPressed);
 
                 if (_timelineManager.IsCutscenePaused())
                     _timelineManager.GetCutscene().Resume();

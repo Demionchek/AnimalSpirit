@@ -309,7 +309,7 @@ MonoBehaviour:
   ratSpeed: 1
   birdFlySpeed: 1.8
   birdAscendSpeed: 2
-  jumpForce: 5
+  jumpForce: 3
   interactDelay: 0.5
   dogColliderSize: {x: 0.25, y: 0.18}
   dogColliderOffset: {x: 0, y: 0.1}
