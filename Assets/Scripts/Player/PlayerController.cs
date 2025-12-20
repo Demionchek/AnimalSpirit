@@ -13,6 +13,7 @@ namespace Player
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour, IHittable
     {
+
         [Header("Movement Settings")]
         [SerializeField] private float dogSpeed = 8f;
         [SerializeField] private float ratSpeed = 6f;
@@ -33,6 +34,7 @@ namespace Player
 
         [Header("Other Settings")]
         [SerializeField] private RandomSoundPlayer randomWoofPlayer;
+        [SerializeField] private bool ignoreDamage = false;
 
         [Inject]
         private InputHandler inputHandler;
@@ -403,7 +405,7 @@ namespace Player
 
         public void Hit()
         {
-            if (isDead || dialogueSystem.isDialogRunning) return;
+            if (isDead || dialogueSystem.isDialogRunning || ignoreDamage) return;
 
             playerAnimationController.SetTrigger(AnimationController.IS_DEAD_S);
             isDead = true;

@@ -1,3 +1,4 @@
+using System.Collections;
 using AI.States;
 using Interfaces;
 using UnityEngine;
@@ -13,33 +14,45 @@ namespace AI
             Init();
             StartCoroutine(DetectionRoutine());
             ChangeState<PatrolStateAI>();
+
+            StartCoroutine(StateUpdateCoroutine());
         }
 
         private void Update()
         {
-            if (AnimationController.isAttacking || isDead) return;
-
-            bool isAttackState = currState is AttackStateAI;
-
-            if (canSeeTarget && canAttack && !isAttackState)
-            {
-                ChangeState<AttackStateAI>();
-            }
-
-            bool isChaseState = currState is ChaseStateAI;
-
-            if (canSeeTarget && !canAttack && !isChaseState)
-            {
-                ChangeState<ChaseStateAI>();
-            }
-
-            if (!canSeeTarget)
-            {
-                ChangeState<PatrolStateAI>();
-            }
-
             currState?.StateUpdate();
             currentAttackTime = Time.time;
+        }
+
+        private IEnumerator StateUpdateCoroutine()
+        {
+            while (!isDead)
+            {
+                yield return new WaitForSeconds(0.5f);
+
+                if (AnimationController.isAttacking) continue;
+
+                if (isDead) break;
+
+                bool isAttackState = currState is AttackStateAI;
+
+                if (canSeeTarget && canAttack && !isAttackState)
+                {
+                    ChangeState<AttackStateAI>();
+                }
+
+                bool isChaseState = currState is ChaseStateAI;
+
+                if (canSeeTarget && !canAttack && !isChaseState)
+                {
+                    ChangeState<ChaseStateAI>();
+                }
+
+                if (!canSeeTarget)
+                {
+                    ChangeState<PatrolStateAI>();
+                }
+            }
         }
 
         private void FixedUpdate()

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using DefaultNamespace;
 using Interfaces;
 using Player;
@@ -25,6 +26,8 @@ namespace AI
         [SerializeField] private int checkPointIndex;
         [Space(5)]
         [SerializeField] private GameObject interactSign;
+        [SerializeField] private GameObject afterSign;
+        [SerializeField] private PlayerController.Shape targetShape;
         [SerializeField] private DoorInteractor doorInteractor;
         [SerializeField] private GameObject objToActivate;
         public bool doorCondition = false;
@@ -51,6 +54,7 @@ namespace AI
         private bool canInteract = true;
 
         private bool isFlip;
+        private bool wasActivated;
 
         public event Action OnInteract;
 
@@ -78,6 +82,12 @@ namespace AI
             lastTime = Time.time;
             canInteract = false;
             interactSign.SetActive(false);
+            if (afterSign != null && !wasActivated)
+            {
+                wasActivated = true;
+                afterSign.SetActive(true);
+                StartCoroutine(DeactivateAfterSign());
+            }
 
             OnInteract?.Invoke();
 
@@ -148,6 +158,12 @@ namespace AI
                     hittable.Hit(); // Взаимодействуем
                 }
             }
+        }
+
+        private IEnumerator DeactivateAfterSign()
+        {
+            yield return new WaitUntil(() => playerController.CurrentShape == targetShape);
+            afterSign?.SetActive(false);
         }
 
         public void SwitchLine(int lineIndex)

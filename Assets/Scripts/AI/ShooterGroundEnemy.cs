@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using AI.States;
 using Interfaces;
 using ObjectPool;
@@ -21,25 +22,37 @@ namespace AI
             StartCoroutine(DetectionRoutine());
             ChangeState<PatrolStateAI>();
             audioSource = GetComponent<AudioSource>();
+
+            StartCoroutine(StateUpdateCoroutine());
+
         }
 
         private void Update()
         {
-            bool isAttackState = currState is AttackStateAI;
-
-            if (canSeeTarget && !isAttackState )
-            {
-                ChangeState<AttackStateAI>();
-            }
-
-            if (!canSeeTarget )
-            {
-                ChangeState<PatrolStateAI>();
-            }
-
             currState?.StateUpdate();
             currentAttackTime = Time.time;
         }
+
+        private IEnumerator StateUpdateCoroutine()
+        {
+            while (!isDead)
+            {
+                yield return new WaitForSeconds(0.5f);
+
+                bool isAttackState = currState is AttackStateAI;
+
+                if (canSeeTarget && !isAttackState )
+                {
+                    ChangeState<AttackStateAI>();
+                }
+
+                if (!canSeeTarget )
+                {
+                    ChangeState<PatrolStateAI>();
+                }
+            }
+        }
+
         private void FixedUpdate()
         {
             currState?.StateFixedUpdate();

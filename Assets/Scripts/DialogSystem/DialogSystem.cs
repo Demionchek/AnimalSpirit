@@ -50,6 +50,7 @@ namespace DefaultNamespace
             linesContainer = GetComponent<LinesContainer>();
             InputLines(linesContainer.dialogLines[(int)DialogType.Intro].lines);
             writer = dialogueText.gameObject.GetComponent<TMPWriter>();
+            if (writer == null)  writer = dialogueText.gameObject.AddComponent<TMPWriter>();
         }
 
         public void InitDialogue(int index)
