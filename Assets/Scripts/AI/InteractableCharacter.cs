@@ -4,6 +4,7 @@ using DefaultNamespace;
 using Interfaces;
 using Player;
 using UnityEngine;
+using UnityEngine.Events;
 using Zenject;
 
 namespace AI
@@ -56,7 +57,7 @@ namespace AI
         private bool isFlip;
         private bool wasActivated;
 
-        public event Action OnInteract;
+        public UnityEvent OnInteract;
 
         private void Start()
         {
