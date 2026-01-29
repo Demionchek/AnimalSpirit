@@ -1,95 +1,71 @@
 using System;
 using System.Collections.Generic;
 using Interfaces;
+using Puzzles;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
-namespace Puzzles
+public class GasVent : MonoBehaviour, IInteractable
 {
-    public class GasVent : MonoBehaviour, IInteractable
+    [Header("Vent Settings")]
+    [SerializeField] private List<GasSource> connectedGasSources = new List<GasSource>();
+    [SerializeField] private AudioClip turnSound;
+
+    [Header("Visuals")]
+    [SerializeField] private Transform wheelTransform;
+    [SerializeField] private SpriteRenderer indicatorLight;
+    [SerializeField] private Color activeColor = Color.red;
+    [SerializeField] private Color inactiveColor = Color.green;
+    [SerializeField] private float rotationAngle = 45f;
+
+    public event Action OnToggle;
+    private bool isOn = false;
+    private AudioSource audioSource;
+
+    public bool IsOn => isOn;
+
+    private void Awake()
     {
-        [Header("Vent Settings")]
-        [SerializeField] private List<GasSource> connectedGasSources = new List<GasSource>();
-        [SerializeField] private float rotationAngle = 90f;
-        [SerializeField] private float rotationSpeed = 180f;
-        [SerializeField] private AudioClip turnSound;
+        audioSource = GetComponent<AudioSource>();
+        UpdateIndicator();
+    }
 
-        [Header("Visuals")]
-        [SerializeField] private Transform wheelTransform;
-        [SerializeField] private Light2D indicatorLight;
-        [SerializeField] private Color activeColor = Color.red;
-        [SerializeField] private Color inactiveColor = Color.green;
+    public void Interact()
+    {
+        ToggleVent();
+    }
 
-        public event Action OnToggle;
+    private void ToggleVent()
+    {
+        isOn = !isOn;
 
-        private bool isOn = false;
-        private bool isRotating = false;
-        private Quaternion targetRotation;
-        private AudioSource audioSource;
-
-        public bool IsOn => isOn;
-
-        private void Awake()
+        // Мгновенное вращение
+        if (wheelTransform != null)
         {
-            audioSource = GetComponent<AudioSource>();
-            UpdateIndicator();
+            wheelTransform.Rotate(0, 0, isOn ? rotationAngle : -rotationAngle);
         }
 
-        public void Interact()
+        // Переключаем связанные источники газа
+        foreach (var gasSource in connectedGasSources)
         {
-            if (isRotating) return;
-
-            ToggleVent();
+            if (gasSource != null)
+                gasSource.Toggle();
         }
 
-        private void ToggleVent()
-        {
-            isOn = !isOn;
+        // Звук
+        if (turnSound != null && audioSource != null)
+            audioSource.PlayOneShot(turnSound);
 
-            // Переключаем связанные источники газа
-            foreach (var gasSource in connectedGasSources)
-            {
-                if (gasSource != null)
-                    gasSource.Toggle();
-            }
+        // Обновляем индикатор
+        UpdateIndicator();
 
-            // Анимация вращения
-            StartCoroutine(RotateWheel());
+        OnToggle?.Invoke();
 
-            // Звук
-            if (turnSound != null && audioSource != null)
-                audioSource.PlayOneShot(turnSound);
+        Debug.Log($"Vent {name} turned {(isOn ? "ON" : "OFF")}");
+    }
 
-            // Обновляем индикатор
-            UpdateIndicator();
-
-            OnToggle?.Invoke();
-
-            Debug.Log($"Vent {name} turned {(isOn ? "ON" : "OFF")}");
-        }
-
-        private System.Collections.IEnumerator RotateWheel()
-        {
-            isRotating = true;
-            float elapsed = 0f;
-            Quaternion startRotation = wheelTransform.rotation;
-            Quaternion endRotation = startRotation * Quaternion.Euler(0, 0, rotationAngle);
-
-            while (elapsed < rotationSpeed)
-            {
-                wheelTransform.rotation = Quaternion.Lerp(startRotation, endRotation, elapsed / rotationSpeed);
-                elapsed += Time.deltaTime;
-                yield return null;
-            }
-
-            wheelTransform.rotation = endRotation;
-            isRotating = false;
-        }
-
-        private void UpdateIndicator()
-        {
-            if (indicatorLight != null)
-                indicatorLight.color = isOn ? activeColor : inactiveColor;
-        }
+    private void UpdateIndicator()
+    {
+        if (indicatorLight != null)
+            indicatorLight.color = isOn ? activeColor : inactiveColor;
     }
 }

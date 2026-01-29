@@ -42,7 +42,9 @@ namespace Puzzles
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+            if (other.gameObject.layer == LayerMask.NameToLayer("Player")
+                || other.gameObject.layer == LayerMask.NameToLayer("Rat")
+                || other.gameObject.layer == LayerMask.NameToLayer("Bird"))
             {
                 IHittable hittable = other.GetComponent<IHittable>();
                 hittable?.Hit();

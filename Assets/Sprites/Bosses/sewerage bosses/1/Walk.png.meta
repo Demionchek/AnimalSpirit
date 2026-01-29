@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c4426c2820e8d85498d6c27be46a990b
+guid: 66fb73e478cf82648b7cf120020a84e7
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -139,19 +139,19 @@ TextureImporter:
       name: Walk_0
       rect:
         serializedVersion: 2
-        x: 2
+        x: 20
         y: 0
-        width: 41
-        height: 19
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        width: 65
+        height: 40
+      alignment: 9
+      pivot: {x: 0.46687546, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a316816645c0d134bba083d326d099bb
-      internalID: 1765700147
+      spriteID: a8f64392440a58847beea1dbb5eadf71
+      internalID: -1296153282
       vertices: []
       indices: 
       edges: []
@@ -160,19 +160,19 @@ TextureImporter:
       name: Walk_1
       rect:
         serializedVersion: 2
-        x: 48
+        x: 107
         y: 0
-        width: 42
-        height: 20
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        width: 74
+        height: 40
+      alignment: 9
+      pivot: {x: 0.47898638, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 88f1c64f333f34c4893ca6cef8ee6294
-      internalID: 838269524
+      spriteID: 3fab8e5d9775ac34aafea12346550d33
+      internalID: 1796415528
       vertices: []
       indices: 
       edges: []
@@ -181,19 +181,19 @@ TextureImporter:
       name: Walk_2
       rect:
         serializedVersion: 2
-        x: 96
+        x: 197
         y: 0
-        width: 44
-        height: 22
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        width: 80
+        height: 41
+      alignment: 9
+      pivot: {x: 0.4551441, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 039f3fcf97c182e48a06fddaa341732f
-      internalID: 1312935939
+      spriteID: 6a81494f488d80d4baf53ce166ad7ace
+      internalID: 260834131
       vertices: []
       indices: 
       edges: []
@@ -202,19 +202,19 @@ TextureImporter:
       name: Walk_3
       rect:
         serializedVersion: 2
-        x: 144
+        x: 289
         y: 0
-        width: 44
-        height: 23
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        width: 84
+        height: 42
+      alignment: 9
+      pivot: {x: 0.44588834, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4d00d69a2d8af264c80917edf239d6cb
-      internalID: 1718116165
+      spriteID: a0385aee4b0ac6c449d084c763d7225a
+      internalID: -1178243052
       vertices: []
       indices: 
       edges: []
@@ -223,19 +223,19 @@ TextureImporter:
       name: Walk_4
       rect:
         serializedVersion: 2
-        x: 192
+        x: 389
         y: 0
-        width: 45
-        height: 22
-      alignment: 7
+        width: 80
+        height: 41
+      alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 315d1b0e14fd62d4180daba26481c047
-      internalID: -200443403
+      spriteID: 034d642b5e383874197db44194df2e88
+      internalID: 894442697
       vertices: []
       indices: 
       edges: []
@@ -244,19 +244,19 @@ TextureImporter:
       name: Walk_5
       rect:
         serializedVersion: 2
-        x: 241
+        x: 487
         y: 0
-        width: 44
-        height: 19
-      alignment: 7
+        width: 78
+        height: 40
+      alignment: 9
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0325b7e9c8f997b42b208a77d3859795
-      internalID: -2073651621
+      spriteID: 160701c5b09819c4fbc79d3f5699e93b
+      internalID: -1922170696
       vertices: []
       indices: 
       edges: []
@@ -272,12 +272,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Walk_0: 1765700147
-      Walk_1: 838269524
-      Walk_2: 1312935939
-      Walk_3: 1718116165
-      Walk_4: -200443403
-      Walk_5: -2073651621
+      Walk_0: -1296153282
+      Walk_1: 1796415528
+      Walk_2: 260834131
+      Walk_3: -1178243052
+      Walk_4: 894442697
+      Walk_5: -1922170696
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
