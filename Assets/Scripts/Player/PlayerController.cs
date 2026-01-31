@@ -356,7 +356,9 @@ namespace Player
             return false;
         }
 
-        public void ChangeShape(Shape newShape)
+        public void ChangeShapeDog() => ChangeShape(Shape.Dog);
+
+        private void ChangeShape(Shape newShape)
         {
             CurrentShape = newShape;
 

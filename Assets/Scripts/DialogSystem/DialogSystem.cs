@@ -5,6 +5,7 @@ using Player;
 using TMPEffects.Components;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using Zenject;
 
 namespace DefaultNamespace
@@ -21,19 +22,20 @@ namespace DefaultNamespace
 
     public class DialogueSystem : MonoBehaviour
     {
-        [SerializeField] private GameObject dialoguePanel; // Панель с текстом
-        [SerializeField] private TextMeshProUGUI dialogueText; // Текст для вывода
-        [SerializeField] private float textSpeed = 0.05f; // Скорость появления текста
-        [SerializeField] private float delayAfterLines = 1.5f; // Задержка после последней строки
+        [SerializeField] private GameObject dialoguePanel;
+        [SerializeField] private TextMeshProUGUI dialogueText;
+        [SerializeField] private float textSpeed = 0.05f;
+        [SerializeField] private float delayAfterLines = 1.5f;
 
         [SerializeField] private bool isTriggerCutscene = false;
         [SerializeField] private DialogType CutsceneTrigger = DialogType.Dialog_3;
+        [SerializeField] private UnityEventDictionary dialogEventDictionary;
         [SerializeField] private int timelineIndex = 3;
 
         public bool isDialogRunning = false;
 
-        private List<string> lines = new List<string>(); // Список строк диалога
-        private int currentLine = 0; // Текущая строка
+        private List<string> lines = new List<string>();
+        private int currentLine = 0;
 
         private LinesContainer linesContainer;
         private DialogType currentType;
@@ -93,38 +95,27 @@ namespace DefaultNamespace
 
             dialogueText.text = lines[currentLine];
 
-            // Сбрасываем состояние нажатия в начале каждой строки
-            // Ждем пока кнопка будет отпущена перед началом новой строки
             yield return new WaitWhile(() => _inputHandler.JumpPressed);
 
-            // Постепенно выводим каждый символ текущей строки
             writer.StartWriter();
 
-            // Ждем пока текст напечатается ИЛИ пока не нажмут прыжок для пропуска
             yield return new WaitUntil(() => writer.IsWriting == false || _inputHandler.JumpPressed);
 
-            // Если текст еще печатался и была нажата кнопка - пропускаем анимацию
             if (writer.IsWriting && _inputHandler.JumpPressed)
             {
                 writer.SkipWriter();
-                // Ждем пока текст полностью не пропустится
                 yield return new WaitUntil(() => writer.IsWriting == false);
             }
 
             currentLine++;
 
-            // Теперь ждем НОВОГО нажатия для продолжения
-            // Сначала убедимся что кнопка отпущена
             yield return new WaitWhile(() => _inputHandler.JumpPressed);
 
-            // Затем ждем нового нажатия
             if(currentLine < lines.Count)
                 yield return new WaitUntil(() => _inputHandler.JumpPressed);
 
-            // Короткая задержка чтобы убедиться что нажатие зарегистрировано
             yield return null;
 
-            // Ждем отпускания кнопки
             yield return new WaitWhile(() => _inputHandler.JumpPressed);
 
             if (currentLine < lines.Count)
@@ -132,7 +123,6 @@ namespace DefaultNamespace
                 StartCoroutine(TypeLine());
             } else
             {
-                // Для последней строки тоже ждем нового нажатия
                 yield return new WaitWhile(() => _inputHandler.JumpPressed);
                 yield return new WaitUntil(() => _inputHandler.JumpPressed);
                 yield return null;
@@ -154,6 +144,9 @@ namespace DefaultNamespace
             {
                 _timelineManager.PlayCutscene(timelineIndex);
             }
+
+            if (dialogEventDictionary.Contains(currentType))
+                dialogEventDictionary[currentType]?.Invoke();
         }
     }
 }
