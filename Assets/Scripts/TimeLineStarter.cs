@@ -2,7 +2,7 @@ using System;
 using Player;
 using UnityEngine;
 using UnityEngine.Playables;
-using Zenject;
+using VContainer;
 
 namespace DefaultNamespace
 {

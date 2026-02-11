@@ -6,7 +6,7 @@ using DefaultNamespace;
 using Interfaces;
 using UnityEngine;
 using UnityEngine.XR.WSA;
-using Zenject;
+using VContainer;
 
 namespace Player
 {

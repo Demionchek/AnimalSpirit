@@ -5,7 +5,7 @@ using Interfaces;
 using Player;
 using UnityEngine;
 using UnityEngine.Events;
-using Zenject;
+using VContainer;
 
 namespace AI
 {

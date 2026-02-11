@@ -2,7 +2,7 @@ using System.Collections;
 using Pathfinding.Examples;
 using Player;
 using UnityEngine;
-using Zenject;
+using VContainer;
 
 namespace DefaultNamespace
 {

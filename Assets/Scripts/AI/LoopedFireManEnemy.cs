@@ -2,7 +2,7 @@ using System;
 using AI.States;
 using Interfaces;
 using UnityEngine;
-using Zenject;
+using VContainer;
 
 namespace AI
 {

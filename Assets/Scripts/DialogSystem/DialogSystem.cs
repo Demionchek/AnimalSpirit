@@ -6,7 +6,7 @@ using TMPEffects.Components;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using Zenject;
+using VContainer;
 
 namespace DefaultNamespace
 {

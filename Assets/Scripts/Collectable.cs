@@ -2,7 +2,7 @@ using System;
 using AI;
 using Interfaces;
 using UnityEngine;
-using Zenject;
+using VContainer;
 
 namespace DefaultNamespace
 {

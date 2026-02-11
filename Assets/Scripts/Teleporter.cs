@@ -1,7 +1,7 @@
 using Interfaces;
 using Player;
 using UnityEngine;
-using Zenject;
+using VContainer;
 
 namespace DefaultNamespace
 {
