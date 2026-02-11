@@ -74,7 +74,7 @@ namespace Player
 
         public bool IsGrounded { get; private set; }
         public float CurrentSpeed { get; private set; }
-        public Vector2 Velocity => rb.velocity;
+        public Vector2 Velocity => rb.linearVelocity;
 
         private Vector2 effectorVelocity = Vector2.zero;
 
@@ -186,12 +186,12 @@ namespace Player
 
             // Если есть стена перед нами, не применяем горизонтальное движение, но оставляем возможность прыжка
             float horizontalVelocity = isWallInFront ? 0 : inputHandler.MoveInput.x * CurrentSpeed;
-            rb.velocity = new Vector2(horizontalVelocity, rb.velocity.y) + effectorVelocity;
+            rb.linearVelocity = new Vector2(horizontalVelocity, rb.linearVelocity.y) + effectorVelocity;
         }
 
         private void HandleFlyingMovement()
         {
-            rb.velocity = new Vector2(
+            rb.linearVelocity = new Vector2(
                 inputHandler.MoveInput.x * birdFlySpeed,
                 inputHandler.MoveInput.y * birdAscendSpeed
             ) + effectorVelocity;
@@ -389,7 +389,7 @@ namespace Player
                     boxTriggerCollider.size = birdColliderSize;
                     boxTriggerCollider.offset = birdColliderOffset;
                     rb.gravityScale = 0f;
-                    rb.velocity = Vector2.zero;
+                    rb.linearVelocity = Vector2.zero;
                     gameObject.layer = LayerMask.NameToLayer("Bird");
                     break;
             }

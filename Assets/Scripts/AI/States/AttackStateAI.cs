@@ -29,7 +29,7 @@ namespace AI
                 if (distance > baseEnemy.stoppingDistance && isGrounded)
                 {
                     direction.Normalize();
-                    baseEnemy.rb.velocity = direction * baseEnemy.speed;
+                    baseEnemy.rb.linearVelocity = direction * baseEnemy.speed;
                     baseEnemy.canAttack = false;
                     baseEnemy.ChangeState<ChaseStateAI>();
                     return;
