@@ -1,3 +1,4 @@
+using System;
 using DefaultNamespace;
 using DefaultNamespace.Features.Player.Application;
 using DefaultNamespace.Features.Player.Presentation;
@@ -22,7 +23,13 @@ namespace Features.Core.Installers
             builder.RegisterComponentInHierarchy<PlayerInput>();
             builder.Register<PlayerInputProvider>(Lifetime.Singleton).AsSelf();
             builder.Register<PlayerModel>(Lifetime.Scoped).AsSelf();
-            builder.Register<PlayerService>(Lifetime.Scoped).AsSelf();
+            builder.Register<PlayerService>(Lifetime.Scoped)
+                   .As<IInitializable>()
+                   .As<ITickable>()
+                   .As<IFixedTickable>()
+                   .As<IDisposable>();
+            builder.Register<UnityPlayerPhysicsPort>(Lifetime.Scoped)
+                   .As<IPlayerPhysicsPort>();
             builder.RegisterComponentInHierarchy<PlayerView>();
             builder.RegisterComponentInHierarchy<PlayerAnimationView>();
             builder.RegisterComponentInHierarchy<RandomSoundPlayer>(); // если нужно

@@ -8,5 +8,6 @@ namespace Features.Core.Settings
         [SerializeField] public PlayerMovementsSO PlayerMovements;
         [SerializeField] public PlayerSphereCastSettingsSO PlayerSphereCastSettings;
         [SerializeField] public ShapesColliderSettingSO ShapesColliderSettings;
+        [SerializeField] public LayerSettings Layers;
     }
 }

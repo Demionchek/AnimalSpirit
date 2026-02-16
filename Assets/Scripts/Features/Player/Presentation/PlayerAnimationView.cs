@@ -11,7 +11,7 @@ namespace DefaultNamespace.Features.Player.Presentation
     {
         private Animator _animator;
         private SpriteRenderer _renderer;
-        private IDisposable shapeSub, barkSub, deathSub, reviveSub;
+        private IDisposable shapeSub, barkSub, deathSub, reviveSub, velocitySub;
         private float _speed;
 
         [Inject]
@@ -20,15 +20,13 @@ namespace DefaultNamespace.Features.Player.Presentation
             ISubscriber<PlayerBarked> barkSub,
             ISubscriber<PlayerDied> deathSub,
             ISubscriber<PlayerRevived> reviveSub,
-            ISubscriber<PlayerGroundedChanged> groundedSub,
-            ISubscriber<PlayerVelocityChanged> velocitySub)
+            ISubscriber<ActualVelocityChanged> velocitySub)
         {
             this.shapeSub = shapeSub.Subscribe(e => _animator.SetInteger("Shape", (int)e.NewShape));
             this.barkSub = barkSub.Subscribe(_ => _animator.SetTrigger("Attack"));
             this.deathSub = deathSub.Subscribe(_ => _animator.SetTrigger("isDead"));
             this.reviveSub = reviveSub.Subscribe(_ => _animator.SetTrigger("Revive"));
-            groundedSub.Subscribe(e => _animator.SetBool("IsGrounded", e.IsGrounded));
-            velocitySub.Subscribe(e => SetSpeed(e.Velocity.x));
+            this.velocitySub = velocitySub.Subscribe(e => SetSpeed(e.Velocity.x));
         }
 
         private void Awake()
@@ -51,7 +49,11 @@ namespace DefaultNamespace.Features.Player.Presentation
 
         private void OnDestroy()
         {
-            shapeSub?.Dispose(); barkSub?.Dispose(); deathSub?.Dispose(); reviveSub?.Dispose();
+            shapeSub?.Dispose();
+            barkSub?.Dispose();
+            deathSub?.Dispose();
+            reviveSub?.Dispose();
+            velocitySub?.Dispose();
         }
     }
 }

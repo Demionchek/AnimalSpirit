@@ -15,11 +15,12 @@ namespace Features.Core.Settings
             public Vector2 colliderSize;
             public Vector2 colliderOffset;
             public CapsuleDirection2D colliderDir;
+            public LayerMask colliderLayer;
         }
 
         [SerializeField] private List<Entry> _entries;
 
-        private Dictionary<Shape, (Vector2, Vector2, CapsuleDirection2D)> _map;
+        private Dictionary<Shape, (Vector2, Vector2, CapsuleDirection2D, LayerMask)> _map;
 
         public Vector2 GetSize(Shape shape)
         {
@@ -39,11 +40,17 @@ namespace Features.Core.Settings
             return _map[shape].Item3;
         }
 
-        private Dictionary<Shape, (Vector2,Vector2, CapsuleDirection2D)> BuildMap()
+        public LayerMask GetLayer(Shape shape)
         {
-            var dict = new Dictionary<Shape, (Vector2, Vector2, CapsuleDirection2D)>();
+            _map ??= BuildMap();
+            return _map[shape].Item4;
+        }
+
+        private Dictionary<Shape, (Vector2,Vector2, CapsuleDirection2D, LayerMask)> BuildMap()
+        {
+            var dict = new Dictionary<Shape, (Vector2, Vector2, CapsuleDirection2D, LayerMask)>();
             foreach (var e in _entries)
-                dict[e.shape] = (e.colliderSize, e.colliderOffset, e.colliderDir);
+                dict[e.shape] = (e.colliderSize, e.colliderOffset, e.colliderDir, e.colliderLayer);
             return dict;
         }
     }

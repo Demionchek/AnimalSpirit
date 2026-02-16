@@ -1,111 +1,181 @@
 using System;
 using DefaultNamespace.Features.Player.Application;
+using Features.Core.Settings;
 using Features.Player.Domain;
+using Features.Player.Infrastructure;
 using MessagePipe;
 using UnityEngine;
 using VContainer;
 
 namespace DefaultNamespace.Features.Player.Presentation
 {
-    [RequireComponent(typeof(Rigidbody2D), typeof(CapsuleCollider2D), typeof(BoxCollider2D))]
-public class PlayerView : MonoBehaviour
-{
-    [Inject] private PlayerService _service;
-
-    private Rigidbody2D rb;
-    private CapsuleCollider2D capsule;
-    private BoxCollider2D boxTrigger;
-    private PlayerAnimationView animView;
-
-    private IPublisher<ActualVelocityChanged> _actualVelPub;
-
-    private IDisposable moveSub, jumpSub, barkSub, shapeSub, deathSub, reviveSub, groundedSub, velocitySub, wallSub;
-
-    private void Awake()
+    [RequireComponent(typeof(Rigidbody2D))]
+    public sealed class PlayerView : MonoBehaviour, IPlayerViewPort
     {
-        rb = GetComponent<Rigidbody2D>();
-        capsule = GetComponent<CapsuleCollider2D>();
-        boxTrigger = GetComponent<BoxCollider2D>();
-        animView = GetComponent<PlayerAnimationView>();
+        Vector2 IPlayerViewPort.Position
+        {
+            get => position;
+            set => position = value;
+        }
+
+        Vector2 IPlayerViewPort.CurrentVelocity
+        {
+            get => currentVelocity;
+            set => currentVelocity = value;
+        }
+
+        private PlayerService _service;
+        private PlayerModel _model;
+        private GameSettings _settings;
+
+        private Rigidbody2D _rb;
+        private CapsuleCollider2D _capsule;
+        private BoxCollider2D _boxTrigger;
+        private PlayerAnimationView _animView;
+
+        private CollisionTypes[] _layerMap = new CollisionTypes[32];
+
+        private IPublisher<ActualVelocityChanged> _actualVelocityPublisher;
+
+        private IDisposable _deathSub;
+        private IDisposable _reviveSub;
+        private IDisposable _groundedSub;
+        private Vector2 position;
+        private Vector2 currentVelocity;
+
+        [Inject]
+        public void Construct(
+            PlayerService service,
+            PlayerModel model,
+            GameSettings gameSettings,
+            ISubscriber<PlayerDied> deathSub,
+            ISubscriber<PlayerRevived> reviveSub,
+            ISubscriber<PlayerGroundedChanged> groundedSub)
+        {
+            _service = service;
+            _model = model;
+            _settings = gameSettings;
+
+            _deathSub = deathSub.Subscribe(OnDeath);
+            _reviveSub = reviveSub.Subscribe(OnRevive);
+            _groundedSub = groundedSub.Subscribe(e => OnGroundedChanged(e.IsGrounded));
+        }
+
+        private void Awake()
+        {
+            BuildLayerMap();
+            _rb = GetComponent<Rigidbody2D>();
+            _capsule = GetComponent<CapsuleCollider2D>();
+            _boxTrigger = GetComponent<BoxCollider2D>();
+            _animView = GetComponent<PlayerAnimationView>();
+        }
+
+        private void Update()
+        {
+            position = transform.position;
+        }
+
+        private void FixedUpdate()
+        {
+            currentVelocity = _rb.velocity;
+        }
+
+        public void ApplyVelocity(Vector2 velocity)
+        {
+            _rb.linearVelocity = velocity;
+        }
+
+        public void ApplyForce(Vector2 force, ForceMode2D mode = ForceMode2D.Impulse)
+        {
+            _rb.AddForce(force, mode);
+        }
+
+        public void ApplyCollider(Vector2 size, Vector2 offset, CapsuleDirection2D direction)
+        {
+            _capsule.size = size;
+            _capsule.offset = offset;
+            _capsule.direction = direction;
+
+            _boxTrigger.offset = offset;
+            _boxTrigger.size = size;
+        }
+
+        public void ApplyGravity(float gravity)
+        {
+            _rb.gravityScale = gravity;
+        }
+
+        public void ApplyLayer(int layer)
+        {
+            gameObject.layer = layer;
+        }
+
+
+        private void OnGroundedChanged(bool grounded) { }
+
+        private void OnDeath(PlayerDied _) { }
+
+        private void OnRevive(PlayerRevived _) { }
+
+
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            CollisionTypes type = MapLayerToCollisionType(other.gameObject.layer);
+
+            float? effectorSpeed = null;
+
+            if (other.gameObject.TryGetComponent<SurfaceEffector2D>(out var effector))
+                effectorSpeed = effector.speed;
+
+            _service.NotifyCollisionEnter(type, effectorSpeed);
+        }
+
+
+        private void OnCollisionExit2D(Collision2D collision)
+        {
+            _service.NotifyGroundedState(false);
+
+            if (collision.gameObject.GetComponent<SurfaceEffector2D>() != null)
+                _service.NotifyEffectorExit();
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            CollisionTypes type = MapLayerToCollisionType(other.gameObject.layer);
+            _service.NotifyTriggerEnter(type);
+        }
+
+        private CollisionTypes MapLayerToCollisionType(int layer)
+        {
+            return _layerMap[layer];
+        }
+
+        private void BuildLayerMap()
+        {
+            for (int i = 0; i < 32; i++)
+                _layerMap[i] = CollisionTypes.None;
+
+            FillMask(_settings.Layers.EnemyMask, CollisionTypes.Enemy);
+            FillMask(_settings.Layers.BulletMask, CollisionTypes.Bullet);
+            FillMask(_settings.Layers.GroundMask, CollisionTypes.Ground);
+        }
+
+        private void FillMask(LayerMask mask, CollisionTypes type)
+        {
+            int value = mask.value;
+
+            for (int i = 0; i < 32; i++)
+            {
+                if ((value & (1 << i)) != 0)
+                    _layerMap[i] = type;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            _deathSub?.Dispose();
+            _reviveSub?.Dispose();
+            _groundedSub?.Dispose();
+        }
     }
-
-    [Inject]
-    private void Construct(
-        ISubscriber<PlayerMoveInput> moveSub,
-        ISubscriber<PlayerJumpPressed> jumpSub,
-        ISubscriber<PlayerBarkPressed> barkSub,
-        ISubscriber<PlayerShapeRequest> shapeSub,
-        ISubscriber<PlayerDied> deathSub,
-        ISubscriber<PlayerRevived> reviveSub,
-        ISubscriber<PlayerGroundedChanged> groundedSub,
-        ISubscriber<PlayerVelocityChanged> velocitySub,
-        ISubscriber<PlayerWallDetected> wallSub,
-        IPublisher<ActualVelocityChanged> actualVelSub)
-    {
-        this.moveSub = moveSub.Subscribe(OnMove);
-        this.jumpSub = jumpSub.Subscribe(OnJump);
-        this.barkSub = barkSub.Subscribe(OnBark);
-        this.shapeSub = shapeSub.Subscribe(OnShapeRequest);
-        this.deathSub = deathSub.Subscribe(OnDeath);
-        this.reviveSub = reviveSub.Subscribe(OnRevive);
-        this.groundedSub = groundedSub.Subscribe(e => OnGroundedChanged(e.IsGrounded));
-        this.velocitySub = velocitySub.Subscribe(e => OnVelocityChanged(e.Velocity));
-        this.wallSub = wallSub.Subscribe(e => OnWallDetected(e.IsWall));
-        this._actualVelPub = actualVelSub;
-    }
-
-
-
-    private void OnMove(PlayerMoveInput e) => _service.Move(e.Value) ;
-    private void OnJump(PlayerJumpPressed _) => _service.TryJump();
-    private void OnBark(PlayerBarkPressed _) => _service.PerformBark(transform.position);
-    private void OnShapeRequest(PlayerShapeRequest e) => _service.RequestShapeChange(e.Target, transform.position);
-
-    private void OnDeath(PlayerDied _) { /* анимация смерти */ }
-    private void OnRevive(PlayerRevived _) { /* респаун */ }
-
-    private void FixedUpdate()
-    {
-        _actualVelPub.Publish(new ActualVelocityChanged(rb.linearVelocity));
-    }
-
-    private void OnGroundedChanged(bool isGrounded)
-    {
-    }
-
-    private void OnVelocityChanged(Vector2 velocity)
-    {
-    }
-
-    private void OnWallDetected(bool isWall)
-    {
-    }
-
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        _service.OnCollisionEnter(other);
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        _service.OnCollisionStay(collision);
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        _service.OnCollisionExit(collision);
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        _service.OnTriggerEnter(other);
-    }
-
-    private void OnDestroy()
-    {
-        moveSub?.Dispose(); jumpSub?.Dispose(); barkSub?.Dispose();
-        shapeSub?.Dispose(); deathSub?.Dispose(); reviveSub?.Dispose();
-        groundedSub?.Dispose(); velocitySub?.Dispose(); wallSub?.Dispose();
-    }
-}
 }
