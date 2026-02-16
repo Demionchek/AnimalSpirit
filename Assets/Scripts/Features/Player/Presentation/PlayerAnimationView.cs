@@ -4,7 +4,7 @@ using MessagePipe;
 using UnityEngine;
 using VContainer;
 
-namespace DefaultNamespace.Features.Player.Presentation
+namespace Features.Player.Presentation
 {
     [RequireComponent(typeof(Animator), typeof(SpriteRenderer))]
     public class PlayerAnimationView : MonoBehaviour

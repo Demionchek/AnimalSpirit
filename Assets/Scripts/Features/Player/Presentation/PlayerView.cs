@@ -1,5 +1,5 @@
 using System;
-using DefaultNamespace.Features.Player.Application;
+using Features.Player.Application;
 using Features.Core.Settings;
 using Features.Player.Domain;
 using Features.Player.Infrastructure;
@@ -7,7 +7,7 @@ using MessagePipe;
 using UnityEngine;
 using VContainer;
 
-namespace DefaultNamespace.Features.Player.Presentation
+namespace Features.Player.Presentation
 {
     [RequireComponent(typeof(Rigidbody2D))]
     public sealed class PlayerView : MonoBehaviour, IPlayerViewPort
@@ -24,7 +24,7 @@ namespace DefaultNamespace.Features.Player.Presentation
             set => currentVelocity = value;
         }
 
-        private PlayerService _service;
+        private PlayerFacade _facade;
         private PlayerModel _model;
         private GameSettings _settings;
 
@@ -45,14 +45,14 @@ namespace DefaultNamespace.Features.Player.Presentation
 
         [Inject]
         public void Construct(
-            PlayerService service,
+            PlayerFacade facade,
             PlayerModel model,
             GameSettings gameSettings,
             ISubscriber<PlayerDied> deathSub,
             ISubscriber<PlayerRevived> reviveSub,
             ISubscriber<PlayerGroundedChanged> groundedSub)
         {
-            _service = service;
+            _facade = facade;
             _model = model;
             _settings = gameSettings;
 
@@ -127,22 +127,22 @@ namespace DefaultNamespace.Features.Player.Presentation
             if (other.gameObject.TryGetComponent<SurfaceEffector2D>(out var effector))
                 effectorSpeed = effector.speed;
 
-            _service.NotifyCollisionEnter(type, effectorSpeed);
+            _facade.NotifyCollisionEnter(type, effectorSpeed);
         }
 
 
         private void OnCollisionExit2D(Collision2D collision)
         {
-            _service.NotifyGroundedState(false);
+            _facade.NotifyGroundedState(false);
 
             if (collision.gameObject.GetComponent<SurfaceEffector2D>() != null)
-                _service.NotifyEffectorExit();
+                _facade.NotifyEffectorExit();
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
             CollisionTypes type = MapLayerToCollisionType(other.gameObject.layer);
-            _service.NotifyTriggerEnter(type);
+            _facade.NotifyTriggerEnter(type);
         }
 
         private CollisionTypes MapLayerToCollisionType(int layer)

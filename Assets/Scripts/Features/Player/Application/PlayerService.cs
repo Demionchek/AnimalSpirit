@@ -11,7 +11,7 @@ using VContainer;
 using VContainer.Unity;
 using IInitializable = Unity.VisualScripting.IInitializable;
 
-namespace DefaultNamespace.Features.Player.Application
+namespace Features.Player.Application
 {
     public sealed class PlayerService :
         IInitializable,

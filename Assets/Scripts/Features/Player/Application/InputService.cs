@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer.Unity;
 
-namespace DefaultNamespace.Features.Player.Application
+namespace Features.Player.Application
 {
     public class InputService : IInitializable, ITickable
     {
