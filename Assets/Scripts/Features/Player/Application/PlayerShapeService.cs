@@ -2,57 +2,87 @@ using Features.Core.Settings;
 using Features.Player.Domain;
 using Features.Player.Infrastructure;
 using MessagePipe;
+using UnityEngine;
 
 namespace Features.Player.Application
 {
+    public readonly struct ShapeParameters
+{
+    public readonly Vector2 Size;
+    public readonly Vector2 Offset;
+    public readonly CapsuleDirection2D Direction;
+    public readonly float Gravity;
+    public readonly int Layer;
+
+    public ShapeParameters(
+        Vector2 size,
+        Vector2 offset,
+        CapsuleDirection2D direction,
+        float gravity,
+        int layer)
+    {
+        Size = size;
+        Offset = offset;
+        Direction = direction;
+        Gravity = gravity;
+        Layer = layer;
+    }
+}
+
     public sealed class PlayerShapeService
     {
         private readonly PlayerModel _model;
         private readonly GameSettings _settings;
         private readonly IPlayerPhysicsPort _physics;
-        private readonly IPlayerViewPort _view;
-        private readonly IPublisher<PlayerShapeChanged> _shapePub;
 
         public PlayerShapeService(
             PlayerModel model,
             GameSettings settings,
-            IPlayerPhysicsPort physics,
-            IPlayerViewPort view,
-            IPublisher<PlayerShapeChanged> shapePub)
+            IPlayerPhysicsPort physics)
         {
             _model = model;
             _settings = settings;
             _physics = physics;
-            _view = view;
-            _shapePub = shapePub;
         }
 
-        public void TryChangeShape(Shape target)
+        public bool TryChangeShape(Shape target, out ShapeParameters parameters)
         {
-            if (_model.IsDead ||
-                target == _model.CurrentShape ||
-                !_model.IsUnlocked(target))
-                return;
+            parameters = default;
 
-            if (!_physics.HasSpaceAbove())
-                return;
+            if (_model.IsDead)
+                return false;
+
+            if (target == _model.CurrentShape)
+                return false;
+
+            if (!_model.IsUnlocked(target))
+                return false;
+
+            Vector2 offset =
+                _settings.ShapesColliderSettings
+                         .GetOffset(_model.CurrentShape);
+
+            float distance =
+                (_settings.ShapesColliderSettings
+                          .GetSize(Shape.Dog).y * 0.5f);
+
+            int groundMask =
+                _settings.Layers.GroundMask;
+
+            if (!_physics.HasSpaceAbove(offset, distance, groundMask))
+                return false;
 
             _model.SetShape(target);
-            ApplyParameters(target);
-            _shapePub.Publish(new PlayerShapeChanged(target));
-        }
 
-        private void ApplyParameters(Shape shape)
-        {
-            var size = _settings.ShapesColliderSettings.GetSize(shape);
-            var offset = _settings.ShapesColliderSettings.GetOffset(shape);
-            var direction = _settings.ShapesColliderSettings.GetDirection(shape);
-            var gravity = _settings.PlayerMovements.GetGravity(shape);
-            var layer = _settings.ShapesColliderSettings.GetLayer(shape);
+            parameters = new ShapeParameters(
+                _settings.ShapesColliderSettings.GetSize(target),
+                _settings.ShapesColliderSettings.GetOffset(target),
+                _settings.ShapesColliderSettings.GetDirection(target),
+                _settings.PlayerMovements.GetGravity(target),
+                _settings.ShapesColliderSettings.GetLayer(target)
+            );
 
-            _view.ApplyGravity(gravity);
-            _view.ApplyCollider(size, offset, direction);
-            _view.ApplyLayer(layer);
+            return true;
         }
     }
 }

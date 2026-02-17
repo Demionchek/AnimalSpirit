@@ -14,12 +14,12 @@ public class TimelineManager : MonoBehaviour
     [Header("Cutscenes")]
     [SerializeField] private PlayableDirector[] _cutscenes;
 
-    [Inject]
-    private InputHandler _inputHandler;
-    [Inject]
-    private PlayerController _player;
-    [Inject]
-    private CameraController _cameraController;
+    // [Inject]
+    // private InputHandler _inputHandler;
+    // [Inject]
+    // private PlayerController _player;
+    // [Inject]
+    // private CameraController _cameraController;
 
     private PlayableDirector _currentCutscene;
     private int _currentCutsceneIndex = 0;
@@ -31,7 +31,7 @@ public class TimelineManager : MonoBehaviour
     {
         if (_playOnStart && _cutscenes.Length > 0)
         {
-            _cameraController.SwitchVirtualCamera(false);
+            //_cameraController.SwitchVirtualCamera(false);
             PlayCutsceneSequence();
         }
     }
@@ -46,23 +46,23 @@ public class TimelineManager : MonoBehaviour
         if (_currentCutscene == null || _currentCutscene.state != PlayState.Playing)
             return;
 
-        if (_inputHandler.JumpPressed)
-        {
-            _isHoldingSkip = true;
-            _skipHoldTimer += Time.deltaTime;
-
-            if (_skipHoldTimer >= _skipHoldDuration)
-            {
-                SkipCurrentCutscene();
-                _isHoldingSkip = false;
-                _skipHoldTimer = 0f;
-            }
-        }
-        else if (_isHoldingSkip)
-        {
-            _isHoldingSkip = false;
-            _skipHoldTimer = 0f;
-        }
+        // if (_inputHandler.JumpPressed)
+        // {
+        //     _isHoldingSkip = true;
+        //     _skipHoldTimer += Time.deltaTime;
+        //
+        //     if (_skipHoldTimer >= _skipHoldDuration)
+        //     {
+        //         SkipCurrentCutscene();
+        //         _isHoldingSkip = false;
+        //         _skipHoldTimer = 0f;
+        //     }
+        // }
+        // else if (_isHoldingSkip)
+        // {
+        //     _isHoldingSkip = false;
+        //     _skipHoldTimer = 0f;
+        // }
     }
 
     // Публичный метод для запуска конкретной катсцены по индексу
@@ -124,7 +124,7 @@ public class TimelineManager : MonoBehaviour
             else
             {
                 _isPlayingSequence = false;
-                _player.gameObject.SetActive(true);
+                //_player.gameObject.SetActive(true);
             }
         }
     }

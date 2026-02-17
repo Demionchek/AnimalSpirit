@@ -6,51 +6,49 @@ using UnityEngine;
 
 namespace Features.Player.Application
 {
-    public sealed class PlayerInteractionService
+public sealed class PlayerInteractionService
+{
+    private readonly PlayerModel _model;
+    private readonly IPlayerPhysicsPort _physics;
+    private readonly GameSettings _settings;
+
+    private float _cooldown;
+
+    public PlayerInteractionService(
+        PlayerModel model,
+        IPlayerPhysicsPort physics,
+        GameSettings settings)
     {
-        private readonly PlayerModel _model;
-        private readonly GameSettings _settings;
-        private readonly IPlayerPhysicsPort _physics;
-        private readonly IPublisher<PlayerBarked> _barkPub;
-
-        private float _interactTimer;
-
-        public PlayerInteractionService(
-            PlayerModel model,
-            GameSettings settings,
-            IPlayerPhysicsPort physics,
-            IPublisher<PlayerBarked> barkPub)
-        {
-            _model = model;
-            _settings = settings;
-            _physics = physics;
-            _barkPub = barkPub;
-        }
-
-        public void Tick()
-        {
-            if (_model.IsDead) return;
-            _interactTimer -= Time.deltaTime;
-        }
-
-        public void TryBark()
-        {
-            if (_model.IsDead || _interactTimer > 0)
-                return;
-
-            _interactTimer = 0.5f;
-
-            var interactables =
-                _physics.OverlapInteractables(
-                    _settings.PlayerSphereCastSettings.radius);
-
-            foreach (var i in interactables)
-                i.Interact();
-
-            _barkPub.Publish(
-                new PlayerBarked(
-                    _model.CurrentShape == Shape.Dog));
-        }
+        _model = model;
+        _physics = physics;
+        _settings = settings;
     }
+
+    public void Tick(float deltaTime)
+    {
+        _cooldown -= deltaTime;
+    }
+
+    public bool TryInteract()
+    {
+        if (_model.IsDead || _cooldown > 0f)
+            return false;
+
+        _cooldown = 0.5f;
+
+        Vector2 offset =
+            _settings.ShapesColliderSettings
+                     .GetOffset(_model.CurrentShape);
+
+        var interactables =
+            _physics.OverlapInteractables( offset,
+                _settings.PlayerSphereCastSettings.radius);
+
+        foreach (var i in interactables)
+            i.Interact();
+
+        return true;
+    }
+}
 
 }

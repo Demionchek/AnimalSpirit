@@ -7,34 +7,24 @@ namespace Features.Player.Application
     public sealed class PlayerLifeService
     {
         private readonly PlayerModel _model;
-        private readonly IPublisher<PlayerDied> _deathPub;
-        private readonly IPublisher<PlayerRevived> _revivePub;
 
-        public PlayerLifeService(
-            PlayerModel model,
-            IPublisher<PlayerDied> deathPub,
-            IPublisher<PlayerRevived> revivePub)
+        public PlayerLifeService(PlayerModel model)
         {
             _model = model;
-            _deathPub = deathPub;
-            _revivePub = revivePub;
         }
 
-        public void Kill()
+        public bool TryKill()
         {
-            if (_model.IsDead) return;
+            if (_model.IsDead)
+                return false;
 
             _model.SetDead(true);
-            _deathPub.Publish(new PlayerDied());
-
-            _ = ReviveAsync();
+            return true;
         }
 
-        private async UniTask ReviveAsync()
+        public void Revive()
         {
-            await UniTask.Delay(3000);
             _model.SetDead(false);
-            _revivePub.Publish(new PlayerRevived());
         }
     }
 

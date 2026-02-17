@@ -12,17 +12,8 @@ namespace Features.Player.Presentation
     [RequireComponent(typeof(Rigidbody2D))]
     public sealed class PlayerView : MonoBehaviour, IPlayerViewPort
     {
-        Vector2 IPlayerViewPort.Position
-        {
-            get => position;
-            set => position = value;
-        }
-
-        Vector2 IPlayerViewPort.CurrentVelocity
-        {
-            get => currentVelocity;
-            set => currentVelocity = value;
-        }
+        public Vector2 Position => transform.position;
+        public Vector2 CurrentVelocity => currentVelocity;
 
         private PlayerFacade _facade;
         private PlayerModel _model;
@@ -40,7 +31,6 @@ namespace Features.Player.Presentation
         private IDisposable _deathSub;
         private IDisposable _reviveSub;
         private IDisposable _groundedSub;
-        private Vector2 position;
         private Vector2 currentVelocity;
 
         [Inject]
@@ -53,6 +43,7 @@ namespace Features.Player.Presentation
             ISubscriber<PlayerGroundedChanged> groundedSub)
         {
             _facade = facade;
+            _facade.BindView(this);
             _model = model;
             _settings = gameSettings;
 
@@ -70,14 +61,10 @@ namespace Features.Player.Presentation
             _animView = GetComponent<PlayerAnimationView>();
         }
 
-        private void Update()
-        {
-            position = transform.position;
-        }
 
         private void FixedUpdate()
         {
-            currentVelocity = _rb.velocity;
+            currentVelocity = _rb.linearVelocity;
         }
 
         public void ApplyVelocity(Vector2 velocity)
@@ -115,6 +102,15 @@ namespace Features.Player.Presentation
 
         private void OnDeath(PlayerDied _) { }
 
+        public void PlayDeath()
+        {
+
+        }
+
+        public void PlayRevive()
+        {
+        }
+
         private void OnRevive(PlayerRevived _) { }
 
 
@@ -126,6 +122,11 @@ namespace Features.Player.Presentation
 
             if (other.gameObject.TryGetComponent<SurfaceEffector2D>(out var effector))
                 effectorSpeed = effector.speed;
+
+            if (type == CollisionTypes.Ground)
+            {
+
+            }
 
             _facade.NotifyCollisionEnter(type, effectorSpeed);
         }

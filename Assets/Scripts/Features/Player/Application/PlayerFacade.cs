@@ -1,5 +1,8 @@
 using System;
+using Cysharp.Threading.Tasks;
 using Features.Player.Domain;
+using Features.Player.Infrastructure;
+using Features.Player.Presentation;
 using MessagePipe;
 using UnityEngine;
 using VContainer;
@@ -18,6 +21,7 @@ namespace Features.Player.Application
         private readonly PlayerLifeService _life;
         private readonly PlayerInteractionService _interaction;
         private readonly PlayerModel _model;
+        private IPlayerViewPort _view;
 
         private IDisposable _moveSub;
         private IDisposable _jumpSub;
@@ -38,6 +42,13 @@ namespace Features.Player.Application
             _model = model;
         }
 
+        // BindView is used to avoid circular dependency between
+        // PlayerView and PlayerFacade during DI container build.
+        public void BindView(IPlayerViewPort view)
+        {
+            _view = view;
+        }
+
         [Inject]
         private void Construct(
             ISubscriber<PlayerMoveInput> moveSub,
@@ -45,47 +56,119 @@ namespace Features.Player.Application
             ISubscriber<PlayerBarkPressed> barkSub,
             ISubscriber<PlayerShapeRequest> shapeSub)
         {
-            _moveSub = moveSub.Subscribe(e => _movement.SetInput(e.Value));
-            _jumpSub = jumpSub.Subscribe(_ => _movement.Jump());
-            _barkSub = barkSub.Subscribe(_ => _interaction.TryBark());
-            _shapeSub = shapeSub.Subscribe(e => _shape.TryChangeShape(e.Target));
+            _moveSub = moveSub.Subscribe(e => SetInput(e.Value));
+            _jumpSub = jumpSub.Subscribe(_ => Jump());
+            _barkSub = barkSub.Subscribe(_ => Interact());
+            _shapeSub = shapeSub.Subscribe(e => ChangeShape(e.Target));
         }
 
-        public void Initialize() { }
+        public void Initialize()
+        {
+            ApplyShape(_model.CurrentShape);
+        }
 
         public void Tick()
         {
-            _interaction.Tick();
+            _interaction.Tick(Time.deltaTime);
         }
 
         public void FixedTick()
         {
-            _movement.FixedTick();
+            if (_model.IsDead)
+                return;
+
+            var velocity =
+                _movement.CalculateVelocity(_view.CurrentVelocity);
+
+            _view.ApplyVelocity(velocity);
         }
 
-        public void NotifyCollisionEnter(CollisionTypes type, float? effectorSpeed)
-        {
-            if (type == CollisionTypes.Enemy ||
-                type == CollisionTypes.Bullet)
-            {
-                _life.Kill();
-            }
+        public void SetInput(Vector2 input) => _movement.SetInput(input);
 
-            if (type == CollisionTypes.Effector && effectorSpeed.HasValue)
-                _movement.SetEffectorVelocity(effectorSpeed.Value);
+        public void Jump()
+        {
+            var force = _movement.GetJumpForce();
+            if (force != Vector2.zero)
+                _view.ApplyForce(force);
+        }
+
+        public void Interact()
+        {
+            _interaction.TryInteract();
+        }
+
+        public void ChangeShape(Shape target)
+        {
+            if (_shape.TryChangeShape(target, out var parameters))
+            {
+                ApplyShape(parameters);
+            }
+        }
+
+        public void Kill()
+        {
+            if (_life.TryKill())
+            {
+                _view.PlayDeath();
+                ReviveAsync().Forget();
+            }
+        }
+
+        private async UniTaskVoid ReviveAsync()
+        {
+            await UniTask.Delay(3000);
+            _life.Revive();
+            _view.PlayRevive();
+        }
+
+        private void ApplyShape(ShapeParameters parameters)
+        {
+            _view.ApplyCollider(parameters.Size, parameters.Offset, parameters.Direction);
+            _view.ApplyGravity(parameters.Gravity);
+            _view.ApplyLayer(parameters.Layer);
+        }
+
+        private void ApplyShape(Shape shape)
+        {
+            ChangeShape(shape);
+        }
+
+        public void NotifyCollisionEnter(
+            CollisionTypes type,
+            float? effectorSpeed)
+        {
+            switch (type)
+            {
+                case CollisionTypes.Enemy:
+                case CollisionTypes.Bullet:
+                    Kill();
+                    break;
+
+                case CollisionTypes.Effector:
+                    if (effectorSpeed.HasValue)
+                        _movement.SetEffectorVelocity(effectorSpeed.Value);
+                    break;
+            }
         }
 
         public void NotifyGroundedState(bool grounded)
         {
-            _model.SetGrounded(grounded);
+            _movement.SetGrounded(grounded);
         }
 
         public void NotifyEffectorExit()
         {
-            _movement.SetEffectorVelocity(0);
+            _movement.ClearEffector();
         }
 
-        public void NotifyTriggerEnter(CollisionTypes type) { }
+        public void NotifyTriggerEnter(CollisionTypes type)
+        {
+            if (type == CollisionTypes.Enemy ||
+                type == CollisionTypes.Bullet)
+            {
+                Kill();
+            }
+        }
 
         public void Dispose()
         {
@@ -95,5 +178,4 @@ namespace Features.Player.Application
             _shapeSub?.Dispose();
         }
     }
-
 }

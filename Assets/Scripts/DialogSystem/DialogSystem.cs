@@ -41,11 +41,11 @@ namespace DefaultNamespace
         private DialogType currentType;
         private TMPWriter writer;
 
-        [Inject]
-        private InputHandler _inputHandler;
+        // [Inject]
+        // private InputHandler _inputHandler;
 
-        [Inject]
-        private TimelineManager _timelineManager;
+        // [Inject]
+        // private TimelineManager _timelineManager;
 
         void Start()
         {
@@ -80,60 +80,60 @@ namespace DefaultNamespace
         {
             dialoguePanel.SetActive(true);
             currentLine = 0;
-            StartCoroutine(TypeLine());
+           // StartCoroutine(TypeLine());
         }
 
-        IEnumerator TypeLine()
-        {
-            isDialogRunning = true;
-
-            bool isPlayingCutscene = _timelineManager.IsCutscenePlaying();
-
-            if (isPlayingCutscene)
-                if (_timelineManager.GetCutscene() != null)
-                    _timelineManager.GetCutscene().Pause();
-
-            dialogueText.text = lines[currentLine];
-
-            yield return new WaitWhile(() => _inputHandler.JumpPressed);
-
-            writer.StartWriter();
-
-            yield return new WaitUntil(() => writer.IsWriting == false || _inputHandler.JumpPressed);
-
-            if (writer.IsWriting && _inputHandler.JumpPressed)
-            {
-                writer.SkipWriter();
-                yield return new WaitUntil(() => writer.IsWriting == false);
-            }
-
-            currentLine++;
-
-            yield return new WaitWhile(() => _inputHandler.JumpPressed);
-
-            if(currentLine < lines.Count)
-                yield return new WaitUntil(() => _inputHandler.JumpPressed);
-
-            yield return null;
-
-            yield return new WaitWhile(() => _inputHandler.JumpPressed);
-
-            if (currentLine < lines.Count)
-            {
-                StartCoroutine(TypeLine());
-            } else
-            {
-                yield return new WaitWhile(() => _inputHandler.JumpPressed);
-                yield return new WaitUntil(() => _inputHandler.JumpPressed);
-                yield return null;
-                yield return new WaitWhile(() => _inputHandler.JumpPressed);
-
-                if (_timelineManager.IsCutscenePaused())
-                    _timelineManager.GetCutscene().Resume();
-
-                EndDialogue();
-            }
-        }
+        // IEnumerator TypeLine()
+        // {
+        //     isDialogRunning = true;
+        //
+        //     bool isPlayingCutscene = _timelineManager.IsCutscenePlaying();
+        //
+        //     if (isPlayingCutscene)
+        //         if (_timelineManager.GetCutscene() != null)
+        //             _timelineManager.GetCutscene().Pause();
+        //
+        //     dialogueText.text = lines[currentLine];
+        //
+        //     yield return new WaitWhile(() => _inputHandler.JumpPressed);
+        //
+        //     writer.StartWriter();
+        //
+        //     yield return new WaitUntil(() => writer.IsWriting == false || _inputHandler.JumpPressed);
+        //
+        //     if (writer.IsWriting && _inputHandler.JumpPressed)
+        //     {
+        //         writer.SkipWriter();
+        //         yield return new WaitUntil(() => writer.IsWriting == false);
+        //     }
+        //
+        //     currentLine++;
+        //
+        //     yield return new WaitWhile(() => _inputHandler.JumpPressed);
+        //
+        //     if(currentLine < lines.Count)
+        //         yield return new WaitUntil(() => _inputHandler.JumpPressed);
+        //
+        //     yield return null;
+        //
+        //     yield return new WaitWhile(() => _inputHandler.JumpPressed);
+        //
+        //     if (currentLine < lines.Count)
+        //     {
+        //         StartCoroutine(TypeLine());
+        //     } else
+        //     {
+        //         yield return new WaitWhile(() => _inputHandler.JumpPressed);
+        //         yield return new WaitUntil(() => _inputHandler.JumpPressed);
+        //         yield return null;
+        //         yield return new WaitWhile(() => _inputHandler.JumpPressed);
+        //
+        //         if (_timelineManager.IsCutscenePaused())
+        //             _timelineManager.GetCutscene().Resume();
+        //
+        //         EndDialogue();
+        //     }
+        // }
 
         void EndDialogue()
         {
@@ -142,7 +142,7 @@ namespace DefaultNamespace
 
             if (isTriggerCutscene && currentType == CutsceneTrigger)
             {
-                _timelineManager.PlayCutscene(timelineIndex);
+                //_timelineManager.PlayCutscene(timelineIndex);
             }
 
             if (dialogEventDictionary.Contains(currentType))

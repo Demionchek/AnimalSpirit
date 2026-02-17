@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 931a5fdd1289467aa9d35851f69cf918, type: 3}
   m_Name: Game Settings
   m_EditorClassIdentifier: Assembly-CSharp::Features.Core.Settings.GameSettingsSO
-  _playerMovements: {fileID: 11400000, guid: cad607de551db674483c21058cbcf8a1, type: 2}
-  _playerSphereCastSettings: {fileID: 11400000, guid: 118963ebd59d6354f972b60ad0af352f, type: 2}
+  PlayerMovements: {fileID: 11400000, guid: cad607de551db674483c21058cbcf8a1, type: 2}
+  PlayerSphereCastSettings: {fileID: 11400000, guid: 118963ebd59d6354f972b60ad0af352f, type: 2}
+  ShapesColliderSettings: {fileID: 11400000, guid: 3f8af0aeb6839da4fa4b1db2c2da9d27, type: 2}
+  Layers: {fileID: 11400000, guid: b4323266f11977141b94a7a2ca6a1383, type: 2}
