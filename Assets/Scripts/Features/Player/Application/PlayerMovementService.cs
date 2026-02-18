@@ -47,16 +47,17 @@ namespace Features.Player.Application
             _effectorVelocity = Vector2.zero;
         }
 
-        public Vector2 CalculateVelocity(Vector2 currentVelocity)
+        public float CalculateHorizontalVelocity()
         {
             if (_model.IsDead)
-                return currentVelocity;
+                return 0f;
 
-            float speed = _settings.PlayerMovements
-                                   .GetSpeed(_model.CurrentShape);
+            float speed =
+                _settings.PlayerMovements
+                         .GetSpeed(_model.CurrentShape);
 
             if (_model.CurrentShape == Shape.Bird)
-                return _currentInput * speed;
+                return _currentInput.x * speed;
 
             bool wallInFront = false;
 
@@ -67,31 +68,30 @@ namespace Features.Player.Application
                     _settings.ShapesColliderSettings
                              .GetSize(_model.CurrentShape).x * 0.5f;
 
-                wallInFront = _physics.HasWall(dir, rayDistance);
+                int mask = ~_settings.Layers.PlayerMask.value;
+
+                wallInFront = _physics.HasWall(dir, rayDistance, mask);
             }
 
             float horizontal = wallInFront
                 ? 0f
                 : _currentInput.x * speed;
 
-            return new Vector2(
-                horizontal + _effectorVelocity.x,
-                currentVelocity.y
-            );
+            return horizontal + _effectorVelocity.x;
         }
 
-        public Vector2 GetJumpForce()
+        public float GetJumpForce()
         {
             if (!_model.IsGrounded ||
                 _model.IsDead ||
                 _model.CurrentShape == Shape.Bird)
-                return Vector2.zero;
+                return 0;
 
             float jumpForce =
                 _settings.PlayerMovements
                          .GetJumpForce(_model.CurrentShape);
 
-            return Vector2.up * jumpForce;
+            return  jumpForce;
         }
     }
 }

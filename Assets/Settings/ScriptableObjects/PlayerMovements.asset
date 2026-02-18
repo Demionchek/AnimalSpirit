@@ -16,9 +16,12 @@ MonoBehaviour:
   - shape: 0
     speed: 1.5
     jumpForce: 12
+    gravityScale: 1
   - shape: 1
     speed: 1
     jumpForce: 12
+    gravityScale: 1
   - shape: 2
     speed: 1.8
     jumpForce: 12
+    gravityScale: 0

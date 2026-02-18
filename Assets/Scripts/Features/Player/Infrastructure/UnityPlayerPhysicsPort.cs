@@ -9,14 +9,25 @@ namespace Features.Player.Infrastructure
 {
     public sealed class UnityPlayerPhysicsPort : MonoBehaviour, IPlayerPhysicsPort
     {
-        public bool HasWall(float direction, float distance)
+        public bool HasWall(float direction, float distance, int mask)
         {
-            var hit = Physics2D.Raycast(
+            ContactFilter2D filter = new ContactFilter2D();
+            filter.SetLayerMask(mask);
+            filter.useTriggers = false;
+
+            RaycastHit2D[] hits = new RaycastHit2D[1];
+
+            int count = Physics2D.Raycast(
                 transform.position,
                 Vector2.right * direction,
-                distance);
+                filter,
+                hits,
+                distance
+            );
 
-            return hit.collider != null;
+            bool hasHit = count > 0;
+
+            return hasHit;
         }
 
         public bool HasSpaceAbove(Vector2 offset, float distance, int mask)

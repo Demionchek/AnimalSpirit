@@ -78,7 +78,7 @@ namespace Features.Player.Application
                 _settings.ShapesColliderSettings.GetSize(target),
                 _settings.ShapesColliderSettings.GetOffset(target),
                 _settings.ShapesColliderSettings.GetDirection(target),
-                _settings.PlayerMovements.GetGravity(target),
+                _settings.PlayerMovements.GetGravityScale(target),
                 _settings.ShapesColliderSettings.GetLayer(target)
             );
 

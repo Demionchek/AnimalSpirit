@@ -77,19 +77,22 @@ namespace Features.Player.Application
             if (_model.IsDead)
                 return;
 
-            var velocity =
-                _movement.CalculateVelocity(_view.CurrentVelocity);
+            float velocity =
+                _movement.CalculateHorizontalVelocity();
 
-            _view.ApplyVelocity(velocity);
+            _view.ApplyHorizontalVelocity(velocity);
         }
 
         public void SetInput(Vector2 input) => _movement.SetInput(input);
 
         public void Jump()
         {
-            var force = _movement.GetJumpForce();
-            if (force != Vector2.zero)
-                _view.ApplyForce(force);
+            if (!_model.IsGrounded)
+                return;
+
+            float jumpForce = _movement.GetJumpForce();
+
+            _view.ApplyForce(Vector2.up * jumpForce);
         }
 
         public void Interact()

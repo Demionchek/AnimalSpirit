@@ -15,7 +15,7 @@ namespace Features.Core.Settings
             public Shape shape;
             public float speed;
             public float jumpForce;
-            public float gravity;
+            public float gravityScale;
         }
 
         [SerializeField] private List<Entry> _entries;
@@ -34,7 +34,7 @@ namespace Features.Core.Settings
             return _map[shape].Item2;
         }
 
-        public float GetGravity(Shape shape)
+        public float GetGravityScale(Shape shape)
         {
             _map ??= BuildMap();
             return _map[shape].Item3;
@@ -44,7 +44,7 @@ namespace Features.Core.Settings
         {
             var dict = new Dictionary<Shape, (float, float, float)>();
             foreach (var e in _entries)
-                dict[e.shape] = (e.speed, e.jumpForce, e.gravity);
+                dict[e.shape] = (e.speed, e.jumpForce, e.gravityScale);
             return dict;
         }
     }

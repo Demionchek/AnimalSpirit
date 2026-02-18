@@ -41,6 +41,10 @@ namespace Features.Core.Installers
                    .AsSelf();
             builder.RegisterComponentInHierarchy<PlayerInput>();
             builder.Register<PlayerInputProvider>(Lifetime.Singleton).AsSelf();
+            builder.Register<InputService>(Lifetime.Scoped)
+                   .As<IInitializable>()
+                   .As<ITickable>()
+                   .AsSelf();
             builder.Register<PlayerModel>(Lifetime.Scoped).AsSelf();
             builder.Register<PlayerMovementService>(Lifetime.Scoped);
             builder.Register<PlayerShapeService>(Lifetime.Scoped);

@@ -67,9 +67,11 @@ namespace Features.Player.Presentation
             currentVelocity = _rb.linearVelocity;
         }
 
-        public void ApplyVelocity(Vector2 velocity)
+        public void ApplyHorizontalVelocity(float x)
         {
-            _rb.linearVelocity = velocity;
+            var v = _rb.linearVelocity;
+            v.x = x;
+            _rb.linearVelocity = v;
         }
 
         public void ApplyForce(Vector2 force, ForceMode2D mode = ForceMode2D.Impulse)
@@ -113,6 +115,17 @@ namespace Features.Player.Presentation
 
         private void OnRevive(PlayerRevived _) { }
 
+        private void OnCollisionStay2D(Collision2D collision)
+        {
+            foreach (ContactPoint2D contact in collision.contacts)
+            {
+                if (contact.normal.y > 0.5f)
+                {
+                    _facade.NotifyGroundedState(true);
+                    return;
+                }
+            }
+        }
 
         private void OnCollisionEnter2D(Collision2D other)
         {
@@ -122,11 +135,6 @@ namespace Features.Player.Presentation
 
             if (other.gameObject.TryGetComponent<SurfaceEffector2D>(out var effector))
                 effectorSpeed = effector.speed;
-
-            if (type == CollisionTypes.Ground)
-            {
-
-            }
 
             _facade.NotifyCollisionEnter(type, effectorSpeed);
         }
