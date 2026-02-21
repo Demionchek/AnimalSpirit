@@ -5,45 +5,40 @@ using UnityEngine;
 
 namespace Features.Player.Domain
 {
-    public class PlayerModel
+    public sealed class PlayerModel
     {
-        private readonly HashSet<Shape> _unlocked = new() { Shape.Dog };
+        private readonly HashSet<Shape> _unlocked = new();
 
-        public Shape CurrentShape { get; private set; } = Shape.Dog;
+        public Shape CurrentShape { get; private set; }
         public bool IsDead { get; private set; }
         public bool IsGrounded { get; private set; }
-        public Vector2 Velocity { get; private set; }
-        public Vector2 EffectorVelocity { get; private set; }
 
-        public IReadOnlyCollection<Shape> UnlockedShapes => _unlocked;
+        public void Initialize(IEnumerable<Shape> unlocked, Shape startShape)
+        {
+            _unlocked.Clear();
+
+            foreach (var shape in unlocked)
+                _unlocked.Add(shape);
+
+            CurrentShape = startShape;
+        }
+
+        public bool IsUnlocked(Shape shape) => _unlocked.Contains(shape);
 
         public void Unlock(Shape shape)
         {
             _unlocked.Add(shape);
         }
 
-        public bool IsUnlocked(Shape shape) => UnlockedShapes.Contains(shape);
-
-        public void SetShape(Shape shape) => CurrentShape = shape;
-
-        public void SetDead(bool dead)
+        public void SetShape(Shape shape)
         {
-            IsDead = dead;
+            if (!_unlocked.Contains(shape))
+                return;
+
+            CurrentShape = shape;
         }
 
-        public void SetGrounded(bool grounded)
-        {
-            IsGrounded = grounded;
-        }
-
-        public void SetVelocity(Vector2 velocity)
-        {
-            Velocity = velocity;
-        }
-
-        public void SetEffectorVelocity(Vector2 velocity)
-        {
-            EffectorVelocity = velocity;
-        }
+        public void SetDead(bool dead) => IsDead = dead;
+        public void SetGrounded(bool grounded) => IsGrounded = grounded;
     }
 }

@@ -9,55 +9,95 @@ namespace Features.Player.Infrastructure
 {
     public sealed class UnityPlayerPhysicsPort : MonoBehaviour, IPlayerPhysicsPort
     {
-        public bool HasWall(float direction, float distance, int mask)
+        [Header("Debug")]
+        [SerializeField] private bool debugEnabled = true;
+
+        private static readonly RaycastHit2D[] _rayHits = new RaycastHit2D[1];
+        private static readonly Collider2D[] _overlapResults = new Collider2D[10];
+
+        public bool HasWall(Vector2 offset, float direction, float distance, int mask)
         {
+            Vector2 origin = (Vector2)transform.position + offset;
+            Vector2 dir = Vector2.right * direction;
+
             ContactFilter2D filter = new ContactFilter2D();
             filter.SetLayerMask(mask);
             filter.useTriggers = false;
 
-            RaycastHit2D[] hits = new RaycastHit2D[1];
-
             int count = Physics2D.Raycast(
-                transform.position,
-                Vector2.right * direction,
+                origin,
+                dir,
                 filter,
-                hits,
+                _rayHits,
                 distance
             );
 
             bool hasHit = count > 0;
 
+#if UNITY_EDITOR
+            if (debugEnabled)
+            {
+                Color color = hasHit ? Color.red : Color.green;
+                Debug.DrawRay(origin, dir * distance, color);
+            }
+#endif
+
             return hasHit;
         }
 
-        public bool HasSpaceAbove(Vector2 offset, float distance, int mask)
+        public bool IsBlockedAbove(Vector2 offset, float distance, int mask)
         {
             Vector2 origin = offset + (Vector2)transform.position;
+            Vector2 dir = Vector2.up;
 
-            return !Physics2D.Raycast(
+            ContactFilter2D filter = new ContactFilter2D();
+            filter.SetLayerMask(mask);
+            filter.useTriggers = false;
+
+            int count = Physics2D.Raycast(
                 origin,
-                Vector2.up,
-                distance,
-                mask);
+                dir,
+                filter,
+                _rayHits,
+                distance
+            );
+
+            bool hasHit = count > 0;
+
+#if UNITY_EDITOR
+            if (debugEnabled)
+            {
+                Color color = hasHit ? Color.red : Color.green;
+                Debug.DrawRay(origin, dir * distance, color);
+            }
+#endif
+
+            return hasHit;
         }
 
         public IReadOnlyList<IInteractable> OverlapInteractables(Vector2 offset, float radius)
         {
             Vector2 origin = offset + (Vector2)transform.position;
 
-            Collider2D[] results = new Collider2D[10];
-
             int count = Physics2D.OverlapCircleNonAlloc(
                 origin,
                 radius,
-                results);
+                _overlapResults
+            );
+
+#if UNITY_EDITOR
+            if (debugEnabled)
+            {
+                DebugExtension.DrawCircle(origin, radius, Color.yellow);
+            }
+#endif
 
             var list = new List<IInteractable>(count);
 
             for (int i = 0; i < count; i++)
             {
-                if (results[i] != null &&
-                    results[i].TryGetComponent<IInteractable>(out var interactable))
+                if (_overlapResults[i] != null &&
+                    _overlapResults[i].TryGetComponent<IInteractable>(out var interactable))
                 {
                     list.Add(interactable);
                 }
@@ -66,4 +106,24 @@ namespace Features.Player.Infrastructure
             return list;
         }
     }
+
+#if UNITY_EDITOR
+    public static class DebugExtension
+    {
+        public static void DrawCircle(Vector2 center, float radius, Color color, int segments = 24)
+        {
+            float angle = 0f;
+            Vector2 lastPoint = center + new Vector2(Mathf.Cos(0), Mathf.Sin(0)) * radius;
+
+            for (int i = 1; i <= segments; i++)
+            {
+                angle = i * Mathf.PI * 2f / segments;
+                Vector2 nextPoint = center + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius;
+
+                Debug.DrawLine(lastPoint, nextPoint, color);
+                lastPoint = nextPoint;
+            }
+        }
+    }
+#endif
 }

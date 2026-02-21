@@ -6,6 +6,7 @@ namespace Features.Player.Infrastructure
     {
         Vector2 Position { get; }
         Vector2 CurrentVelocity { get; }
+        void ApplyVelocity(Vector2 v);
         void ApplyHorizontalVelocity(float x);
         void ApplyForce(Vector2 force, ForceMode2D mode = ForceMode2D.Impulse);
         void ApplyCollider(Vector2 size, Vector2 offset, CapsuleDirection2D direction);

@@ -9,7 +9,8 @@ namespace Features.Player.Application
     {
         private readonly PlayerModel _model;
         private readonly GameSettings _settings;
-        private readonly IPlayerPhysicsPort _physics;
+        private readonly IMovementStrategy _groundStrategy;
+        private readonly IMovementStrategy _birdStrategy;
 
         private Vector2 _currentInput;
         private Vector2 _effectorVelocity;
@@ -17,11 +18,13 @@ namespace Features.Player.Application
         public PlayerMovementService(
             PlayerModel model,
             GameSettings settings,
-            IPlayerPhysicsPort physics)
+            GroundMovementStrategy groundStrategy,
+            BirdMovementStrategy birdStrategy)
         {
             _model = model;
             _settings = settings;
-            _physics = physics;
+            _groundStrategy = groundStrategy;
+            _birdStrategy = birdStrategy;
         }
 
         public void SetInput(Vector2 input)
@@ -47,37 +50,16 @@ namespace Features.Player.Application
             _effectorVelocity = Vector2.zero;
         }
 
-        public float CalculateHorizontalVelocity()
+        public Vector2 CalculateVelocity(Vector2 currentVelocity)
         {
-            if (_model.IsDead)
-                return 0f;
+            IMovementStrategy strategy =
+                _model.CurrentShape == Shape.Bird
+                    ? _birdStrategy
+                    : _groundStrategy;
 
-            float speed =
-                _settings.PlayerMovements
-                         .GetSpeed(_model.CurrentShape);
-
-            if (_model.CurrentShape == Shape.Bird)
-                return _currentInput.x * speed;
-
-            bool wallInFront = false;
-
-            if (Mathf.Abs(_currentInput.x) > 0.1f)
-            {
-                float dir = Mathf.Sign(_currentInput.x);
-                float rayDistance =
-                    _settings.ShapesColliderSettings
-                             .GetSize(_model.CurrentShape).x * 0.5f;
-
-                int mask = ~_settings.Layers.PlayerMask.value;
-
-                wallInFront = _physics.HasWall(dir, rayDistance, mask);
-            }
-
-            float horizontal = wallInFront
-                ? 0f
-                : _currentInput.x * speed;
-
-            return horizontal + _effectorVelocity.x;
+            return strategy.CalculateVelocity(
+                _currentInput,
+                currentVelocity);
         }
 
         public float GetJumpForce()

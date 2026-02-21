@@ -6,6 +6,8 @@ namespace Features.Core.Settings
     public class LayerSettings : ScriptableObject
     {
         public LayerMask PlayerMask;
+        public LayerMask RatMask;
+        public LayerMask BirdMask;
         public LayerMask GroundMask;
         public LayerMask EnemyMask;
         public LayerMask BulletMask;

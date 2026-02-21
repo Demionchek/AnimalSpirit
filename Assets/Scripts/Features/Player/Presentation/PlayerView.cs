@@ -16,7 +16,6 @@ namespace Features.Player.Presentation
         public Vector2 CurrentVelocity => currentVelocity;
 
         private PlayerFacade _facade;
-        private PlayerModel _model;
         private GameSettings _settings;
 
         private Rigidbody2D _rb;
@@ -26,8 +25,6 @@ namespace Features.Player.Presentation
 
         private CollisionTypes[] _layerMap = new CollisionTypes[32];
 
-        private IPublisher<ActualVelocityChanged> _actualVelocityPublisher;
-
         private IDisposable _deathSub;
         private IDisposable _reviveSub;
         private IDisposable _groundedSub;
@@ -36,7 +33,6 @@ namespace Features.Player.Presentation
         [Inject]
         public void Construct(
             PlayerFacade facade,
-            PlayerModel model,
             GameSettings gameSettings,
             ISubscriber<PlayerDied> deathSub,
             ISubscriber<PlayerRevived> reviveSub,
@@ -44,9 +40,7 @@ namespace Features.Player.Presentation
         {
             _facade = facade;
             _facade.BindView(this);
-            _model = model;
             _settings = gameSettings;
-
             _deathSub = deathSub.Subscribe(OnDeath);
             _reviveSub = reviveSub.Subscribe(OnRevive);
             _groundedSub = groundedSub.Subscribe(e => OnGroundedChanged(e.IsGrounded));
@@ -58,7 +52,6 @@ namespace Features.Player.Presentation
             _rb = GetComponent<Rigidbody2D>();
             _capsule = GetComponent<CapsuleCollider2D>();
             _boxTrigger = GetComponent<BoxCollider2D>();
-            _animView = GetComponent<PlayerAnimationView>();
         }
 
 
@@ -73,6 +66,8 @@ namespace Features.Player.Presentation
             v.x = x;
             _rb.linearVelocity = v;
         }
+
+        public void ApplyVelocity(Vector2 v) => _rb.linearVelocity = v;
 
         public void ApplyForce(Vector2 force, ForceMode2D mode = ForceMode2D.Impulse)
         {
@@ -98,7 +93,6 @@ namespace Features.Player.Presentation
         {
             gameObject.layer = layer;
         }
-
 
         private void OnGroundedChanged(bool grounded) { }
 

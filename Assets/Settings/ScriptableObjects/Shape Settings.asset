@@ -17,11 +17,20 @@ MonoBehaviour:
     colliderSize: {x: 0.25, y: 0.18}
     colliderOffset: {x: 0, y: 0.1}
     colliderDir: 1
+    colliderLayer:
+      serializedVersion: 2
+      m_Bits: 256
   - shape: 1
     colliderSize: {x: 0.13, y: 0.06}
     colliderOffset: {x: 0, y: 0.04}
     colliderDir: 1
+    colliderLayer:
+      serializedVersion: 2
+      m_Bits: 4096
   - shape: 2
     colliderSize: {x: 0.11, y: 0.15}
     colliderOffset: {x: 0, y: 0.08}
     colliderDir: 0
+    colliderLayer:
+      serializedVersion: 2
+      m_Bits: 8192

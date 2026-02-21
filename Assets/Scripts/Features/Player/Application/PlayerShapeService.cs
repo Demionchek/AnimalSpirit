@@ -35,14 +35,18 @@ namespace Features.Player.Application
         private readonly GameSettings _settings;
         private readonly IPlayerPhysicsPort _physics;
 
+        public readonly IPublisher<PlayerShapeChanged> _shapeSub;
+
         public PlayerShapeService(
             PlayerModel model,
             GameSettings settings,
-            IPlayerPhysicsPort physics)
+            IPlayerPhysicsPort physics,
+            IPublisher<PlayerShapeChanged> shapePub)
         {
             _model = model;
             _settings = settings;
             _physics = physics;
+            _shapeSub = shapePub;
         }
 
         public bool TryChangeShape(Shape target, out ShapeParameters parameters)
@@ -69,20 +73,34 @@ namespace Features.Player.Application
             int groundMask =
                 _settings.Layers.GroundMask;
 
-            if (!_physics.HasSpaceAbove(offset, distance, groundMask))
+            if (_physics.IsBlockedAbove(offset, distance, groundMask))
                 return false;
 
             _model.SetShape(target);
+
+            _shapeSub.Publish(new PlayerShapeChanged(target));
 
             parameters = new ShapeParameters(
                 _settings.ShapesColliderSettings.GetSize(target),
                 _settings.ShapesColliderSettings.GetOffset(target),
                 _settings.ShapesColliderSettings.GetDirection(target),
                 _settings.PlayerMovements.GetGravityScale(target),
-                _settings.ShapesColliderSettings.GetLayer(target)
+                LayerMaskToLayer(_settings.ShapesColliderSettings.GetLayer(target))
             );
 
             return true;
+        }
+
+        private int LayerMaskToLayer(LayerMask mask)
+        {
+            int layer = 0;
+
+            while (mask > 1)
+            {
+                mask >>= 1;
+                layer++;
+            }
+            return layer;
         }
     }
 }

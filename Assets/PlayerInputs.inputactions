@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "PlayerInputs",
     "maps": [
         {
@@ -63,7 +64,7 @@
                     "name": "ShapeDog",
                     "type": "Button",
                     "id": "71151f4d-6d58-40a9-922e-fab7b6a7612b",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false

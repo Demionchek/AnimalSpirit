@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using Features.Core.Settings;
 using Features.Player.Domain;
 using Features.Player.Infrastructure;
 using Features.Player.Presentation;
@@ -21,6 +22,7 @@ namespace Features.Player.Application
         private readonly PlayerLifeService _life;
         private readonly PlayerInteractionService _interaction;
         private readonly PlayerModel _model;
+        private readonly GameSettings _settings;
         private IPlayerViewPort _view;
 
         private IDisposable _moveSub;
@@ -33,13 +35,15 @@ namespace Features.Player.Application
             PlayerShapeService shape,
             PlayerLifeService life,
             PlayerInteractionService interaction,
-            PlayerModel model)
+            PlayerModel model,
+            GameSettings settings)
         {
             _movement = movement;
             _shape = shape;
             _life = life;
             _interaction = interaction;
             _model = model;
+            _settings = settings;
         }
 
         // BindView is used to avoid circular dependency between
@@ -64,6 +68,11 @@ namespace Features.Player.Application
 
         public void Initialize()
         {
+            _model.Initialize(
+                _settings.ShapeConfig.initiallyUnlocked,
+                Shape.Dog
+            );
+
             ApplyShape(_model.CurrentShape);
         }
 
@@ -77,10 +86,14 @@ namespace Features.Player.Application
             if (_model.IsDead)
                 return;
 
-            float velocity =
-                _movement.CalculateHorizontalVelocity();
+            Vector2 velocity =
+                _movement.CalculateVelocity(
+                    _view.CurrentVelocity);
 
-            _view.ApplyHorizontalVelocity(velocity);
+            if (_model.CurrentShape == Shape.Bird)
+                _view.ApplyVelocity(velocity);
+            else
+                _view.ApplyHorizontalVelocity(velocity.x);
         }
 
         public void SetInput(Vector2 input) => _movement.SetInput(input);

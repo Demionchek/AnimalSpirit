@@ -1,4 +1,5 @@
 using System;
+using Features.Player.Application;
 using Features.Player.Domain;
 using MessagePipe;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace Features.Player.Presentation
     {
         private Animator _animator;
         private SpriteRenderer _renderer;
-        private IDisposable shapeSub, barkSub, deathSub, reviveSub, velocitySub;
+        private IDisposable shapeSub, barkSub, deathSub, reviveSub, moveSub;
         private float _speed;
 
         [Inject]
@@ -20,13 +21,13 @@ namespace Features.Player.Presentation
             ISubscriber<PlayerBarked> barkSub,
             ISubscriber<PlayerDied> deathSub,
             ISubscriber<PlayerRevived> reviveSub,
-            ISubscriber<ActualVelocityChanged> velocitySub)
+            ISubscriber<PlayerMoveInput> moveSub)
         {
             this.shapeSub = shapeSub.Subscribe(e => _animator.SetInteger("Shape", (int)e.NewShape));
             this.barkSub = barkSub.Subscribe(_ => _animator.SetTrigger("Attack"));
             this.deathSub = deathSub.Subscribe(_ => _animator.SetTrigger("isDead"));
             this.reviveSub = reviveSub.Subscribe(_ => _animator.SetTrigger("Revive"));
-            this.velocitySub = velocitySub.Subscribe(e => SetSpeed(e.Velocity.x));
+            this.moveSub = moveSub.Subscribe(e => SetSpeed(e.Value.x));
         }
 
         private void Awake()
@@ -53,7 +54,7 @@ namespace Features.Player.Presentation
             barkSub?.Dispose();
             deathSub?.Dispose();
             reviveSub?.Dispose();
-            velocitySub?.Dispose();
+            moveSub?.Dispose();
         }
     }
 }

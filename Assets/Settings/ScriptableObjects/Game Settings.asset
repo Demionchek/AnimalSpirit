@@ -16,3 +16,4 @@ MonoBehaviour:
   PlayerSphereCastSettings: {fileID: 11400000, guid: 118963ebd59d6354f972b60ad0af352f, type: 2}
   ShapesColliderSettings: {fileID: 11400000, guid: 3f8af0aeb6839da4fa4b1db2c2da9d27, type: 2}
   Layers: {fileID: 11400000, guid: b4323266f11977141b94a7a2ca6a1383, type: 2}
+  ShapeConfig: {fileID: 11400000, guid: 5d1aa6a55a5ce334699c80892fa7a1ff, type: 2}

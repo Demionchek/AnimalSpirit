@@ -47,6 +47,8 @@ namespace Features.Core.Installers
                    .AsSelf();
             builder.Register<PlayerModel>(Lifetime.Scoped).AsSelf();
             builder.Register<PlayerMovementService>(Lifetime.Scoped);
+            builder.Register<GroundMovementStrategy>(Lifetime.Scoped);
+            builder.Register<BirdMovementStrategy>(Lifetime.Scoped);
             builder.Register<PlayerShapeService>(Lifetime.Scoped);
             builder.Register<PlayerLifeService>(Lifetime.Scoped);
             builder.Register<PlayerInteractionService>(Lifetime.Scoped);
