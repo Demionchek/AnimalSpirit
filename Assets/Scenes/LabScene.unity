@@ -7278,7 +7278,7 @@ MonoBehaviour:
           m_CallState: 2
     - m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 2268019756966721414}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: DefaultNamespace.DialogueSystem, Assembly-CSharp
           m_MethodName: InitDialogue
           m_Mode: 3
@@ -7356,7 +7356,7 @@ MonoBehaviour:
           m_CallState: 2
     - m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 2268019756966721414}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: DefaultNamespace.DialogueSystem, Assembly-CSharp
           m_MethodName: InitDialogue
           m_Mode: 3
@@ -13339,17 +13339,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5382648352618279100, guid: 79bce8730f56fad4ca374bec1846b1ac, type: 3}
   m_PrefabInstance: {fileID: 1292155796}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1292155800 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 132571527810222378, guid: 79bce8730f56fad4ca374bec1846b1ac, type: 3}
-  m_PrefabInstance: {fileID: 1292155796}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94120e928a0c4b4d9f8a564404bafaf8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1293955871
 GameObject:
   m_ObjectHideFlags: 0
@@ -39697,7 +39686,7 @@ MonoBehaviour:
           m_CallState: 2
     - m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 2268019756966721414}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: DefaultNamespace.DialogueSystem, Assembly-CSharp
           m_MethodName: InitDialogue
           m_Mode: 3
@@ -40768,10 +40757,23 @@ MonoBehaviour:
           m_CallState: 2
     - m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 2268019756966721414}
-          m_TargetAssemblyTypeName: DefaultNamespace.DialogueSystem, Assembly-CSharp
-          m_MethodName: InitDialogue
+        - m_Target: {fileID: 4929173544591524238}
+          m_TargetAssemblyTypeName: Features.Dialogue.Presentation.DialogueTrigger,
+            Assembly-CSharp
+          m_MethodName: TriggerDialogue
           m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 2078136307}
+          m_TargetAssemblyTypeName: UnityEngine.Playables.PlayableDirector, UnityEngine
+          m_MethodName: Pause
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -40846,7 +40848,7 @@ MonoBehaviour:
           m_CallState: 2
     - m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 2268019756966721414}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: DefaultNamespace.DialogueSystem, Assembly-CSharp
           m_MethodName: InitDialogue
           m_Mode: 3
@@ -41299,6 +41301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c177199fbde04c4684e2b10a4fc909a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Features.Player.Infrastructure.UnityPlayerPhysicsPort
+  debugEnabled: 1
 --- !u!1 &2043804030
 GameObject:
   m_ObjectHideFlags: 0
@@ -46541,7 +46544,7 @@ Tilemap:
       - {fileID: 1491571654, guid: 9eeaa49ae82dc194991e343a79ff9885, type: 3}
       - {fileID: 1887070136, guid: 9eeaa49ae82dc194991e343a79ff9885, type: 3}
       - {fileID: 1300558925, guid: 9eeaa49ae82dc194991e343a79ff9885, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 32, y: -27, z: 0}
@@ -46931,7 +46934,7 @@ Tilemap:
       - {fileID: 1491571654, guid: 9eeaa49ae82dc194991e343a79ff9885, type: 3}
       - {fileID: 1887070136, guid: 9eeaa49ae82dc194991e343a79ff9885, type: 3}
       - {fileID: 1300558925, guid: 9eeaa49ae82dc194991e343a79ff9885, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 71, y: -27, z: 0}
@@ -47081,7 +47084,7 @@ Tilemap:
       - {fileID: 563030729, guid: f1296aa73b8718c479f69e501ee43b10, type: 3}
       - {fileID: 1545467998, guid: f1296aa73b8718c479f69e501ee43b10, type: 3}
       - {fileID: -1022599072, guid: f1296aa73b8718c479f69e501ee43b10, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 13, y: -26, z: 0}
@@ -47241,7 +47244,7 @@ Tilemap:
       - {fileID: 563030729, guid: f1296aa73b8718c479f69e501ee43b10, type: 3}
       - {fileID: 1545467998, guid: f1296aa73b8718c479f69e501ee43b10, type: 3}
       - {fileID: -1022599072, guid: f1296aa73b8718c479f69e501ee43b10, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 29, y: -26, z: 0}
@@ -47401,7 +47404,7 @@ Tilemap:
       - {fileID: 563030729, guid: f1296aa73b8718c479f69e501ee43b10, type: 3}
       - {fileID: 1545467998, guid: f1296aa73b8718c479f69e501ee43b10, type: 3}
       - {fileID: -1022599072, guid: f1296aa73b8718c479f69e501ee43b10, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 45, y: -26, z: 0}
@@ -47931,7 +47934,7 @@ Tilemap:
       - {fileID: -119871324, guid: ebb3a04c29bb68f4dae97e53dd904e86, type: 3}
       - {fileID: 1890537969, guid: ebb3a04c29bb68f4dae97e53dd904e86, type: 3}
       - {fileID: -1347136267, guid: ebb3a04c29bb68f4dae97e53dd904e86, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 25, y: -25, z: 0}
@@ -47991,7 +47994,7 @@ Tilemap:
       - {fileID: -119871324, guid: ebb3a04c29bb68f4dae97e53dd904e86, type: 3}
       - {fileID: 1890537969, guid: ebb3a04c29bb68f4dae97e53dd904e86, type: 3}
       - {fileID: -1347136267, guid: ebb3a04c29bb68f4dae97e53dd904e86, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 31, y: -25, z: 0}
@@ -48101,7 +48104,7 @@ Tilemap:
       - {fileID: -119871324, guid: ebb3a04c29bb68f4dae97e53dd904e86, type: 3}
       - {fileID: 1890537969, guid: ebb3a04c29bb68f4dae97e53dd904e86, type: 3}
       - {fileID: -1347136267, guid: ebb3a04c29bb68f4dae97e53dd904e86, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 42, y: -25, z: 0}
@@ -48161,7 +48164,7 @@ Tilemap:
       - {fileID: -119871324, guid: ebb3a04c29bb68f4dae97e53dd904e86, type: 3}
       - {fileID: 1890537969, guid: ebb3a04c29bb68f4dae97e53dd904e86, type: 3}
       - {fileID: -1347136267, guid: ebb3a04c29bb68f4dae97e53dd904e86, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 48, y: -25, z: 0}
@@ -48251,7 +48254,7 @@ Tilemap:
       - {fileID: -119871324, guid: ebb3a04c29bb68f4dae97e53dd904e86, type: 3}
       - {fileID: 1890537969, guid: ebb3a04c29bb68f4dae97e53dd904e86, type: 3}
       - {fileID: -1347136267, guid: ebb3a04c29bb68f4dae97e53dd904e86, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 57, y: -25, z: 0}
@@ -48301,7 +48304,7 @@ Tilemap:
       - {fileID: -119871324, guid: ebb3a04c29bb68f4dae97e53dd904e86, type: 3}
       - {fileID: 1890537969, guid: ebb3a04c29bb68f4dae97e53dd904e86, type: 3}
       - {fileID: -1347136267, guid: ebb3a04c29bb68f4dae97e53dd904e86, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 62, y: -25, z: 0}
@@ -48361,7 +48364,7 @@ Tilemap:
       - {fileID: -119871324, guid: ebb3a04c29bb68f4dae97e53dd904e86, type: 3}
       - {fileID: 1890537969, guid: ebb3a04c29bb68f4dae97e53dd904e86, type: 3}
       - {fileID: -1347136267, guid: ebb3a04c29bb68f4dae97e53dd904e86, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 68, y: -25, z: 0}
@@ -48511,7 +48514,7 @@ Tilemap:
       - {fileID: 237175212, guid: ce2b70f57dce5a241a62d01eefbd816a, type: 3}
       - {fileID: -1840978211, guid: ce2b70f57dce5a241a62d01eefbd816a, type: 3}
       - {fileID: -1214371182, guid: ce2b70f57dce5a241a62d01eefbd816a, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 10, y: -24, z: 0}
@@ -48811,7 +48814,7 @@ Tilemap:
       - {fileID: 237175212, guid: ce2b70f57dce5a241a62d01eefbd816a, type: 3}
       - {fileID: -1840978211, guid: ce2b70f57dce5a241a62d01eefbd816a, type: 3}
       - {fileID: -1214371182, guid: ce2b70f57dce5a241a62d01eefbd816a, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 40, y: -24, z: 0}
@@ -48861,7 +48864,7 @@ Tilemap:
       - {fileID: 237175212, guid: ce2b70f57dce5a241a62d01eefbd816a, type: 3}
       - {fileID: -1840978211, guid: ce2b70f57dce5a241a62d01eefbd816a, type: 3}
       - {fileID: -1214371182, guid: ce2b70f57dce5a241a62d01eefbd816a, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 45, y: -24, z: 0}
@@ -49221,7 +49224,7 @@ Tilemap:
       - {fileID: 237175212, guid: ce2b70f57dce5a241a62d01eefbd816a, type: 3}
       - {fileID: -1840978211, guid: ce2b70f57dce5a241a62d01eefbd816a, type: 3}
       - {fileID: -1214371182, guid: ce2b70f57dce5a241a62d01eefbd816a, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:
@@ -49520,7 +49523,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: 4981fa2da8e633843bd49ee2e7714efb, type: 2}
-  m_InitialState: 0
+  m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
@@ -82065,6 +82068,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   gameSettings: {fileID: 11400000, guid: 1771fc9ca11773e4a827594e9bdd0a28, type: 2}
+  dialogueData: {fileID: 11400000, guid: a2c588d06b1dbc54c8357efda57df022, type: 2}
 --- !u!1 &1285217997273840180
 GameObject:
   m_ObjectHideFlags: 0
@@ -82317,44 +82321,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2268019756966721414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4929173544591524236}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c898a599a8b74371a1a4ee33d2210c48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialoguePanel: {fileID: 8418687766882745479}
-  dialogueText: {fileID: 661223711243698304}
-  textSpeed: 0.05
-  delayAfterLines: 1.5
-  isTriggerCutscene: 0
-  CutsceneTrigger: 3
-  dialogEventDictionary:
-    items:
-    - key: 2
-      value:
-        m_PersistentCalls:
-          m_Calls:
-          - m_Target: {fileID: 1292155800}
-            m_TargetAssemblyTypeName: DefaultNamespace.DoorInteractor, Assembly-CSharp
-            m_MethodName: OpenManual
-            m_Mode: 6
-            m_Arguments:
-              m_ObjectArgument: {fileID: 0}
-              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 0
-              m_FloatArgument: 0
-              m_StringArgument: 
-              m_BoolArgument: 1
-            m_CallState: 2
-  timelineIndex: 3
-  isDialogRunning: 0
 --- !u!4 &2279274337003880385
 Transform:
   m_ObjectHideFlags: 0
@@ -82446,46 +82412,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2434711321445031247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4929173544591524236}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b9f966cbd6145439b4e401d06d75d46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialogLines:
-  - lines:
-    - supersoldier gas test 13D21
-    - test subjects are lab rat and first human being
-    - initializing in 3... 2... 1...
-  - lines:
-    - Test subject rat shows muscle grouth and agression
-    - test subject human is dead
-    - should continue testing on animals to achive stable formula
-  - lines:
-    - Hi there! Hope I didn't scare ya!
-    - We've heard of your exploits. The way you handled the drone factory was incredibly
-      cool, but unfortunately, they have a couple more drone manufacturing facilities
-      that you'll encounter on your way.
-    - These people are developing some kind of drug that will be capable of turning
-      animals and people into weapons of war.
-    - "Currently, they are testing this drug on us\u2014the rats. Sometimes, some
-      of us manage to escape during a poorly conducted experiment."
-    - But we are running out of time now, go to the lab and save more animals! We
-      will talk later...
-  - lines:
-    - Thank you for stopping him, but more of them will come
-    - There is a facility ahead that you should destroy before it's too late!
-    - Follow me!
-  - lines:
-    - A keycard
-    - may be it will open the shutted door above?
-  - lines: []
 --- !u!114 &2436841416228335001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82686,7 +82612,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 548451372413842470}
-  - component: {fileID: 8999669427625003084}
+  - component: {fileID: 2780972508297658553}
   m_Layer: 0
   m_Name: TimelineManager
   m_TagString: Untagged
@@ -82694,6 +82620,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2780972508297658553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2780972508297658552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16be3147155744eb97f72cbd2a1a92e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.Cutscene.Infrastructure.UnityTimelinePort
+  _allowOnStart: 1
+  _cutscenes:
+  - {fileID: 2078136307}
+  - {fileID: 785218422}
+  - {fileID: 606818188}
 --- !u!224 &2786838366849806578
 RectTransform:
   m_ObjectHideFlags: 0
@@ -83328,8 +83271,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 515729841030865886}
-  - component: {fileID: 2268019756966721414}
-  - component: {fileID: 2434711321445031247}
+  - component: {fileID: 4929173544591524237}
+  - component: {fileID: 4929173544591524238}
   m_Layer: 0
   m_Name: DialogSystem
   m_TagString: Untagged
@@ -83337,6 +83280,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &4929173544591524237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4929173544591524236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3007195c16d043f69342cd869a9e0766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.Dialogue.Presentation.UnityDialogueView
+  _panel: {fileID: 8418687766882745479}
+  _text: {fileID: 661223711243698304}
+--- !u!114 &4929173544591524238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4929173544591524236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7608d47456e4490693d52fedb7ecf69e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.Dialogue.Presentation.DialogueTrigger
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _dialogueId: 0
 --- !u!114 &5053884895740954764
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -84986,24 +84959,6 @@ RectTransform:
   m_AnchoredPosition: {x: 230.82, y: -34.445}
   m_SizeDelta: {x: 138.35, y: 13.47}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8999669427625003084
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2780972508297658552}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b58ec0dc006b47a47895054a58ee89c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playOnStart: 0
-  _skipHoldDuration: 3
-  _cutscenes:
-  - {fileID: 2078136307}
-  - {fileID: 785218422}
-  - {fileID: 606818188}
 --- !u!212 &9116678442386532568
 SpriteRenderer:
   serializedVersion: 2

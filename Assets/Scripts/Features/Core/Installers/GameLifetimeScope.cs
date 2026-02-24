@@ -3,6 +3,14 @@ using DefaultNamespace;
 using Features.Player.Application;
 using Features.Player.Presentation;
 using Features.Core.Settings;
+using Features.Cutscene.Application;
+using Features.Cutscene.Domain;
+using Features.Cutscene.Infrastructure;
+using Features.Cutscene.Presentation;
+using Features.Dialogue.Application;
+using Features.Dialogue.Domain;
+using Features.Dialogue.Infrastructure;
+using Features.Dialogue.Presentation;
 using Features.Player.Domain;
 using Features.Player.Infrastructure;
 using UnityEngine;
@@ -16,16 +24,22 @@ namespace Features.Core.Installers
     public class GameLifetimeScope : LifetimeScope
     {
         [SerializeField] private GameSettings gameSettings;
+        [SerializeField] private DialogueDatabase dialogueData;
 
         public override void Configure(IContainerBuilder builder)
         {
             var options = builder.RegisterMessagePipe();
+            builder.RegisterInstance(gameSettings);
+            builder.RegisterInstance(dialogueData);
+
+            //
+            //  PLAYER
+            //
             builder.RegisterMessageBroker<PlayerMoveInput>(options);
             builder.RegisterMessageBroker<PlayerJumpPressed>(options);
             builder.RegisterMessageBroker<PlayerBarkPressed>(options);
             builder.RegisterMessageBroker<PlayerShapeRequest>(options);
 
-            builder.RegisterInstance(gameSettings);
             builder.RegisterComponentInHierarchy<UnityPlayerPhysicsPort>()
                    .As<IPlayerPhysicsPort>();
 
@@ -53,6 +67,33 @@ namespace Features.Core.Installers
             builder.Register<PlayerLifeService>(Lifetime.Scoped);
             builder.Register<PlayerInteractionService>(Lifetime.Scoped);
 
+            //
+            // TIMELINE
+            //
+
+            builder.Register<CutsceneModel>(Lifetime.Scoped);
+            builder.Register<CutsceneService>(Lifetime.Scoped);
+            builder.Register<CutsceneFacade>(Lifetime.Scoped)
+                   .As<IInitializable>()
+                   .AsSelf();
+
+            builder.RegisterComponentInHierarchy<UnityTimelinePort>()
+                   .As<ICutscenePort>();
+
+            //
+            // DIALOGUE
+            //
+            builder.RegisterComponentInHierarchy<DialogueTrigger>();
+            builder.RegisterMessageBroker<DialogueRequested>(options);
+            builder.RegisterMessageBroker<DialogueFinished>(options);
+            builder.Register<DialogueModel>(Lifetime.Scoped);
+            builder.Register<DialogueService>(Lifetime.Scoped);
+            builder.Register<DialogueFacade>(Lifetime.Scoped)
+                   .As<IInitializable>()
+                   .AsSelf();
+
+            builder.RegisterComponentInHierarchy<UnityDialogueView>()
+                   .As<IDialogueViewPort>();
         }
     }
 }

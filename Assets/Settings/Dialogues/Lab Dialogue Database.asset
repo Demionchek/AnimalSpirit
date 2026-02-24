@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24e5d8689a4c4a7d9bd27bf05179bfbe, type: 3}
+  m_Name: Lab Dialogue Database
+  m_EditorClassIdentifier: Assembly-CSharp::Features.Core.Settings.DialogueDatabase
+  Dialogues:
+  - Id: 0
+    Lines:
+    - supersoldier gas test 13D21
+    - test subjects are lab rat and first human being
+    - initializing in 3... 2... 1...
+  - Id: 1
+    Lines:
+    - Test subject rat shows muscle grouth and agression
+    - test subject human is dead
+    - should continue testing on animals to achive stable formula
+  - Id: 2
+    Lines:
+    - Hi there! Hope I didn't scare ya!
+    - We've heard of your exploits. The way you handled the drone factory was incredibly
+      cool, but unfortunately, they have a couple more drone manufacturing facilities
+      that you'll encounter on your way.
+    - These people are developing some kind of drug that will be capable of turning
+      animals and people into weapons of war.
+    - "Currently, they are testing this drug on us\u2014the rats. Sometimes, some
+      of us manage to escape during a poorly conducted experiment."
+    - But we are running out of time now, go to the lab and save more animals! We
+      will talk later...
