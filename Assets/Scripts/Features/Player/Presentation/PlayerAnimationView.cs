@@ -12,8 +12,9 @@ namespace Features.Player.Presentation
     {
         private Animator _animator;
         private SpriteRenderer _renderer;
-        private IDisposable shapeSub, barkSub, deathSub, reviveSub, moveSub;
+        private IDisposable shapeSub, barkSub, deathSub, reviveSub, moveSub, controlSub;
         private float _speed;
+        private bool _controlsEnabled = true;
 
         [Inject]
         private void Construct(
@@ -21,13 +22,18 @@ namespace Features.Player.Presentation
             ISubscriber<PlayerBarked> barkSub,
             ISubscriber<PlayerDied> deathSub,
             ISubscriber<PlayerRevived> reviveSub,
-            ISubscriber<PlayerMoveInput> moveSub)
+            ISubscriber<PlayerMoveInput> moveSub,
+            ISubscriber<PlayerControlStateChanged> controlSub)
         {
             this.shapeSub = shapeSub.Subscribe(e => _animator.SetInteger("Shape", (int)e.NewShape));
             this.barkSub = barkSub.Subscribe(_ => _animator.SetTrigger("Attack"));
             this.deathSub = deathSub.Subscribe(_ => _animator.SetTrigger("isDead"));
             this.reviveSub = reviveSub.Subscribe(_ => _animator.SetTrigger("Revive"));
             this.moveSub = moveSub.Subscribe(e => SetSpeed(e.Value.x));
+            this.controlSub = controlSub.Subscribe(e =>
+            {
+                _controlsEnabled = e.IsEnabled;
+            });
         }
 
         private void Awake()
@@ -38,6 +44,9 @@ namespace Features.Player.Presentation
 
         private void SetSpeed(float speed)
         {
+            if (!_controlsEnabled)
+                speed = 0;
+
             _speed = speed;
             _animator.SetFloat("Speed", Mathf.Abs(_speed));
         }

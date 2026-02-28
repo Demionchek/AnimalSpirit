@@ -24,7 +24,9 @@ namespace Features.Player.Application
         private readonly PlayerModel _model;
         private readonly GameSettings _settings;
         private IPlayerViewPort _view;
+        private bool _controlsEnabled = true;
 
+        private IDisposable _controlSub;
         private IDisposable _moveSub;
         private IDisposable _jumpSub;
         private IDisposable _barkSub;
@@ -58,12 +60,17 @@ namespace Features.Player.Application
             ISubscriber<PlayerMoveInput> moveSub,
             ISubscriber<PlayerJumpPressed> jumpSub,
             ISubscriber<PlayerBarkPressed> barkSub,
-            ISubscriber<PlayerShapeRequest> shapeSub)
+            ISubscriber<PlayerShapeRequest> shapeSub,
+            ISubscriber<PlayerControlStateChanged> controlSub)
         {
             _moveSub = moveSub.Subscribe(e => SetInput(e.Value));
             _jumpSub = jumpSub.Subscribe(_ => Jump());
             _barkSub = barkSub.Subscribe(_ => Interact());
             _shapeSub = shapeSub.Subscribe(e => ChangeShape(e.Target));
+            _controlSub = controlSub.Subscribe(e =>
+            {
+                _controlsEnabled = e.IsEnabled;
+            });
         }
 
         public void Initialize()
@@ -96,11 +103,20 @@ namespace Features.Player.Application
                 _view.ApplyHorizontalVelocity(velocity.x);
         }
 
-        public void SetInput(Vector2 input) => _movement.SetInput(input);
+        public void SetInput(Vector2 input)
+        {
+            if (!_controlsEnabled)
+                input = Vector2.zero;
+
+            _movement.SetInput(input);
+        }
 
         public void Jump()
         {
             if (!_model.IsGrounded)
+                return;
+
+            if (!_controlsEnabled)
                 return;
 
             float jumpForce = _movement.GetJumpForce();
@@ -110,11 +126,17 @@ namespace Features.Player.Application
 
         public void Interact()
         {
+            if (!_controlsEnabled)
+                return;
+
             _interaction.TryInteract();
         }
 
         public void ChangeShape(Shape target)
         {
+            if (!_controlsEnabled)
+                return;
+
             if (_shape.TryChangeShape(target, out var parameters))
             {
                 ApplyShape(parameters);
@@ -123,6 +145,9 @@ namespace Features.Player.Application
 
         public void Kill()
         {
+            if (!_controlsEnabled)
+                return;
+
             if (_life.TryKill())
             {
                 _view.PlayDeath();
@@ -192,6 +217,7 @@ namespace Features.Player.Application
             _jumpSub?.Dispose();
             _barkSub?.Dispose();
             _shapeSub?.Dispose();
+            _controlSub?.Dispose();
         }
     }
 }

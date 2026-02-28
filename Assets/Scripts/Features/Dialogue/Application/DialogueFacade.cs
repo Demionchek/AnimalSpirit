@@ -20,6 +20,7 @@ namespace Features.Dialogue.Application
         private IDialogueViewPort _view;
 
         private readonly IPublisher<DialogueFinished> _finishedPub;
+        private readonly IPublisher<PlayerControlStateChanged> _controlPub;
 
         private IDisposable _requestSub;
         private IDisposable _advanceSub;
@@ -28,11 +29,13 @@ namespace Features.Dialogue.Application
         public DialogueFacade(
             DialogueService service,
             DialogueDatabase database,
-            IPublisher<DialogueFinished> finishedPub)
+            IPublisher<DialogueFinished> finishedPub,
+            IPublisher<PlayerControlStateChanged> controlPub)
         {
             _service = service;
             _database = database;
             _finishedPub = finishedPub;
+            _controlPub = controlPub;
         }
 
         [Inject]
@@ -60,6 +63,7 @@ namespace Features.Dialogue.Application
                 return;
 
             StartDialogue(entry);
+            _controlPub.Publish(new PlayerControlStateChanged(false));
         }
 
         private void StartDialogue(DialogueEntry entry)
@@ -100,6 +104,7 @@ namespace Features.Dialogue.Application
                 _service.Stop();
                 _view.Hide();
                 _finishedPub.Publish(new DialogueFinished());
+                _controlPub.Publish(new PlayerControlStateChanged(true));
             }
         }
 

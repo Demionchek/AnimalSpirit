@@ -33,13 +33,19 @@ namespace Features.Core.Installers
             builder.RegisterInstance(dialogueData);
 
             //
-            //  PLAYER
+            //  MESSAGES
             //
+            builder.RegisterMessageBroker<DialogueRequested>(options);
+            builder.RegisterMessageBroker<DialogueFinished>(options);
+            builder.RegisterMessageBroker<PlayerControlStateChanged>(options);
             builder.RegisterMessageBroker<PlayerMoveInput>(options);
             builder.RegisterMessageBroker<PlayerJumpPressed>(options);
             builder.RegisterMessageBroker<PlayerBarkPressed>(options);
             builder.RegisterMessageBroker<PlayerShapeRequest>(options);
 
+            //
+            //  PLAYER
+            //
             builder.RegisterComponentInHierarchy<UnityPlayerPhysicsPort>()
                    .As<IPlayerPhysicsPort>();
 
@@ -70,13 +76,11 @@ namespace Features.Core.Installers
             //
             // TIMELINE
             //
-
             builder.Register<CutsceneModel>(Lifetime.Scoped);
             builder.Register<CutsceneService>(Lifetime.Scoped);
             builder.Register<CutsceneFacade>(Lifetime.Scoped)
                    .As<IInitializable>()
                    .AsSelf();
-
             builder.RegisterComponentInHierarchy<UnityTimelinePort>()
                    .As<ICutscenePort>();
 
@@ -84,8 +88,6 @@ namespace Features.Core.Installers
             // DIALOGUE
             //
             builder.RegisterComponentInHierarchy<DialogueTrigger>();
-            builder.RegisterMessageBroker<DialogueRequested>(options);
-            builder.RegisterMessageBroker<DialogueFinished>(options);
             builder.Register<DialogueModel>(Lifetime.Scoped);
             builder.Register<DialogueService>(Lifetime.Scoped);
             builder.Register<DialogueFacade>(Lifetime.Scoped)
