@@ -174,6 +174,11 @@ namespace Features.Player.Application
             ChangeShape(shape);
         }
 
+        public void UnlockShape(Shape shape)
+        {
+            _model.Unlock(shape);
+        }
+
         public void NotifyCollisionEnter(
             CollisionTypes type,
             float? effectorSpeed)
