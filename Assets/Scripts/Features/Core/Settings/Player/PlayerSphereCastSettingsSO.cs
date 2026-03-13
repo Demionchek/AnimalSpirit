@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Features.Core.Settings
+namespace Features.Core.Settings.Player
 {
     [CreateAssetMenu(fileName = "PlayerSphereCastSettings", menuName = "Game Settings/PlayerSphereCastSettings")]
     public class PlayerSphereCastSettingsSO : ScriptableObject

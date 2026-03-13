@@ -1,6 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
 using Features.Core.Settings;
+using Features.Core.Settings.Scene;
 using Features.Player.Domain;
 using Features.Player.Infrastructure;
 using Features.Player.Presentation;
@@ -23,7 +24,10 @@ namespace Features.Player.Application
         private readonly PlayerInteractionService _interaction;
         private readonly PlayerModel _model;
         private readonly GameSettings _settings;
+        private readonly SceneShapeConfig _sceneConfig;
+
         private IPlayerViewPort _view;
+
         private bool _controlsEnabled = true;
 
         private IDisposable _controlSub;
@@ -38,7 +42,8 @@ namespace Features.Player.Application
             PlayerLifeService life,
             PlayerInteractionService interaction,
             PlayerModel model,
-            GameSettings settings)
+            GameSettings settings,
+            SceneShapeConfig sceneConfig)
         {
             _movement = movement;
             _shape = shape;
@@ -46,10 +51,9 @@ namespace Features.Player.Application
             _interaction = interaction;
             _model = model;
             _settings = settings;
+            _sceneConfig = sceneConfig;
         }
 
-        // BindView is used to avoid circular dependency between
-        // PlayerView and PlayerFacade during DI container build.
         public void BindView(IPlayerViewPort view)
         {
             _view = view;
@@ -76,11 +80,18 @@ namespace Features.Player.Application
         public void Initialize()
         {
             _model.Initialize(
-                _settings.ShapeConfig.initiallyUnlocked,
-                Shape.Dog
+                _sceneConfig.unlockedShapes,
+                _sceneConfig.startShape
             );
 
-            ApplyShape(_model.CurrentShape);
+            foreach (var shape in _sceneConfig.unlockedShapes)
+            {
+                _shape.UnlockShape(shape);
+            }
+
+            ApplyShape(
+                _shape.GetShapeParameters(
+                    _sceneConfig.startShape));
         }
 
         public void Tick()
@@ -169,14 +180,9 @@ namespace Features.Player.Application
             _view.ApplyLayer(parameters.Layer);
         }
 
-        private void ApplyShape(Shape shape)
-        {
-            ChangeShape(shape);
-        }
-
         public void UnlockShape(Shape shape)
         {
-            _model.Unlock(shape);
+            _shape.UnlockShape(shape);
         }
 
         public void NotifyCollisionEnter(

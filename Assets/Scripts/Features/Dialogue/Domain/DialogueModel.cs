@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Features.Core.Settings;
+using Features.Core.Settings.Scene;
 
 namespace Features.Dialogue.Domain
 {

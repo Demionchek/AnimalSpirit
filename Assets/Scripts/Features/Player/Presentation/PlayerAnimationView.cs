@@ -25,7 +25,7 @@ namespace Features.Player.Presentation
             ISubscriber<PlayerMoveInput> moveSub,
             ISubscriber<PlayerControlStateChanged> controlSub)
         {
-            this.shapeSub = shapeSub.Subscribe(e => _animator.SetInteger("Shape", (int)e.NewShape));
+            this.shapeSub = shapeSub.Subscribe(e => _animator.SetInteger("Shape", (int)e.Shape));
             this.barkSub = barkSub.Subscribe(_ => _animator.SetTrigger("Attack"));
             this.deathSub = deathSub.Subscribe(_ => _animator.SetTrigger("isDead"));
             this.reviveSub = reviveSub.Subscribe(_ => _animator.SetTrigger("Revive"));

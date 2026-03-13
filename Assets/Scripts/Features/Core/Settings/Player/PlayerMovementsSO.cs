@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Features.Player.Domain;
 using UnityEngine;
 
-namespace Features.Core.Settings
+namespace Features.Core.Settings.Player
 {
     [CreateAssetMenu(fileName = "PlayerMovements", menuName = "Game Settings/PlayerMovements")]
 

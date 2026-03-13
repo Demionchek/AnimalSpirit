@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Features.Core.Settings
+namespace Features.Core.Settings.Scene
 {
     [CreateAssetMenu(fileName = "LayerSettingsSO", menuName = "Game Settings/Layers Settings")]
     public class LayerSettings : ScriptableObject

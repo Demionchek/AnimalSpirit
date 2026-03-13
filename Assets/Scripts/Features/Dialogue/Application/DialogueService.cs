@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Features.Core.Settings;
+using Features.Core.Settings.Scene;
 using Features.Dialogue.Domain;
 
 namespace Features.Dialogue.Application

@@ -1,3 +1,5 @@
+using Features.Core.Settings.Player;
+using Features.Core.Settings.Scene;
 using UnityEngine;
 
 namespace Features.Core.Settings

@@ -48,6 +48,12 @@ namespace Features.Player.Presentation
 
         private void Awake()
         {
+            if (_rb == null || _capsule == null || _boxTrigger == null)
+                Init();
+        }
+
+        private void Init()
+        {
             BuildLayerMap();
             _rb = GetComponent<Rigidbody2D>();
             _capsule = GetComponent<CapsuleCollider2D>();
@@ -76,6 +82,9 @@ namespace Features.Player.Presentation
 
         public void ApplyCollider(Vector2 size, Vector2 offset, CapsuleDirection2D direction)
         {
+            if (_rb == null || _capsule == null || _boxTrigger == null)
+                Init();
+
             _capsule.size = size;
             _capsule.offset = offset;
             _capsule.direction = direction;

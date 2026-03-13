@@ -2,7 +2,7 @@ using Features.Interactables.Presentation;
 using Features.Player.Domain;
 using UnityEngine;
 
-namespace Features.Core.Settings
+namespace Features.Core.Settings.Scene
 {
     [CreateAssetMenu(menuName = "Interaction/Interaction Config")]
     public sealed class InteractionConfig : ScriptableObject

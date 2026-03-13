@@ -1,10 +1,11 @@
 using System;
-using DefaultNamespace;
 using DefaultNamespace.Features.Interactables.Domain;
+using DefaultNamespace.Features.UIShape.Application;
 using Features.Trigger.Application;
 using Features.Player.Application;
 using Features.Player.Presentation;
 using Features.Core.Settings;
+using Features.Core.Settings.Scene;
 using Features.Cutscene.Application;
 using Features.Cutscene.Domain;
 using Features.Cutscene.Infrastructure;
@@ -14,13 +15,12 @@ using Features.Dialogue.Domain;
 using Features.Dialogue.Infrastructure;
 using Features.Dialogue.Presentation;
 using Features.Interactables.Application;
-using Features.Interactables.Infrastructure;
 using Features.Interactables.Presentation;
 using Features.Player.Domain;
 using Features.Player.Infrastructure;
-using Features.Trigger.Application;
 using Features.Trigger.Domain;
 using Features.Trigger.Presentation;
+using Features.UIShape.Presentation;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -34,12 +34,18 @@ namespace Features.Core.Installers
     {
         [SerializeField] private GameSettings gameSettings;
         [SerializeField] private DialogueDatabase dialogueData;
+        [SerializeField] private SceneShapeConfig sceneShapeConfig;
 
         public override void Configure(IContainerBuilder builder)
         {
             var options = builder.RegisterMessagePipe();
+
+            //
+            //SETTINGS
+            //
             builder.RegisterInstance(gameSettings);
             builder.RegisterInstance(dialogueData);
+            builder.RegisterInstance(sceneShapeConfig);
 
             //
             //  MESSAGES
@@ -51,6 +57,19 @@ namespace Features.Core.Installers
             builder.RegisterMessageBroker<PlayerJumpPressed>(options);
             builder.RegisterMessageBroker<PlayerBarkPressed>(options);
             builder.RegisterMessageBroker<PlayerShapeRequest>(options);
+            builder.RegisterMessageBroker<PlayerShapeChanged>(options);
+            builder.RegisterMessageBroker<PlayerShapeUnlocked>(options);
+            builder.RegisterMessageBroker<WorldTriggerRequested>(options);
+
+            //
+            // UI
+            //
+            builder.RegisterComponentInHierarchy<UIShapeView>();
+
+            builder.Register<UIShapeFacade>(Lifetime.Scoped)
+                   .As<IInitializable>()
+                   .As<IDisposable>();
+
 
             //
             //  PLAYER
@@ -126,8 +145,6 @@ namespace Features.Core.Installers
             //
             // TRIGGERS
             //
-            builder.RegisterMessageBroker<WorldTriggerRequested>(options);
-
             builder.Register<WorldTriggerService>(Lifetime.Scoped);
 
             builder.Register<WorldTriggerFacade>(Lifetime.Scoped)

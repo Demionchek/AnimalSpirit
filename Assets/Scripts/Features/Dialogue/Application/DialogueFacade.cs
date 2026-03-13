@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Features.Core.Settings;
+using Features.Core.Settings.Scene;
 using Features.Dialogue.Domain;
 using Features.Dialogue.Infrastructure;
 using Features.Player.Domain;

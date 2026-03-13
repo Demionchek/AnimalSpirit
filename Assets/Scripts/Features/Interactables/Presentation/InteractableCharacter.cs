@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Features.Core.Settings;
+using Features.Core.Settings.Scene;
 using Features.Interactables.Application;
 using Features.Interactables.Infrastructure;
 using Interfaces;
