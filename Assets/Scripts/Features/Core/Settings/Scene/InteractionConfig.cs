@@ -18,5 +18,9 @@ namespace Features.Core.Settings.Scene
         [Header("Checkpoint")]
         public bool setCheckpoint;
         public int checkpointIndex;
+
+        [Header("Attack")]
+        public bool performAttack;
+        public string triggerName;
     }
 }

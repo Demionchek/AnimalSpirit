@@ -23,8 +23,6 @@ namespace Features.Dialogue.Presentation
 
         public bool IsTyping => _writer != null && _writer.IsWriting;
 
-        private readonly IPublisher<DialogueRequested> _dialogueTriggerPub;
-
         [Inject]
         public void Construct(DialogueFacade facade,
                               ISubscriber<PlayerJumpPressed> skipSub)

@@ -44,6 +44,8 @@ namespace Features.Player.Presentation
 
         private void SetSpeed(float speed)
         {
+            if (!gameObject.activeSelf) return;
+
             if (!_controlsEnabled)
                 speed = 0;
 

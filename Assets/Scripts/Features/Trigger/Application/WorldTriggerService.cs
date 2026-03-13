@@ -3,6 +3,7 @@ using Features.Dialogue.Application;
 using Features.Interactables.Application;
 using Features.Trigger.Domain;
 using UnityEngine;
+using VContainer;
 
 namespace Features.Trigger.Application
 {
@@ -13,9 +14,11 @@ namespace Features.Trigger.Application
         public WorldTriggerService(
             CutsceneService cutscene,
    //         CheckpointService checkpoint,
-            DoorService door,
-            DialogueFacade dialogue)
+            DialogueFacade dialogue,
+            IObjectResolver resolver)
         {
+            resolver.TryResolve(out DoorService door);
+
             _context = new WorldTriggerContext(
                 cutscene,
  //               checkpoint,

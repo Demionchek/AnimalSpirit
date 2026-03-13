@@ -14,13 +14,16 @@ namespace Features.Cutscene.Application
         private readonly CutsceneService _service;
 
         private IDisposable _dialogueFinishedSub;
+        private IDisposable _dialogueRequestedSub;
 
         [Inject]
         private void Construct(
-            ISubscriber<DialogueFinished> dialogueFinishedSub)
+            ISubscriber<DialogueFinished> dialogueFinishedSub,
+            ISubscriber<DialogueRequested> dialogueRequestedSub)
         {
             _dialogueFinishedSub =
                 dialogueFinishedSub.Subscribe(OnDialogueFinished);
+            _dialogueRequestedSub = dialogueRequestedSub.Subscribe(OnDialogueRequested);
         }
 
         public CutsceneFacade(
@@ -54,6 +57,11 @@ namespace Features.Cutscene.Application
         public void NotifyFinished()
         {
             _service.OnCutsceneFinished();
+        }
+
+        private void OnDialogueRequested(DialogueRequested e)
+        {
+            _service.Pause();
         }
     }
 }

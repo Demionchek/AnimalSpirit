@@ -59,9 +59,8 @@ namespace Features.Cutscene.Application
             OnCutsceneFinished();
         }
 
-        public void Resume()
-        {
-            _port.Resume();
-        }
+        public void Resume() => _port.Resume();
+
+        public void Pause() => _port.Pause();
     }
 }

@@ -10,6 +10,7 @@ using VContainer;
 
 namespace Features.Interactables.Presentation
 {
+    [RequireComponent(typeof(SceneInteractionReferences))]
     public sealed class InteractableCharacter :
         MonoBehaviour,
         IInteractable
@@ -21,6 +22,8 @@ namespace Features.Interactables.Presentation
 
         private readonly List<IInteractionAction> _actions =
             new List<IInteractionAction>();
+
+        private Animator animator;
 
         private float _lastInteractTime;
 
@@ -34,6 +37,8 @@ namespace Features.Interactables.Presentation
                 return;
             }
 
+            animator = GetComponent<Animator>();
+
             if (config.startDialogue)
                 _actions.Add(factory.CreateDialogue(config.dialogueId));
 
@@ -43,6 +48,10 @@ namespace Features.Interactables.Presentation
             // if (config.setCheckpoint)
             //     _actions.Add(factory.CreateCheckpoint(config.checkpointIndex));
 
+            if (config.performAttack)
+                _actions.Add(factory.CreateAttackAction(animator, config.triggerName));
+
+
             if (sceneRefs.objectToActivate != null)
                 _actions.Add(factory.CreateActivate(
                     sceneRefs.objectToActivate));
@@ -51,6 +60,11 @@ namespace Features.Interactables.Presentation
                 _actions.Add(factory.CreateDoor(
                     sceneRefs.doorToOpen,
                     sceneRefs.manualDoorOpen));
+
+            if (sceneRefs.audioSource != null && sceneRefs.audioClip != null)
+                _actions.Add(factory.CreateAudioSource(sceneRefs.audioSource, sceneRefs.audioClip));
+
+
         }
 
         public void Interact()

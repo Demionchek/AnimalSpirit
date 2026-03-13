@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24e5d8689a4c4a7d9bd27bf05179bfbe, type: 3}
+  m_Name: Intro Dialogue Database
+  m_EditorClassIdentifier: Assembly-CSharp::Features.Core.Settings.Scene.DialogueDatabase
+  Dialogues:
+  - Id: 0
+    Lines:
+    - Oh mighty Spirit of the Forest, hear me!
+    - Come and save our home!
+  - Id: 1
+    Lines:
+    - Please save our home!
+    - Stop the fire ahead!
+  - Id: 2
+    Lines:
+    - The only way to get across is from above...
+  - Id: 3
+    Lines:
+    - Thank you for stopping him, but more of them will come
+    - There is a facility ahead that you should destroy before it's too late!
+    - Follow me!

@@ -15,7 +15,7 @@ MonoBehaviour:
   _entries:
   - shape: 0
     speed: 1.5
-    jumpForce: 12
+    jumpForce: 3
     gravityScale: 1
   - shape: 1
     speed: 1

@@ -40,5 +40,11 @@ namespace Features.Interactables.Application
 
         public IInteractionAction CreateDoor(DoorView door, bool open)
             => new OpenDoorAction(door, open);
+
+        public IInteractionAction CreateAudioSource(AudioSource source,  AudioClip audioClip)
+            => new PlaySoundAction(audioClip, source);
+
+        public IInteractionAction CreateAttackAction(Animator animator, string triggerName)
+            => new PerformAttackAction(animator, triggerName);
     }
 }

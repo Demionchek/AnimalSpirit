@@ -39,6 +39,9 @@ namespace Features.Core.Installers
         public override void Configure(IContainerBuilder builder)
         {
             var options = builder.RegisterMessagePipe();
+            var hasInteractables = HasComponentInScene<InteractableCharacter>();
+            var hasDoors = HasComponentInScene<DoorView>();
+            var hasWorldTriggers = HasComponentInScene<WorldTriggerView>();
 
             //
             //SETTINGS
@@ -69,7 +72,6 @@ namespace Features.Core.Installers
             builder.Register<UIShapeFacade>(Lifetime.Scoped)
                    .As<IInitializable>()
                    .As<IDisposable>();
-
 
             //
             //  PLAYER
@@ -130,37 +132,60 @@ namespace Features.Core.Installers
             //
             // INTERACTABLE
             //
-            builder.Register<InteractionActionFactory>(
-                   Lifetime.Scoped);
 
-            builder.RegisterComponentInHierarchy<
-                   InteractableCharacter>();
+            if (hasInteractables)
+            {
+                   builder.Register<InteractionActionFactory>(
+                          Lifetime.Scoped);
 
-            builder.Register<DoorModel>(Lifetime.Transient);
-            builder.Register<DoorService>(Lifetime.Transient);
+                   builder.RegisterComponentInHierarchy<
+                          InteractableCharacter>();
+            }
 
-            builder.RegisterComponentInHierarchy<DoorView>()
-                   .AsSelf();
+            if (hasDoors)
+            {
+                   builder.Register<DoorModel>(Lifetime.Transient);
+                   builder.Register<DoorService>(Lifetime.Transient);
+
+                   builder.RegisterComponentInHierarchy<DoorView>()
+                          .AsSelf();
+            }
 
             //
             // TRIGGERS
             //
-            builder.Register<WorldTriggerService>(Lifetime.Scoped);
+            if (hasWorldTriggers)
+            {
+                   builder.Register<WorldTriggerService>(Lifetime.Scoped);
 
-            builder.Register<WorldTriggerFacade>(Lifetime.Scoped)
-                   .As<IInitializable>();
+                   builder.Register<WorldTriggerFacade>(Lifetime.Scoped)
+                          .As<IInitializable>();
+            }
 
             //
             //Callback
             //
             builder.RegisterBuildCallback(container =>
             {
-                   foreach (var doors in Object.FindObjectsOfType<DoorView>(true))
-                     container.Inject(doors);
+                   if (hasDoors)
+                          foreach (var doors in Object.FindObjectsOfType<DoorView>(true))
+                                   container.Inject(doors);
 
-                   foreach (var trigger in Object.FindObjectsOfType<WorldTriggerView>(true))
-                          container.Inject(trigger);
+
+                   if (hasWorldTriggers)
+                            foreach (var trigger in Object.FindObjectsOfType<WorldTriggerView>(true))
+                                   container.Inject(trigger);
+
+                   if (hasInteractables)
+                          foreach (var interactableCharacter in Object.FindObjectsOfType<InteractableCharacter>(true))
+                                 container.Inject(interactableCharacter);
             });
+        }
+
+        private static bool HasComponentInScene<T>()
+            where T : Component
+        {
+            return Object.FindObjectsOfType<T>(true).Length > 0;
         }
     }
 }
