@@ -1,12 +1,8 @@
-using System;
-using System.Collections;
+
 using System.Collections.Generic;
-using Player;
 using TMPEffects.Components;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
-using VContainer;
 
 namespace DefaultNamespace
 {
@@ -37,7 +33,7 @@ namespace DefaultNamespace
         private List<string> lines = new List<string>();
         private int currentLine = 0;
 
-        private LinesContainer linesContainer;
+   //     private LinesContainer linesContainer;
         private DialogType currentType;
         private TMPWriter writer;
 
@@ -49,8 +45,8 @@ namespace DefaultNamespace
 
         void Start()
         {
-            linesContainer = GetComponent<LinesContainer>();
-            InputLines(linesContainer.dialogLines[(int)DialogType.Intro].lines);
+    //        linesContainer = GetComponent<LinesContainer>();
+    //        InputLines(linesContainer.dialogLines[(int)DialogType.Intro].lines);
             writer = dialogueText.gameObject.GetComponent<TMPWriter>();
             if (writer == null)  writer = dialogueText.gameObject.AddComponent<TMPWriter>();
         }
@@ -61,7 +57,7 @@ namespace DefaultNamespace
             currentType = (DialogType)index;
 
             ClearLines();
-            InputLines(linesContainer.dialogLines[index].lines);
+       //     InputLines(linesContainer.dialogLines[index].lines);
 
             StartDialogue();
         }

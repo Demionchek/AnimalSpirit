@@ -1,9 +1,6 @@
-using System;
+
 using System.Collections;
-using Animations;
 using Pathfinding;
-using Player;
-//using Pathfinding;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -31,7 +28,7 @@ namespace DefaultNamespace
         private AIDestinationSetter aiDestinationSetter;
         private SpriteRenderer spriteRenderer;
         private Transform homeTransform;
-        private PlayerController playerController;
+       // private PlayerController playerController;
 
         public bool CanSeeTarget => canSeeTarget;
         public Transform Target => target;
@@ -59,8 +56,8 @@ namespace DefaultNamespace
 
         private void OnDisable()
         {
-            if (playerController != null)
-                playerController.OnRevive -= ResetOnRevive;
+           // if (playerController != null)
+              //  playerController.OnRevive -= ResetOnRevive;
         }
 
         private void ResetOnRevive()
@@ -84,22 +81,22 @@ namespace DefaultNamespace
             foreach (Collider2D targetCollider in targetsInViewRadius)
             {
 
-                if (playerController == null)
-                {
-                    if (targetCollider.TryGetComponent(out PlayerController player))
-                    {
-                        playerController = player;
-                        playerController.OnRevive += ResetOnRevive;
-                    }
-                }
-
-                if (!ignorePlayerShape && !canSeeTarget && playerController != null)
-                {
-                    if ( playerController.CurrentShape == PlayerController.Shape.Rat)
-                    {
-                        continue;
-                    }
-                }
+                // if (playerController == null)
+                // {
+                //     if (targetCollider.TryGetComponent(out PlayerController player))
+                //     {
+                //         playerController = player;
+                //         playerController.OnRevive += ResetOnRevive;
+                //     }
+                // }
+                //
+                // if (!ignorePlayerShape && !canSeeTarget && playerController != null)
+                // {
+                //     if ( playerController.CurrentShape == PlayerController.Shape.Rat)
+                //     {
+                //         continue;
+                //     }
+                // }
 
                 Transform potentialTarget = targetCollider.transform;
                 Vector2 potentialTargetPos = new Vector2(potentialTarget.position.x, potentialTarget.position.y);

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Animations;
-using Player;
 using UnityEngine;
 
 namespace AI
@@ -115,13 +114,13 @@ namespace AI
 
             foreach (Collider2D targetCollider in targetsInViewRadius)
             {
-                if (!canSeeTarget && targetCollider.TryGetComponent(out PlayerController player))
-                {
-                    if (player.CurrentShape == PlayerController.Shape.Rat)
-                    {
-                        continue;
-                    }
-                }
+                // if (!canSeeTarget && targetCollider.TryGetComponent(out PlayerController player))
+                // {
+                //     if (player.CurrentShape == PlayerController.Shape.Rat)
+                //     {
+                //         continue;
+                //     }
+                // }
 
                 Transform potentialTarget = targetCollider.transform;
                 Vector2 potentialTargetPos = new Vector2(potentialTarget.position.x, potentialTarget.position.y + TARGET_OFFSET);

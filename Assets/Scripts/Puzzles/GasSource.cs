@@ -1,6 +1,5 @@
 using System;
 using Interfaces;
-using Player;
 using UnityEngine;
 
 namespace Puzzles

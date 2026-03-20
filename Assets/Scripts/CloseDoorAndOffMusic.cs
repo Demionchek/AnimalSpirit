@@ -1,6 +1,5 @@
 using System.Collections;
 using Pathfinding.Examples;
-using Player;
 using UnityEngine;
 using VContainer;
 
@@ -21,13 +20,13 @@ namespace DefaultNamespace
         {
             if (isActivated) return;
 
-            if (other.TryGetComponent(out PlayerController player))
-            {
-                door.OpenManual(false);
-                StartCoroutine(SoundOffSmooth());
-                checkPoints.SetCurrentCheckpoint(CheckPointIndex);
-                isActivated = true;
-            }
+            // if (other.TryGetComponent(out PlayerController player))
+            // {
+            //     door.OpenManual(false);
+            //     StartCoroutine(SoundOffSmooth());
+            //     checkPoints.SetCurrentCheckpoint(CheckPointIndex);
+            //     isActivated = true;
+            // }
         }
 
         private IEnumerator SoundOffSmooth()

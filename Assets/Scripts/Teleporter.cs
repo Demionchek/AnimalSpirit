@@ -1,5 +1,5 @@
 using Interfaces;
-using Player;
+//using Player;
 using UnityEngine;
 using VContainer;
 
@@ -9,12 +9,12 @@ namespace DefaultNamespace
     {
         [SerializeField] private Transform teleportTo;
 
-        [Inject]
-        private PlayerController playerController;
+        //[Inject]
+        //       private PlayerController playerController;
 
         public void Interact()
         {
-            playerController.transform.position = teleportTo.position;
+            //playerController.transform.position = teleportTo.position;
         }
     }
 }

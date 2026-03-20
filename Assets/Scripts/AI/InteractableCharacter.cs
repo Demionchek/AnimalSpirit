@@ -3,7 +3,6 @@ using System.Collections;
 using DefaultNamespace;
 using Features.Interactables.Presentation;
 using Interfaces;
-using Player;
 using UnityEngine;
 using UnityEngine.Events;
 using VContainer;
@@ -20,7 +19,7 @@ namespace AI
         [SerializeField] private DialogType dialogType;
         [Space(5)]
         [SerializeField] private bool unlocksShape = false;
-        [SerializeField] private PlayerController.Shape shape;
+      //  [SerializeField] private PlayerController.Shape shape;
         [Space(5)]
         [SerializeField] private float interactDelay = 0.5f;
         [Space(5)]
@@ -29,7 +28,7 @@ namespace AI
         [Space(5)]
         [SerializeField] private GameObject interactSign;
         [SerializeField] private GameObject afterSign;
-        [SerializeField] private PlayerController.Shape targetShape;
+      //  [SerializeField] private PlayerController.Shape targetShape;
         [SerializeField] private DoorInteractor doorInteractor;
         [SerializeField] private GameObject objToActivate;
         public bool doorCondition = false;
@@ -43,8 +42,8 @@ namespace AI
 
         [Inject]
         private DialogueSystem dialogueSystem;
-        [Inject]
-        private PlayerController playerController;
+
+    //    private PlayerController playerController;
         [Inject]
         private CheckPoints checkPoints;
 
@@ -88,7 +87,7 @@ namespace AI
             {
                 wasActivated = true;
                 afterSign.SetActive(true);
-                StartCoroutine(DeactivateAfterSign());
+               // StartCoroutine(DeactivateAfterSign());
             }
 
             OnInteract?.Invoke();
@@ -102,8 +101,8 @@ namespace AI
             // if (canHit)
             //     CircleCastAll();
 
-            if(unlocksShape)
-                playerController.UnlockShape(shape);
+            // if(unlocksShape)
+            //     playerController.UnlockShape(shape);
 
             if (isCheckPoint)
                 checkPoints.SetCurrentCheckpoint(checkPointIndex);
@@ -162,11 +161,11 @@ namespace AI
             }
         }
 
-        private IEnumerator DeactivateAfterSign()
-        {
-            yield return new WaitUntil(() => playerController.CurrentShape == targetShape);
-            afterSign?.SetActive(false);
-        }
+        // private IEnumerator DeactivateAfterSign()
+        // {
+        //     //yield return new WaitUntil(() => playerController.CurrentShape == targetShape);
+        //     afterSign?.SetActive(false);
+        // }
 
         public void SwitchLine(int lineIndex)
         {

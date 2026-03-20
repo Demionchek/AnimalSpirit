@@ -124,7 +124,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2018730574424755941, guid: 7f78c99201ef0e14b86f4ebd2229297d, type: 3}
   m_PrefabInstance: {fileID: 1922741730066351071}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1922741730066351072}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28db1e98f59642b49114ad344f1489c7, type: 3}
@@ -1807,7 +1807,7 @@ Tilemap:
       - {fileID: -712880748, guid: 6c95f81cb6f25bf40bc1b84835e2dca3, type: 3}
       - {fileID: 859841632, guid: 6c95f81cb6f25bf40bc1b84835e2dca3, type: 3}
       - {fileID: -2128375368, guid: 6c95f81cb6f25bf40bc1b84835e2dca3, type: 3}
-      m_AnimationSpeed: 10
+      m_AnimationSpeed: 10.000001
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 34, y: -3, z: 0}
@@ -1885,7 +1885,7 @@ Tilemap:
       - {fileID: 2047429429, guid: 788436f92291c8547bdd2630ced1483b, type: 3}
       - {fileID: -1680160658, guid: 788436f92291c8547bdd2630ced1483b, type: 3}
       - {fileID: 1674905399, guid: 788436f92291c8547bdd2630ced1483b, type: 3}
-      m_AnimationSpeed: 10.000001
+      m_AnimationSpeed: 10
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:
@@ -6187,8 +6187,51 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8373293267181887988, guid: 7f78c99201ef0e14b86f4ebd2229297d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1793157969}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2482687512777489332, guid: 7f78c99201ef0e14b86f4ebd2229297d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1922741730066351074}
+    - targetCorrespondingSourceObject: {fileID: 2482687512777489332, guid: 7f78c99201ef0e14b86f4ebd2229297d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1922741730066351073}
   m_SourcePrefab: {fileID: 100100000, guid: 7f78c99201ef0e14b86f4ebd2229297d, type: 3}
+--- !u!1 &1922741730066351072 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2482687512777489332, guid: 7f78c99201ef0e14b86f4ebd2229297d, type: 3}
+  m_PrefabInstance: {fileID: 1922741730066351071}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1922741730066351073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1922741730066351072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3a507e28fdb4268a5140f83df1dd628, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.Interactables.Presentation.InteractableCharacter
+  config: {fileID: 0}
+  interactDelay: 0.5
+  interactSign: {fileID: 459259075}
+--- !u!114 &1922741730066351074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1922741730066351072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 858e4dbc12de461f979bb0c1dea7155a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.Interactables.Presentation.SceneInteractionReferences
+  doorToOpen: {fileID: 0}
+  manualDoorOpen: 0
+  objectToActivate: {fileID: 0}
+  audioSource: {fileID: 0}
+  audioClip: {fileID: 0}
 --- !u!114 &2077635586907644405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7047,8 +7090,51 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6179015931501245930, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5936682251674269530}
+    - targetCorrespondingSourceObject: {fileID: 6179015931501245930, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5936682251674269529}
   m_SourcePrefab: {fileID: 100100000, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
+--- !u!1 &5936682251674269528 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6179015931501245930, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
+  m_PrefabInstance: {fileID: 5936682251674269527}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5936682251674269529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5936682251674269528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3a507e28fdb4268a5140f83df1dd628, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.Interactables.Presentation.InteractableCharacter
+  config: {fileID: 0}
+  interactDelay: 0.5
+  interactSign: {fileID: 0}
+--- !u!114 &5936682251674269530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5936682251674269528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 858e4dbc12de461f979bb0c1dea7155a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.Interactables.Presentation.SceneInteractionReferences
+  doorToOpen: {fileID: 0}
+  manualDoorOpen: 0
+  objectToActivate: {fileID: 0}
+  audioSource: {fileID: 0}
+  audioClip: {fileID: 0}
 --- !u!4 &6022692595348229238
 Transform:
   m_ObjectHideFlags: 0
@@ -7466,7 +7552,6 @@ MonoBehaviour:
   config: {fileID: 11400000, guid: e83c048ed3b6e6f43b75da8829137c0e, type: 2}
   interactDelay: 0.5
   interactSign: {fileID: 5636298731577248779}
-  sceneRefs: {fileID: 9101396857445323392}
 --- !u!114 &9101396857445323392
 MonoBehaviour:
   m_ObjectHideFlags: 0

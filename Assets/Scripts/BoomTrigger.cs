@@ -15,8 +15,8 @@ namespace DefaultNamespace
         public List<Light2D> lights;
         public AudioSource audioSource;
 
-        [Inject]
-        private TimelineManager _timelineManager;
+        // [Inject]
+        // private TimelineManager _timelineManager;
 
         private void OnTriggerEnter2D(Collider2D other)
         {
@@ -24,7 +24,7 @@ namespace DefaultNamespace
             {
                 Destroy(other.gameObject);
                 boom.SetActive(true);
-                _timelineManager.PlayCutscene(cutsceneIndex);
+//                _timelineManager.PlayCutscene(cutsceneIndex);
                 StartCoroutine(LightToggle());
             }
         }

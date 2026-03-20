@@ -10,8 +10,8 @@ namespace AI
     {
         [SerializeField] private GameObject fireGO;
 
-        [Inject]
-        private TimelineManager timelineManager;
+        // [Inject]
+        // private TimelineManager timelineManager;
 
         private void Awake()
         {
@@ -45,7 +45,7 @@ namespace AI
             isDead = true;
             ChangeState<DeathState>();
             PlaySound(deathSound);
-            timelineManager.PlayCutscene(2);
+  //          timelineManager.PlayCutscene(2);
         }
 
         private void PlaySound(AudioClip clip)

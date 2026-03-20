@@ -1,5 +1,4 @@
 using System.Collections;
-using Player;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -16,23 +15,23 @@ public class YPositionToValue : MonoBehaviour
     private bool isPlayerInside = false;
     private Transform playerTransform;
 
-    private PlayerController playerController;
+        //  private PlayerController playerController;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent(out PlayerController player))
-        {
-            isPlayerInside = true;
-            playerTransform = other.transform;
-            playerController = player;
-            playerController.OnRevive += SetToDefault;
-            Debug.Log("Player entered the collider");
-
-            if (audioSource != null && !audioSource.isPlaying)
-            {
-                StartCoroutine(SoundEnableSmoothly());
-            }
-        }
+        // if (other.TryGetComponent(out PlayerController player))
+        // {
+        //     isPlayerInside = true;
+        //     playerTransform = other.transform;
+        //     playerController = player;
+        //     playerController.OnRevive += SetToDefault;
+        //     Debug.Log("Player entered the collider");
+        //
+        //     if (audioSource != null && !audioSource.isPlaying)
+        //     {
+        //         StartCoroutine(SoundEnableSmoothly());
+        //     }
+        // }
     }
 
     private IEnumerator SoundEnableSmoothly()
@@ -49,11 +48,11 @@ public class YPositionToValue : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.TryGetComponent(out PlayerController player))
-        {
-            isPlayerInside = false;
-            Debug.Log("Player exited the collider");
-        }
+        // if (other.TryGetComponent(out PlayerController player))
+        // {
+        //     isPlayerInside = false;
+        //     Debug.Log("Player exited the collider");
+        // }
     }
 
     private void Update()
@@ -76,8 +75,8 @@ public class YPositionToValue : MonoBehaviour
 
     private void OnDisable()
     {
-        if (playerController != null)
-            playerController.OnRevive -= SetToDefault;
+        // if (playerController != null)
+        //     playerController.OnRevive -= SetToDefault;
     }
 
     private void SetToDefault()

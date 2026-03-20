@@ -18,7 +18,7 @@ namespace Features.Interactables.Presentation
         [SerializeField] private InteractionConfig config;
         [SerializeField] private float interactDelay = 0.5f;
         [SerializeField] private GameObject interactSign;
-        [SerializeField] private SceneInteractionReferences sceneRefs;
+        private SceneInteractionReferences sceneRefs;
 
         private readonly List<IInteractionAction> _actions =
             new List<IInteractionAction>();
@@ -38,6 +38,7 @@ namespace Features.Interactables.Presentation
             }
 
             animator = GetComponent<Animator>();
+            sceneRefs = GetComponent<SceneInteractionReferences>();
 
             if (config.startDialogue)
                 _actions.Add(factory.CreateDialogue(config.dialogueId));

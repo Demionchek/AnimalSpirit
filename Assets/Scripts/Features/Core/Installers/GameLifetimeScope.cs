@@ -1,6 +1,12 @@
 using System;
 using DefaultNamespace.Features.Interactables.Domain;
 using DefaultNamespace.Features.UIShape.Application;
+using Features.AI.Application;
+using Features.AI.Infrastructure;
+using Features.AI.Presentation;
+using Features.Core.ObjectPool.Application;
+using Features.Core.ObjectPool.Infrastructure;
+using Features.Core.ObjectPool.Presentation;
 using Features.Trigger.Application;
 using Features.Player.Application;
 using Features.Player.Presentation;
@@ -35,6 +41,9 @@ namespace Features.Core.Installers
         [SerializeField] private GameSettings gameSettings;
         [SerializeField] private DialogueDatabase dialogueData;
         [SerializeField] private SceneShapeConfig sceneShapeConfig;
+        [Header("ObjectPool")]
+        [SerializeField] private BulletView bulletPrefab;
+        [SerializeField] private Transform poolRoot;
 
         public override void Configure(IContainerBuilder builder)
         {
@@ -74,6 +83,16 @@ namespace Features.Core.Installers
                    .As<IDisposable>();
 
             //
+            // OBJECT POOL
+            //
+            builder.RegisterComponentInHierarchy<BulletView>();
+
+            builder.Register<BulletPool>(Lifetime.Singleton)
+                   .WithParameter("initialSize", 10)
+                   .WithParameter("poolParent", poolRoot)
+                   .As<IObjectPool<BulletView>>();
+
+            //
             //  PLAYER
             //
             builder.Register<PlayerInputProvider>(Lifetime.Singleton).AsSelf();
@@ -104,6 +123,19 @@ namespace Features.Core.Installers
             builder.RegisterComponentInHierarchy<PlayerInput>();
 
             //
+            // AI
+            //
+
+            builder.RegisterComponentInHierarchy<UnityEnemyAnimationPort>()
+                   .As<IEnemyAnimationPort>();
+            builder.RegisterComponentInHierarchy<UnityEnemyPhysicsPort>()
+                   .As<IEnemyPhysicsPort>();
+
+            builder.Register<EnemyAnimationService>(Lifetime.Scoped);
+            builder.Register<EnemyPatrolService>(Lifetime.Scoped);
+            builder.Register<EnemyPerceptionService>(Lifetime.Scoped);
+
+            //
             // TIMELINE
             //
             builder.Register<CutsceneModel>(Lifetime.Scoped);
@@ -132,7 +164,6 @@ namespace Features.Core.Installers
             //
             // INTERACTABLE
             //
-
             if (hasInteractables)
             {
                    builder.Register<InteractionActionFactory>(
@@ -163,7 +194,7 @@ namespace Features.Core.Installers
             }
 
             //
-            //Callback
+            // CALLBACK
             //
             builder.RegisterBuildCallback(container =>
             {
