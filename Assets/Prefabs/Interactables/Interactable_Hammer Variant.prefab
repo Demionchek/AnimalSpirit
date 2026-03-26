@@ -42,9 +42,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 43fa72b388b28cb4ca1c101daed30612, type: 3}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 43fa72b388b28cb4ca1c101daed30612, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -178,7 +179,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3168824584024183748, guid: 4f1e4af4fb4e58c4a9b6e239d7ea816c, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5792769232774961036, guid: 4f1e4af4fb4e58c4a9b6e239d7ea816c, type: 3}
       propertyPath: m_Controller
@@ -260,7 +261,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1553269953604478613, guid: 4f1e4af4fb4e58c4a9b6e239d7ea816c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 9060754082282916228, guid: 4f1e4af4fb4e58c4a9b6e239d7ea816c, type: 3}
@@ -270,10 +272,21 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3168824584024183748, guid: 4f1e4af4fb4e58c4a9b6e239d7ea816c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3332926534659608392}
+    - targetCorrespondingSourceObject: {fileID: 3168824584024183748, guid: 4f1e4af4fb4e58c4a9b6e239d7ea816c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5936831832588814751}
+    - targetCorrespondingSourceObject: {fileID: 3168824584024183748, guid: 4f1e4af4fb4e58c4a9b6e239d7ea816c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8652396378197414183}
   m_SourcePrefab: {fileID: 100100000, guid: 4f1e4af4fb4e58c4a9b6e239d7ea816c, type: 3}
 --- !u!4 &254427811198136234 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9060754082282916228, guid: 4f1e4af4fb4e58c4a9b6e239d7ea816c, type: 3}
+  m_PrefabInstance: {fileID: 9095489402743105070}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2173875689287004119 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6922739613397813753, guid: 4f1e4af4fb4e58c4a9b6e239d7ea816c, type: 3}
   m_PrefabInstance: {fileID: 9095489402743105070}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &6179015931501245930 stripped
@@ -292,6 +305,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -377,3 +391,35 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5936831832588814751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6179015931501245930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 858e4dbc12de461f979bb0c1dea7155a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.Interactables.Presentation.SceneInteractionReferences
+  doorToOpen: {fileID: 0}
+  manualDoorOpen: 0
+  objectToActivate: {fileID: 2173875689287004119}
+  audioSource: {fileID: 3332926534659608392}
+  audioClip: {fileID: 8300000, guid: 20ee1ba1721d1b04daf1f057f78e3bf4, type: 3}
+--- !u!114 &8652396378197414183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6179015931501245930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3a507e28fdb4268a5140f83df1dd628, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.Interactables.Presentation.InteractableCharacter
+  config: {fileID: 11400000, guid: 968098550c9e1e84ca843359237adc20, type: 2}
+  interactDelay: 0.5
+  interactSign: {fileID: 0}

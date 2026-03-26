@@ -1,4 +1,5 @@
 using Features.AI.Application;
+using Features.AI.Application.Attacks;
 using Features.AI.Domain;
 using Features.AI.Infrastructure;
 using Features.AI.Presentation;
@@ -38,18 +39,26 @@ namespace Features.Core.Installers
             builder.Register<EnemyCombatService>(Lifetime.Scoped);
             builder.Register<EnemyAnimationService>(Lifetime.Scoped);
             builder.Register<EnemyPatrolService>(Lifetime.Scoped);
-
             builder.Register<EnemyStateMachine>(Lifetime.Scoped);
 
-            builder.RegisterInstance(
-                new BulletPool(_bulletPrefab, 10, _poolRoot)
-            ).As<IObjectPool<BulletView>>();
+            builder.Register<MeleeAttack>(Lifetime.Scoped);
+
+            builder.Register<EnemyAttackFactory>(Lifetime.Scoped);
 
             builder.Register<EnemyFacade>(Lifetime.Scoped)
                    .As<IInitializable>()
-                   .As<ITickable>();
+                   .As<ITickable>()
+                   .As<IFixedTickable>()
+                   .AsSelf();
 
             builder.RegisterComponentInHierarchy<EnemyView>();
+
+            if (_config.hasPool)
+            {
+                builder.RegisterInstance(
+                    new BulletPool(_bulletPrefab, 10, _poolRoot)
+                ).As<IObjectPool<BulletView>>();
+            }
         }
     }
 }

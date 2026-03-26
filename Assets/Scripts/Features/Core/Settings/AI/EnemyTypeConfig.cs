@@ -35,5 +35,9 @@ namespace Features.Core.Settings.AI
 
         [Header("Enemy Type")]
         public EnemyAttackType attackType;
+
+        [Header("ObjectPool")]
+        public bool hasPool = false;
+        public GameObject poolPrefab;
     }
 }

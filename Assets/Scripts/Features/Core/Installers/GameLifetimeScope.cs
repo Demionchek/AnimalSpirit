@@ -85,12 +85,12 @@ namespace Features.Core.Installers
             //
             // OBJECT POOL
             //
-            builder.RegisterComponentInHierarchy<BulletView>();
-
-            builder.Register<BulletPool>(Lifetime.Singleton)
-                   .WithParameter("initialSize", 10)
-                   .WithParameter("poolParent", poolRoot)
-                   .As<IObjectPool<BulletView>>();
+            // builder.RegisterComponentInHierarchy<BulletView>();
+            //
+            // builder.Register<BulletPool>(Lifetime.Singleton)
+            //        .WithParameter("initialSize", 10)
+            //        .WithParameter("poolParent", poolRoot)
+            //        .As<IObjectPool<BulletView>>();
 
             //
             //  PLAYER

@@ -9,15 +9,19 @@ namespace Features.AI.Application
     {
         private readonly EnemyModel _model;
         private readonly EnemyTypeConfig _config;
-        private readonly IEnemyAttack _attack;
+
+        private IEnemyAttack _attack;
 
         public EnemyCombatService(
             EnemyModel model,
-            EnemyTypeConfig config,
-            IEnemyAttack attack)
+            EnemyTypeConfig config)
         {
             _model = model;
             _config = config;
+        }
+
+        public void Initialize(IEnemyAttack attack)
+        {
             _attack = attack;
         }
 
@@ -26,12 +30,10 @@ namespace Features.AI.Application
             if (_model.Target == null)
                 return;
 
-            float time = Time.time;
-
-            if (time < _model.LastAttackTime + _config.attackDelay)
+            if (Time.time < _model.LastAttackTime + _config.attackDelay)
                 return;
 
-            _model.LastAttackTime = time;
+            _model.LastAttackTime = Time.time;
 
             _attack.Execute(_model);
         }
