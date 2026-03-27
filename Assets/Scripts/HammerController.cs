@@ -1,4 +1,5 @@
 using Animations;
+using Features.Interactables.Infrastructure;
 using Interfaces;
 using UnityEngine;
 

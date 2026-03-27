@@ -22,5 +22,10 @@ namespace Features.Core.Settings.Scene
         [Header("Attack")]
         public bool performAttack;
         public string triggerName;
+
+        [Header("Physics")]
+        public float circleRadius;
+        public float xDistance;
+        public float yDistance;
     }
 }

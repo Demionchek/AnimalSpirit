@@ -1,4 +1,4 @@
-namespace Interfaces
+namespace Features.Interactables.Infrastructure
 {
     public interface IHittable
     {

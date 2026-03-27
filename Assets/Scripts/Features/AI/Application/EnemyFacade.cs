@@ -91,8 +91,6 @@ namespace Features.AI.Application
             if(_model.IsDead)
                 return;
 
-            _perception.Tick();
-
             _stateMachine.Tick();
         }
 
@@ -101,7 +99,19 @@ namespace Features.AI.Application
             if(_model.IsDead)
                 return;
 
+            _perception.Tick();
+
             _stateMachine.FixedTick();
+        }
+
+        public void Kill()
+        {
+            if (_model.IsDead)
+                return;
+
+            _model.Kill();
+            _physics.Stop();
+            _animation.Die();
         }
     }
 }

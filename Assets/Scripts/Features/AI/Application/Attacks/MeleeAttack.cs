@@ -1,6 +1,7 @@
 using Features.AI.Domain;
 using Features.AI.Infrastructure;
 using Features.Core.Settings.AI;
+using Features.Interactables.Infrastructure;
 using Interfaces;
 using UnityEngine;
 

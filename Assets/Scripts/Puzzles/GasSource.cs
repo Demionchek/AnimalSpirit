@@ -1,4 +1,5 @@
 using System;
+using Features.Interactables.Infrastructure;
 using Interfaces;
 using UnityEngine;
 

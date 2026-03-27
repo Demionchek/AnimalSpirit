@@ -10,6 +10,17 @@ namespace Features.AI.Presentation
         private Animator _animator;
         private SpriteRenderer _sprite;
 
+        public bool IsFlipped
+        {
+            get
+            {
+                if (_sprite != null)
+                    return _sprite.flipX;
+
+                return false;
+            }
+        }
+
         private void Awake()
         {
             _animator = GetComponent<Animator>();

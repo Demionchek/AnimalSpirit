@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using DefaultNamespace;
+using Features.Interactables.Infrastructure;
 using Features.Interactables.Presentation;
 using Interfaces;
 using UnityEngine;

@@ -1,4 +1,5 @@
 using Features.Core.ObjectPool.Infrastructure;
+using Features.Interactables.Infrastructure;
 using Interfaces;
 using UnityEngine;
 

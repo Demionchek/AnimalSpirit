@@ -44,7 +44,10 @@ namespace Features.Interactables.Application
         public IInteractionAction CreateAudioSource(AudioSource source,  AudioClip audioClip)
             => new PlaySoundAction(audioClip, source);
 
-        public IInteractionAction CreateAttackAction(Animator animator, string triggerName)
-            => new PerformAttackAction(animator, triggerName);
+        public IInteractionAction CreateAttackAction(
+            Animator animator,
+            string triggerName,
+            InteractableCharacterPhysicsPort physicsPort)
+            => new PerformAttackAction(animator, triggerName, physicsPort);
     }
 }

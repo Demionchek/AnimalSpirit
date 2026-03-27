@@ -19,6 +19,7 @@ namespace Features.Interactables.Presentation
         [SerializeField] private float interactDelay = 0.5f;
         [SerializeField] private GameObject interactSign;
         private SceneInteractionReferences sceneRefs;
+        private InteractableCharacterPhysicsPort physicsPort;
 
         private readonly List<IInteractionAction> _actions =
             new List<IInteractionAction>();
@@ -26,6 +27,8 @@ namespace Features.Interactables.Presentation
         private Animator animator;
 
         private float _lastInteractTime;
+
+        public InteractionConfig Config => config;
 
         [Inject]
         public void Construct(
@@ -39,6 +42,7 @@ namespace Features.Interactables.Presentation
 
             animator = GetComponent<Animator>();
             sceneRefs = GetComponent<SceneInteractionReferences>();
+            physicsPort = GetComponent<InteractableCharacterPhysicsPort>();
 
             if (config.startDialogue)
                 _actions.Add(factory.CreateDialogue(config.dialogueId));
@@ -50,7 +54,10 @@ namespace Features.Interactables.Presentation
             //     _actions.Add(factory.CreateCheckpoint(config.checkpointIndex));
 
             if (config.performAttack)
-                _actions.Add(factory.CreateAttackAction(animator, config.triggerName));
+                _actions.Add(factory.CreateAttackAction(
+                    animator,
+                    config.triggerName,
+                    physicsPort));
 
 
             if (sceneRefs.objectToActivate != null)

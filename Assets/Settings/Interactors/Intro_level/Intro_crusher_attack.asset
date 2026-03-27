@@ -20,3 +20,6 @@ MonoBehaviour:
   checkpointIndex: 0
   performAttack: 1
   triggerName: Attack
+  circleRadius: 0.25
+  xDistance: 0.4
+  yDistance: 0.15

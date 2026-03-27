@@ -13,7 +13,12 @@ namespace Features.Core.Installers
                 Lifetime.Scoped);
 
             builder.RegisterComponentInHierarchy<
-                InteractableCharacter>();
+                InteractableCharacter>()
+                .AsSelf();
+
+            builder.RegisterComponentInHierarchy<
+                InteractableCharacterPhysicsPort>()
+                .AsSelf();
         }
     }
 }

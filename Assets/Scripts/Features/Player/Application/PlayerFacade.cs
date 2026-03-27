@@ -27,6 +27,7 @@ namespace Features.Player.Application
         private readonly SceneShapeConfig _sceneConfig;
 
         private IPlayerViewPort _view;
+        private bool _isInitialized;
 
         private bool _controlsEnabled = true;
 
@@ -57,6 +58,9 @@ namespace Features.Player.Application
         public void BindView(IPlayerViewPort view)
         {
             _view = view;
+
+            if (_isInitialized)
+                ApplyCurrentShapeToView();
         }
 
         [Inject]
@@ -89,9 +93,8 @@ namespace Features.Player.Application
                 _shape.UnlockShape(shape);
             }
 
-            ApplyShape(
-                _shape.GetShapeParameters(
-                    _sceneConfig.startShape));
+            _isInitialized = true;
+            ApplyCurrentShapeToView();
         }
 
         public void Tick()
@@ -101,7 +104,7 @@ namespace Features.Player.Application
 
         public void FixedTick()
         {
-            if (_model.IsDead)
+            if (_model.IsDead || _view == null)
                 return;
 
             Vector2 velocity =
@@ -128,6 +131,9 @@ namespace Features.Player.Application
                 return;
 
             if (!_controlsEnabled)
+                return;
+
+            if (_view == null)
                 return;
 
             float jumpForce = _movement.GetJumpForce();
@@ -161,7 +167,7 @@ namespace Features.Player.Application
 
             if (_life.TryKill())
             {
-                _view.PlayDeath();
+                _view?.PlayDeath();
                 ReviveAsync().Forget();
             }
         }
@@ -170,14 +176,28 @@ namespace Features.Player.Application
         {
             await UniTask.Delay(3000);
             _life.Revive();
-            _view.PlayRevive();
+
+            if (_view != null)
+                _view.PlayRevive();
         }
 
         private void ApplyShape(ShapeParameters parameters)
         {
+            if (_view == null)
+                return;
+
             _view.ApplyCollider(parameters.Size, parameters.Offset, parameters.Direction);
             _view.ApplyGravity(parameters.Gravity);
             _view.ApplyLayer(parameters.Layer);
+        }
+
+        private void ApplyCurrentShapeToView()
+        {
+            if (_view == null)
+                return;
+
+            ApplyShape(
+                _shape.GetShapeParameters(_model.CurrentShape));
         }
 
         public void UnlockShape(Shape shape)

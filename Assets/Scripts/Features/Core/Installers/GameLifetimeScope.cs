@@ -83,16 +83,6 @@ namespace Features.Core.Installers
                    .As<IDisposable>();
 
             //
-            // OBJECT POOL
-            //
-            // builder.RegisterComponentInHierarchy<BulletView>();
-            //
-            // builder.Register<BulletPool>(Lifetime.Singleton)
-            //        .WithParameter("initialSize", 10)
-            //        .WithParameter("poolParent", poolRoot)
-            //        .As<IObjectPool<BulletView>>();
-
-            //
             //  PLAYER
             //
             builder.Register<PlayerInputProvider>(Lifetime.Singleton).AsSelf();
@@ -169,8 +159,8 @@ namespace Features.Core.Installers
                    builder.Register<InteractionActionFactory>(
                           Lifetime.Scoped);
 
-                   builder.RegisterComponentInHierarchy<
-                          InteractableCharacter>();
+                   builder.RegisterComponentInHierarchy<InteractableCharacter>();
+                   builder.RegisterComponentInHierarchy<InteractableCharacterPhysicsPort>();
             }
 
             if (hasDoors)
@@ -208,8 +198,13 @@ namespace Features.Core.Installers
                                    container.Inject(trigger);
 
                    if (hasInteractables)
+                   {
                           foreach (var interactableCharacter in Object.FindObjectsOfType<InteractableCharacter>(true))
                                  container.Inject(interactableCharacter);
+
+                          foreach (var characterPhysicsPort in FindObjectsOfType<InteractableCharacterPhysicsPort>(true))
+                                 container.Inject(characterPhysicsPort);
+                   }
             });
         }
 

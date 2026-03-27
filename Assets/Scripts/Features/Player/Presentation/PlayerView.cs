@@ -1,8 +1,10 @@
 using System;
 using Features.Player.Application;
 using Features.Core.Settings;
+using Features.Interactables.Infrastructure;
 using Features.Player.Domain;
 using Features.Player.Infrastructure;
+using Interfaces;
 using MessagePipe;
 using UnityEngine;
 using VContainer;
@@ -10,7 +12,7 @@ using VContainer;
 namespace Features.Player.Presentation
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    public sealed class PlayerView : MonoBehaviour, IPlayerViewPort
+    public sealed class PlayerView : MonoBehaviour, IPlayerViewPort, IHittable
     {
         public Vector2 Position => transform.position;
         public Vector2 CurrentVelocity => currentVelocity;
@@ -114,6 +116,11 @@ namespace Features.Player.Presentation
 
         public void PlayRevive()
         {
+        }
+
+        public void Hit()
+        {
+            _facade?.Kill();
         }
 
         private void OnRevive(PlayerRevived _) { }

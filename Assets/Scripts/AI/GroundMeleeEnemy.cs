@@ -1,5 +1,6 @@
 using System.Collections;
 using AI.States;
+using Features.Interactables.Infrastructure;
 using Interfaces;
 using UnityEngine;
 

@@ -6,5 +6,6 @@ namespace Features.AI.Infrastructure
         void SetAttack();
         void SetDead();
         void SetFlip(bool flip);
+        bool IsFlipped { get; }
     }
 }
