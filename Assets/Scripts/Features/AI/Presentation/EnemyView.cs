@@ -1,7 +1,5 @@
-using System;
 using Features.AI.Application;
 using Features.Interactables.Infrastructure;
-using Interfaces;
 using UnityEngine;
 using VContainer;
 
@@ -38,10 +36,15 @@ namespace Features.AI.Presentation
             OnKilled();
         }
 
+        public void OnAttackFinished() => _facade.AttackFinished();
+
+        public void PerformAttack() => _facade.PerformAttack();
+
         private void OnKilled()
         {
             _collider.enabled = false;
             _rb.bodyType = RigidbodyType2D.Kinematic;
         }
+
     }
 }

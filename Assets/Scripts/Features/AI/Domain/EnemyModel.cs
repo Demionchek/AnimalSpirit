@@ -10,6 +10,7 @@ namespace Features.AI.Domain
         public bool IsDead { get; private set; }
         public bool CanSeeTarget { get; set; }
         public bool CanAttack { get; set; }
+        public bool IsAttacking { get; set; }
         public Transform Target { get; set; }
         public float LastAttackTime { get; set; }
 

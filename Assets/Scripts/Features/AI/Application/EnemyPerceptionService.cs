@@ -13,6 +13,7 @@ namespace Features.AI.Application
         private readonly IEnemyAnimationPort  _animation;
 
         private readonly Collider2D[] _buffer = new Collider2D[8];
+        private Vector2 sightYOffset = Vector2.zero;
 
         public EnemyPerceptionService(
             EnemyModel model,
@@ -26,13 +27,20 @@ namespace Features.AI.Application
             _animation = animation;
         }
 
-        public void Tick()
+        public void FixedTick()
         {
             _model.Target = null;
             _model.CanSeeTarget = false;
 
+            if (sightYOffset == Vector2.zero)
+            {
+                sightYOffset = new Vector2(0, _config.sightYOffset);
+            }
+
+            Vector2 origin = _physics.Position + sightYOffset;
+
             int count = _physics.OverlapCircle(
-                _physics.Position,
+                origin,
                 _config.sightRange,
                 _config.targetMask,
                 _buffer);
@@ -48,15 +56,12 @@ namespace Features.AI.Application
                     return;
                 }
             }
-#if UNITY_EDITOR
-            DrawVisionDebug(_physics.Position, GetForward(), _config.sightRange, false, true);
-#endif
         }
 
         private bool IsVisible(Transform target)
         {
-            Vector2 origin = _physics.Position;
-            Vector2 targetPos = target.position;
+            Vector2 origin = _physics.Position + sightYOffset;
+            Vector2 targetPos = (Vector2)target.position + sightYOffset;
 
             Vector2 dir = (targetPos - origin).normalized;
             float distance = Vector2.Distance(origin, targetPos);

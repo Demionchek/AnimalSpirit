@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Features.AI.Application
 {
-    public sealed class EnemyCombatService
+    public sealed class EnemyCombatService : IEnemyCombatPort
     {
         private readonly EnemyModel _model;
         private readonly EnemyTypeConfig _config;

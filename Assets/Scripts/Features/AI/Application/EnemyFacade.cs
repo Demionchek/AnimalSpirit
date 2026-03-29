@@ -71,7 +71,8 @@ namespace Features.AI.Application
                 _physics,
                 _patrolPort,
                 _movement,
-                _animation);
+                _animation,
+                _combat);
 
             var attack = _factory.Create(
                 _config,
@@ -99,10 +100,13 @@ namespace Features.AI.Application
             if(_model.IsDead)
                 return;
 
-            _perception.Tick();
+            _perception.FixedTick();
 
             _stateMachine.FixedTick();
         }
+
+        public void AttackFinished() => _model.IsAttacking = false;
+        public void PerformAttack() => _combat.TryAttack();
 
         public void Kill()
         {

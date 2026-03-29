@@ -13,6 +13,7 @@ namespace Features.AI.Application.States
         public readonly IEnemyPatrolPort PatrolPort;
         public readonly EnemyMovementService Movement;
         public readonly EnemyAnimationService Animation;
+        public readonly IEnemyCombatPort Combat;
 
         public EnemyStateMachine StateMachine;
 
@@ -26,7 +27,8 @@ namespace Features.AI.Application.States
             IEnemyPhysicsPort physics,
             IEnemyPatrolPort patrolPort,
             EnemyMovementService movement,
-            EnemyAnimationService animation)
+            EnemyAnimationService animation,
+            IEnemyCombatPort combat)
         {
             Model = model;
             Config = config;
@@ -35,6 +37,7 @@ namespace Features.AI.Application.States
             Animation = animation;
             Patrol = patrol;
             PatrolPort = patrolPort;
+            Combat = combat;
         }
     }
 }

@@ -10,6 +10,10 @@ namespace Features.AI.Presentation
         private Animator _animator;
         private SpriteRenderer _sprite;
 
+        private readonly string ATTACK_S = "Attack";
+        private readonly string SPEED_S = "Speed";
+        private readonly string IS_DEAD_S = "isDead";
+
         public bool IsFlipped
         {
             get
@@ -29,17 +33,17 @@ namespace Features.AI.Presentation
 
         public void SetSpeed(float value)
         {
-            _animator.SetFloat(AnimationController.SPEED_S, value);
+            _animator.SetFloat(SPEED_S, value);
         }
 
         public void SetAttack()
         {
-            _animator.SetTrigger(AnimationController.ATTACK_S);
+            _animator.SetTrigger(ATTACK_S);
         }
 
         public void SetDead()
         {
-            _animator.SetTrigger(AnimationController.IS_DEAD_S);
+            _animator.SetTrigger(IS_DEAD_S);
         }
 
         public void SetFlip(bool flip)

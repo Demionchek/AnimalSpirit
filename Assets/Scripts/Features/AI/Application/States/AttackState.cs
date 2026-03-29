@@ -1,21 +1,9 @@
-using Features.Core.Settings.AI;
 using UnityEngine;
 
 namespace Features.AI.Application.States
 {
     public sealed class AttackState : EnemyState
     {
-        private EnemyCombatService _combat;
-
-        public AttackState Init(
-            EnemyStateContext ctx,
-            EnemyCombatService combat)
-        {
-            Initialize(ctx);
-            _combat = combat;
-            return this;
-        }
-
         public override void Tick()
         {
             if (Ctx.Model.Target == null)
@@ -36,7 +24,8 @@ namespace Features.AI.Application.States
                 return;
             }
 
-            _combat.TryAttack();
+            Ctx.Model.IsAttacking = true;
+            Ctx.Animation.Attack();
         }
     }
 }

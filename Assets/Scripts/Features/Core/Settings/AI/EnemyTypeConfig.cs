@@ -20,6 +20,7 @@ namespace Features.Core.Settings.AI
         public float sightRange = 2f;
         public float sightAngle = 90f;
         public float detectionInterval = 0.2f;
+        public float sightYOffset = 0.15f;
 
         [Header("Combat")]
         public float attackDelay = 0.3f;

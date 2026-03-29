@@ -5,6 +5,7 @@ namespace Features.AI.Application.States
     public abstract class EnemyState : IEnemyState
     {
         protected EnemyStateContext Ctx;
+        protected EnemyCombatService Combat;
 
         public void Initialize(EnemyStateContext ctx)
         {
