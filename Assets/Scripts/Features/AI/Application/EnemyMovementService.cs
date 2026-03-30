@@ -20,6 +20,11 @@ namespace Features.AI.Application
 
         public void Move(Vector2 direction)
         {
+            if (_config.isHorizontal)
+            {
+                direction = direction.x > 0 ? Vector2.right : Vector2.left;
+            }
+
             _physics.SetVelocity(direction * _config.speed);
         }
 

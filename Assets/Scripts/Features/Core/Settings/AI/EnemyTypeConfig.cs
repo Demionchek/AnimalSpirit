@@ -15,6 +15,7 @@ namespace Features.Core.Settings.AI
         [Header("Movement")]
         public float speed = 2f;
         public float stoppingDistance = 1f;
+        public bool isHorizontal = true;
 
         [Header("Vision")]
         public float sightRange = 2f;
@@ -25,6 +26,8 @@ namespace Features.Core.Settings.AI
         [Header("Combat")]
         public float attackDelay = 0.3f;
         public float attackDistance = 0.3f;
+        public float attackXOffset = 0.15f;
+        public float attackYOffset = 0.2f;
 
         [Header("Patrol")]
         public float waitTimeAtPoint = 2f;
