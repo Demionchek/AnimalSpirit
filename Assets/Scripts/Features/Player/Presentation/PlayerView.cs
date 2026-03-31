@@ -105,18 +105,11 @@ namespace Features.Player.Presentation
             gameObject.layer = layer;
         }
 
+        public void ApplyPosition(Vector2 position) => transform.position = position;
+
         private void OnGroundedChanged(bool grounded) { }
 
         private void OnDeath(PlayerDied _) { }
-
-        public void PlayDeath()
-        {
-
-        }
-
-        public void PlayRevive()
-        {
-        }
 
         public void Hit()
         {

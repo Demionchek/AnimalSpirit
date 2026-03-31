@@ -4,6 +4,10 @@ using DefaultNamespace.Features.UIShape.Application;
 using Features.AI.Application;
 using Features.AI.Infrastructure;
 using Features.AI.Presentation;
+using Features.Checkpoints.Application;
+using Features.Checkpoints.Domain;
+using Features.Checkpoints.Infrastructure;
+using Features.Checkpoints.Presentation;
 using Features.Core.ObjectPool.Application;
 using Features.Core.ObjectPool.Infrastructure;
 using Features.Core.ObjectPool.Presentation;
@@ -65,6 +69,8 @@ namespace Features.Core.Installers
             builder.RegisterMessageBroker<DialogueRequested>(options);
             builder.RegisterMessageBroker<DialogueFinished>(options);
             builder.RegisterMessageBroker<PlayerControlStateChanged>(options);
+            builder.RegisterMessageBroker<PlayerDied>(options);
+            builder.RegisterMessageBroker<PlayerRevived>(options);
             builder.RegisterMessageBroker<PlayerMoveInput>(options);
             builder.RegisterMessageBroker<PlayerJumpPressed>(options);
             builder.RegisterMessageBroker<PlayerBarkPressed>(options);
@@ -72,6 +78,8 @@ namespace Features.Core.Installers
             builder.RegisterMessageBroker<PlayerShapeChanged>(options);
             builder.RegisterMessageBroker<PlayerShapeUnlocked>(options);
             builder.RegisterMessageBroker<WorldTriggerRequested>(options);
+            builder.RegisterMessageBroker<CheckpointCallback>(options);
+            builder.RegisterMessageBroker<CheckpointRequest>(options);
 
             //
             // UI
@@ -81,6 +89,18 @@ namespace Features.Core.Installers
             builder.Register<UIShapeFacade>(Lifetime.Scoped)
                    .As<IInitializable>()
                    .As<IDisposable>();
+
+            //
+            // CHECKPOINT
+            //
+            builder.RegisterComponentInHierarchy<CheckpointsTransformContainer>()
+                   .As<ICheckpointsContainer>();
+            builder.Register<CheckpointModel>(Lifetime.Scoped).AsSelf();
+            builder.Register<CheckpointService>(Lifetime.Scoped);
+            builder.Register<CheckpointFacade>(Lifetime.Scoped)
+                   .As<IInitializable>()
+                   .As<IDisposable>()
+                   .AsSelf();
 
             //
             //  PLAYER

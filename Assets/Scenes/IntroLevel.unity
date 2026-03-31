@@ -1796,7 +1796,7 @@ Tilemap:
       - {fileID: -712880748, guid: 6c95f81cb6f25bf40bc1b84835e2dca3, type: 3}
       - {fileID: 859841632, guid: 6c95f81cb6f25bf40bc1b84835e2dca3, type: 3}
       - {fileID: -2128375368, guid: 6c95f81cb6f25bf40bc1b84835e2dca3, type: 3}
-      m_AnimationSpeed: 10
+      m_AnimationSpeed: 10.000001
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 34, y: -3, z: 0}
@@ -5445,13 +5445,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1900355950}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f479c99396a481187a8059ad124db17, type: 3}
+  m_Script: {fileID: 11500000, guid: a83eca2d89664a03a9050a4cda293c9f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  _checkPoints:
+  m_EditorClassIdentifier: Assembly-CSharp::Features.Checkpoints.Presentation.CheckpointsTransformContainer
+  _checkpoints:
   - {fileID: 177933603}
   - {fileID: 313136981}
-  startCheckPoint: 0
 --- !u!1 &1996150829
 GameObject:
   m_ObjectHideFlags: 0

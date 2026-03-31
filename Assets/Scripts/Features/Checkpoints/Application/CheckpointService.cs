@@ -6,11 +6,12 @@ namespace Features.Checkpoints.Application
 {
     public class CheckpointService
     {
-        private CheckpointModel _model;
+        private readonly CheckpointModel _model;
 
-        public void Initialize()
+        public CheckpointService(
+            CheckpointModel model)
         {
-            _model = new CheckpointModel();
+            _model = model;
         }
 
         public void SetCheckpoint(int index, Vector3 position)
@@ -19,6 +20,6 @@ namespace Features.Checkpoints.Application
             _model.position = position;
         }
 
-
+        public Vector3 GetCheckpointPosition() => _model.position;
     }
 }

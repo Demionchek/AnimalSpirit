@@ -1,10 +1,10 @@
 using System;
 using Cysharp.Threading.Tasks;
+using Features.Checkpoints.Domain;
 using Features.Core.Settings;
 using Features.Core.Settings.Scene;
 using Features.Player.Domain;
 using Features.Player.Infrastructure;
-using Features.Player.Presentation;
 using MessagePipe;
 using UnityEngine;
 using VContainer;
@@ -23,7 +23,6 @@ namespace Features.Player.Application
         private readonly PlayerLifeService _life;
         private readonly PlayerInteractionService _interaction;
         private readonly PlayerModel _model;
-        private readonly GameSettings _settings;
         private readonly SceneShapeConfig _sceneConfig;
 
         private IPlayerViewPort _view;
@@ -31,28 +30,37 @@ namespace Features.Player.Application
 
         private bool _controlsEnabled = true;
 
+        private readonly IPublisher<CheckpointRequest> _checkpointRequestPub;
+        private readonly IPublisher<PlayerRevived> _playerRevivedPubPub;
+        private readonly IPublisher<PlayerDied> _playerDiedPub;
+
         private IDisposable _controlSub;
         private IDisposable _moveSub;
         private IDisposable _jumpSub;
         private IDisposable _barkSub;
         private IDisposable _shapeSub;
+        private IDisposable _checkpointSub;
 
         public PlayerFacade(
-            PlayerMovementService movement,
-            PlayerShapeService shape,
-            PlayerLifeService life,
-            PlayerInteractionService interaction,
             PlayerModel model,
-            GameSettings settings,
-            SceneShapeConfig sceneConfig)
+            PlayerLifeService life,
+            PlayerShapeService shape,
+            SceneShapeConfig sceneConfig,
+            PlayerMovementService movement,
+            PlayerInteractionService interaction,
+            IPublisher<PlayerDied> playerDiedPub,
+            IPublisher<PlayerRevived> playerRevivedPub,
+            IPublisher<CheckpointRequest> checkpointRequest)
         {
-            _movement = movement;
-            _shape = shape;
             _life = life;
-            _interaction = interaction;
             _model = model;
-            _settings = settings;
+            _shape = shape;
+            _movement = movement;
+            _interaction = interaction;
             _sceneConfig = sceneConfig;
+            _playerDiedPub = playerDiedPub;
+            _playerRevivedPubPub = playerRevivedPub;
+            _checkpointRequestPub = checkpointRequest;
         }
 
         public void BindView(IPlayerViewPort view)
@@ -69,12 +77,14 @@ namespace Features.Player.Application
             ISubscriber<PlayerJumpPressed> jumpSub,
             ISubscriber<PlayerBarkPressed> barkSub,
             ISubscriber<PlayerShapeRequest> shapeSub,
-            ISubscriber<PlayerControlStateChanged> controlSub)
+            ISubscriber<PlayerControlStateChanged> controlSub,
+            ISubscriber<CheckpointCallback> checkpointCallback)
         {
             _moveSub = moveSub.Subscribe(e => SetInput(e.Value));
             _jumpSub = jumpSub.Subscribe(_ => Jump());
             _barkSub = barkSub.Subscribe(_ => Interact());
             _shapeSub = shapeSub.Subscribe(e => ChangeShape(e.Target));
+            _checkpointSub = checkpointCallback.Subscribe(e => ApplyRevivePosition(e.Position));
             _controlSub = controlSub.Subscribe(e =>
             {
                 _controlsEnabled = e.IsEnabled;
@@ -167,7 +177,7 @@ namespace Features.Player.Application
 
             if (_life.TryKill())
             {
-                _view?.PlayDeath();
+                _playerDiedPub.Publish(new PlayerDied());
                 ReviveAsync().Forget();
             }
         }
@@ -177,8 +187,13 @@ namespace Features.Player.Application
             await UniTask.Delay(3000);
             _life.Revive();
 
-            if (_view != null)
-                _view.PlayRevive();
+            _checkpointRequestPub.Publish(new CheckpointRequest());
+            _playerRevivedPubPub.Publish(new PlayerRevived());
+        }
+
+        private void ApplyRevivePosition(Vector2 position)
+        {
+            if (_view != null) _view.ApplyPosition(position);
         }
 
         private void ApplyShape(ShapeParameters parameters)
@@ -249,6 +264,7 @@ namespace Features.Player.Application
             _barkSub?.Dispose();
             _shapeSub?.Dispose();
             _controlSub?.Dispose();
+            _checkpointSub?.Dispose();
         }
     }
 }

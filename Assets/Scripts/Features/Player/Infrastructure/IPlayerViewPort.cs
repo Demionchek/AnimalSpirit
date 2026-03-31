@@ -12,7 +12,6 @@ namespace Features.Player.Infrastructure
         void ApplyCollider(Vector2 size, Vector2 offset, CapsuleDirection2D direction);
         void ApplyGravity(float gravity);
         void ApplyLayer(int layer);
-        void PlayDeath();
-        void PlayRevive();
+        void ApplyPosition(Vector2 position);
     }
 }

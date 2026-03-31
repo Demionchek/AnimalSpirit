@@ -25,6 +25,7 @@ namespace Features.Player.Application
         public void Revive()
         {
             _model.SetDead(false);
+
         }
     }
 
