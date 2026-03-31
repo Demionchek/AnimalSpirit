@@ -50,15 +50,14 @@ namespace Features.Interactables.Presentation
             if (config.unlockShape)
                 _actions.Add(factory.CreateUnlock(config.shape));
 
-            // if (config.setCheckpoint)
-            //     _actions.Add(factory.CreateCheckpoint(config.checkpointIndex));
+            if (config.setCheckpoint)
+                _actions.Add(factory.CreateCheckpoint(config.checkpointIndex));
 
             if (config.performAttack)
                 _actions.Add(factory.CreateAttackAction(
                     animator,
                     config.triggerName,
                     physicsPort));
-
 
             if (sceneRefs.objectToActivate != null)
                 _actions.Add(factory.CreateActivate(
@@ -71,8 +70,6 @@ namespace Features.Interactables.Presentation
 
             if (sceneRefs.audioSource != null && sceneRefs.audioClip != null)
                 _actions.Add(factory.CreateAudioSource(sceneRefs.audioSource, sceneRefs.audioClip));
-
-
         }
 
         public void Interact()

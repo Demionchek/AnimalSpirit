@@ -84,7 +84,7 @@ namespace Features.Player.Application
             _jumpSub = jumpSub.Subscribe(_ => Jump());
             _barkSub = barkSub.Subscribe(_ => Interact());
             _shapeSub = shapeSub.Subscribe(e => ChangeShape(e.Target));
-            _checkpointSub = checkpointCallback.Subscribe(e => ApplyRevivePosition(e.Position));
+            _checkpointSub = checkpointCallback.Subscribe(e => ApplyRevivePosition(e.position));
             _controlSub = controlSub.Subscribe(e =>
             {
                 _controlsEnabled = e.IsEnabled;
@@ -178,6 +178,7 @@ namespace Features.Player.Application
             if (_life.TryKill())
             {
                 _playerDiedPub.Publish(new PlayerDied());
+                _view.ApplyGravity(1);
                 ReviveAsync().Forget();
             }
         }
@@ -186,7 +187,7 @@ namespace Features.Player.Application
         {
             await UniTask.Delay(3000);
             _life.Revive();
-
+            _view.ApplyGravity(_shape.GetShapeParameters(_model.CurrentShape).Gravity);
             _checkpointRequestPub.Publish(new CheckpointRequest());
             _playerRevivedPubPub.Publish(new PlayerRevived());
         }

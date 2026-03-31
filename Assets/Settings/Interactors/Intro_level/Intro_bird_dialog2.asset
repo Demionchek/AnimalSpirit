@@ -16,7 +16,10 @@ MonoBehaviour:
   dialogueId: 2
   unlockShape: 1
   shape: 2
-  setCheckpoint: 0
-  checkpointIndex: 0
+  setCheckpoint: 1
+  checkpointIndex: 1
   performAttack: 0
   triggerName: 
+  circleRadius: 0
+  xDistance: 0
+  yDistance: 0

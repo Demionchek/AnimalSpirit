@@ -16,6 +16,7 @@ namespace Features.Checkpoints.Application
         private readonly IPublisher<CheckpointCallback> _checkpointCallback;
 
         private IDisposable _requestSub;
+        private IDisposable _setterSub;
 
         public CheckpointFacade(
             CheckpointService service,
@@ -29,9 +30,11 @@ namespace Features.Checkpoints.Application
 
         [Inject]
         private void Construct(
-            ISubscriber<CheckpointRequest> requestHandler)
+            ISubscriber<CheckpointRequest> requestHandler,
+            ISubscriber<CheckpointSetter> checkpointSetter)
         {
             _requestSub = requestHandler.Subscribe(_ => RequestCallback());
+            _setterSub = checkpointSetter.Subscribe(e => CheckpointSetter(e.index));
         }
 
         public void Initialize()
@@ -43,6 +46,11 @@ namespace Features.Checkpoints.Application
         {
             Vector3 position = _service.GetCheckpointPosition();
             _checkpointCallback.Publish(new CheckpointCallback(position));
+        }
+
+        private void CheckpointSetter(int index)
+        {
+            _service.SetCheckpoint(index, _checkpointContainer.GetPositionByIndex(index));
         }
 
         public void Dispose()

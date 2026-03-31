@@ -1,4 +1,5 @@
-using DefaultNamespace;
+using Features.Checkpoints.Application;
+using Features.Checkpoints.Domain;
 using Features.Dialogue.Domain;
 using Features.Interactables.Infrastructure;
 using Features.Interactables.Presentation;
@@ -12,18 +13,18 @@ namespace Features.Interactables.Application
     public sealed class InteractionActionFactory
     {
         private readonly IPublisher<DialogueRequested> _dialoguePublisher;
+        private readonly IPublisher<CheckpointSetter> _checkpointPublisher;
         private readonly PlayerFacade _player;
-        //private readonly CheckpointService _checkpoint;
 
         public InteractionActionFactory(
             IPublisher<DialogueRequested> dialoguePublisher,
+            IPublisher<CheckpointSetter> checkpointPublisher,
             PlayerFacade player
-            //CheckpointService checkpoint
             )
         {
             _dialoguePublisher = dialoguePublisher;
+            _checkpointPublisher = checkpointPublisher;
             _player = player;
-            //_checkpoint = checkpoint;
         }
 
         public IInteractionAction CreateDialogue(int id)
@@ -32,8 +33,8 @@ namespace Features.Interactables.Application
         public IInteractionAction CreateUnlock(Shape shape)
             => new UnlockShapeAction(_player, shape);
 
-        // public IInteractionAction CreateCheckpoint(int index)
-        //     => new SetCheckpointAction(_checkpoint, index);
+        public IInteractionAction CreateCheckpoint(int index)
+             => new SetCheckpointAction(_checkpointPublisher, index);
 
         public IInteractionAction CreateActivate(GameObject target)
             => new ActivateObjectAction(target);

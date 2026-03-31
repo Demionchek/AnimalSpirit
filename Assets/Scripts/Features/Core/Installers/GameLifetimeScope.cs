@@ -80,6 +80,7 @@ namespace Features.Core.Installers
             builder.RegisterMessageBroker<WorldTriggerRequested>(options);
             builder.RegisterMessageBroker<CheckpointCallback>(options);
             builder.RegisterMessageBroker<CheckpointRequest>(options);
+            builder.RegisterMessageBroker<CheckpointSetter>(options);
 
             //
             // UI

@@ -109,11 +109,14 @@ namespace Features.Player.Presentation
 
         private void OnGroundedChanged(bool grounded) { }
 
-        private void OnDeath(PlayerDied _) { }
-
         public void Hit()
         {
             _facade?.Kill();
+        }
+
+        private void OnDeath(PlayerDied _)
+        {
+
         }
 
         private void OnRevive(PlayerRevived _) { }

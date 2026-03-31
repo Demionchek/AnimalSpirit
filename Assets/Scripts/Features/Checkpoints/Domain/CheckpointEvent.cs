@@ -6,10 +6,19 @@ namespace Features.Checkpoints.Domain
 
     public readonly struct CheckpointCallback
     {
-        public readonly Vector2 Position;
+        public readonly Vector2 position;
         public CheckpointCallback(Vector2 position)
         {
-            Position = position;
+            this.position = position;
+        }
+    }
+
+    public readonly struct CheckpointSetter
+    {
+        public readonly int index;
+        public CheckpointSetter(int index)
+        {
+            this.index = index;
         }
     }
 }
