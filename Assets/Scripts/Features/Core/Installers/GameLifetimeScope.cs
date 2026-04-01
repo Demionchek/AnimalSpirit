@@ -127,7 +127,8 @@ namespace Features.Core.Installers
 
             builder.RegisterComponentInHierarchy<UnityPlayerPhysicsPort>()
                    .As<IPlayerPhysicsPort>();
-            builder.RegisterComponentInHierarchy<PlayerAnimationView>();
+            builder.RegisterComponentInHierarchy<PlayerAnimationView>()
+                   .As<IPlayerAnimationPort>();
             builder.RegisterComponentInHierarchy<PlayerView>()
                    .AsSelf()
                    .As<IPlayerViewPort>();

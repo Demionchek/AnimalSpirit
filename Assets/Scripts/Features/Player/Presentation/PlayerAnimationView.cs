@@ -1,6 +1,7 @@
 using System;
 using Features.Player.Application;
 using Features.Player.Domain;
+using Features.Player.Infrastructure;
 using MessagePipe;
 using UnityEngine;
 using VContainer;
@@ -8,13 +9,15 @@ using VContainer;
 namespace Features.Player.Presentation
 {
     [RequireComponent(typeof(Animator), typeof(SpriteRenderer))]
-    public class PlayerAnimationView : MonoBehaviour
+    public class PlayerAnimationView : MonoBehaviour, IPlayerAnimationPort
     {
         private Animator _animator;
         private SpriteRenderer _renderer;
         private IDisposable shapeSub, barkSub, deathSub, reviveSub, moveSub, controlSub;
         private float _speed;
         private bool _controlsEnabled = true;
+
+        public bool isFlipped => _renderer != null && _renderer.flipX;
 
         [Inject]
         private void Construct(
@@ -26,7 +29,10 @@ namespace Features.Player.Presentation
             ISubscriber<PlayerControlStateChanged> controlSub)
         {
             this.shapeSub = shapeSub.Subscribe(e => _animator.SetInteger("Shape", (int)e.Shape));
-            this.barkSub = barkSub.Subscribe(_ => _animator.SetTrigger("Attack"));
+            this.barkSub = barkSub.Subscribe(e =>
+            {
+                if(e.IsDogForm) _animator.SetTrigger("Attack");
+            }) ;
             this.deathSub = deathSub.Subscribe(_ => _animator.SetTrigger("isDead"));
             this.reviveSub = reviveSub.Subscribe(_ => _animator.SetTrigger("Revive"));
             this.moveSub = moveSub.Subscribe(e => SetSpeed(e.Value.x));
@@ -66,6 +72,8 @@ namespace Features.Player.Presentation
             deathSub?.Dispose();
             reviveSub?.Dispose();
             moveSub?.Dispose();
+            controlSub?.Dispose();
         }
+
     }
 }

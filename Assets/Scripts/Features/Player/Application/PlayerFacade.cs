@@ -33,6 +33,7 @@ namespace Features.Player.Application
         private readonly IPublisher<CheckpointRequest> _checkpointRequestPub;
         private readonly IPublisher<PlayerRevived> _playerRevivedPubPub;
         private readonly IPublisher<PlayerDied> _playerDiedPub;
+        private readonly IPublisher<PlayerBarked> _playerBarkPub;
 
         private IDisposable _controlSub;
         private IDisposable _moveSub;
@@ -49,6 +50,7 @@ namespace Features.Player.Application
             PlayerMovementService movement,
             PlayerInteractionService interaction,
             IPublisher<PlayerDied> playerDiedPub,
+            IPublisher<PlayerBarked> playerBarkPub,
             IPublisher<PlayerRevived> playerRevivedPub,
             IPublisher<CheckpointRequest> checkpointRequest)
         {
@@ -59,6 +61,7 @@ namespace Features.Player.Application
             _interaction = interaction;
             _sceneConfig = sceneConfig;
             _playerDiedPub = playerDiedPub;
+            _playerBarkPub = playerBarkPub;
             _playerRevivedPubPub = playerRevivedPub;
             _checkpointRequestPub = checkpointRequest;
         }
@@ -156,7 +159,7 @@ namespace Features.Player.Application
             if (!_controlsEnabled)
                 return;
 
-            _interaction.TryInteract();
+            if (_interaction.TryInteract()) _playerBarkPub.Publish(new PlayerBarked(_model.CurrentShape == Shape.Dog));
         }
 
         public void ChangeShape(Shape target)

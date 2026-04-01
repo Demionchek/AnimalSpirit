@@ -10,6 +10,7 @@ public sealed class PlayerInteractionService
 {
     private readonly PlayerModel _model;
     private readonly IPlayerPhysicsPort _physics;
+    private readonly IPlayerAnimationPort _animation;
     private readonly GameSettings _settings;
 
     private float _cooldown;
@@ -17,11 +18,13 @@ public sealed class PlayerInteractionService
     public PlayerInteractionService(
         PlayerModel model,
         IPlayerPhysicsPort physics,
+        IPlayerAnimationPort animation,
         GameSettings settings)
     {
         _model = model;
         _physics = physics;
         _settings = settings;
+        _animation = animation;
     }
 
     public void Tick(float deltaTime)
@@ -36,9 +39,11 @@ public sealed class PlayerInteractionService
 
         _cooldown = 0.5f;
 
-        Vector2 offset =
-            _settings.ShapesColliderSettings
-                     .GetOffset(_model.CurrentShape);
+        var cast = _settings.PlayerSphereCastSettings;
+        Vector2 offset = new(
+            _animation.isFlipped ? -cast.offsetX : cast.offsetX,
+            cast.offsetY
+        );
 
         var interactables =
             _physics.OverlapInteractables( offset,

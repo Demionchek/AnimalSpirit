@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PlayerSphereCastSettings
   m_EditorClassIdentifier: Assembly-CSharp::Features.Core.Settings.PlayerSphereCastSettingsSO
   radius: 0.2
-  distance: 0.02
-  offsetY: 0.15
+  offsetY: 0.2
+  offsetX: 0.15

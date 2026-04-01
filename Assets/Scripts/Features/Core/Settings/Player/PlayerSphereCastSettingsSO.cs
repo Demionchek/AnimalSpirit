@@ -6,7 +6,7 @@ namespace Features.Core.Settings.Player
     public class PlayerSphereCastSettingsSO : ScriptableObject
     {
         public float radius;
-        public float distance;
         public float offsetY;
+        public float offsetX;
     }
 }

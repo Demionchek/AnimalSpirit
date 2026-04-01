@@ -23,7 +23,6 @@ namespace Features.Player.Presentation
         private Rigidbody2D _rb;
         private CapsuleCollider2D _capsule;
         private BoxCollider2D _boxTrigger;
-        private PlayerAnimationView _animView;
 
         private CollisionTypes[] _layerMap = new CollisionTypes[32];
 
