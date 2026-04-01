@@ -1835,7 +1835,7 @@ Tilemap:
       - {fileID: -224976724, guid: 4262147ee099ccc44a3837223a262e6e, type: 3}
       - {fileID: -1506084410, guid: 4262147ee099ccc44a3837223a262e6e, type: 3}
       - {fileID: -653657070, guid: 4262147ee099ccc44a3837223a262e6e, type: 3}
-      m_AnimationSpeed: 10.000001
+      m_AnimationSpeed: 10
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 37, y: -3, z: 0}
@@ -4901,6 +4901,50 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &1773147082 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2417039349925371383, guid: 2a24e53284674de40abc2eb56efa248d, type: 3}
+  m_PrefabInstance: {fileID: 2582479027534071154}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19cb26e493f443deb980abd21f517990, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.AI.Presentation.UnityEnemyPhysicsPort
+--- !u!114 &1773147083 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 103286326463829827, guid: 2a24e53284674de40abc2eb56efa248d, type: 3}
+  m_PrefabInstance: {fileID: 2582479027534071154}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b29268a71d324ce5a589fd897a5816e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.AI.Presentation.UnityEnemyPatrolPort
+--- !u!114 &1773147084 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8975777017989046951, guid: 2a24e53284674de40abc2eb56efa248d, type: 3}
+  m_PrefabInstance: {fileID: 2582479027534071154}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc54658acf4c490299c3ae9b8cd289ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.AI.Presentation.UnityEnemyAnimationPort
+--- !u!114 &1773147086 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9141357265532697139, guid: 2a24e53284674de40abc2eb56efa248d, type: 3}
+  m_PrefabInstance: {fileID: 2582479027534071154}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92fa2799aa76471d9ce81c0bb5a8b7e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.AI.Presentation.EnemyView
 --- !u!1 &1783985512
 GameObject:
   m_ObjectHideFlags: 0
@@ -5703,7 +5747,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Features.AI.Presentation.EnemyView
   shootPoint: {fileID: 0}
-  fireGO: {fileID: 0}
+  fireGO: {fileID: 2153952810513832779}
 --- !u!114 &2028728519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5720,9 +5764,39 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
-  _config: {fileID: 0}
+  _config: {fileID: 11400000, guid: 0945196cbd0778f44995a1d31aec8c02, type: 2}
   _bulletPrefab: {fileID: 0}
   _poolRoot: {fileID: 0}
+  _physicsPort: {fileID: 2028728516}
+  _animationPort: {fileID: 2028728517}
+  _patrolPort: {fileID: 2028728527}
+  _enemyView: {fileID: 2028728518}
+--- !u!114 &2028728526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2028728507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e93c584c886441f8abdc4d78f1c86124, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.AI.Presentation.PatrolPointsContainer
+  Points: []
+--- !u!114 &2028728527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2028728507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b29268a71d324ce5a589fd897a5816e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.AI.Presentation.UnityEnemyPatrolPort
+  _container: {fileID: 2028728526}
 --- !u!1 &2033988318
 GameObject:
   m_ObjectHideFlags: 0
@@ -6342,6 +6416,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3468504627886832390, guid: c87c76752767e334b9d2f0bcd72b2870, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 3851233157379351374, guid: c87c76752767e334b9d2f0bcd72b2870, type: 3}
       propertyPath: m_IsTrigger
       value: 1
@@ -6368,6 +6446,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5226882701379115760, guid: c87c76752767e334b9d2f0bcd72b2870, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2028728516}
+    - targetCorrespondingSourceObject: {fileID: 5226882701379115760, guid: c87c76752767e334b9d2f0bcd72b2870, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2028728527}
+    - targetCorrespondingSourceObject: {fileID: 5226882701379115760, guid: c87c76752767e334b9d2f0bcd72b2870, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2028728526}
     - targetCorrespondingSourceObject: {fileID: 3468504627886832390, guid: c87c76752767e334b9d2f0bcd72b2870, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2153952810513832780}
@@ -6533,6 +6617,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Heavy_Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 3655495168285949438, guid: 2a24e53284674de40abc2eb56efa248d, type: 3}
+      propertyPath: _enemyView
+      value: 
+      objectReference: {fileID: 1773147086}
+    - target: {fileID: 3655495168285949438, guid: 2a24e53284674de40abc2eb56efa248d, type: 3}
+      propertyPath: _patrolPort
+      value: 
+      objectReference: {fileID: 1773147083}
+    - target: {fileID: 3655495168285949438, guid: 2a24e53284674de40abc2eb56efa248d, type: 3}
+      propertyPath: _physicsPort
+      value: 
+      objectReference: {fileID: 1773147082}
+    - target: {fileID: 3655495168285949438, guid: 2a24e53284674de40abc2eb56efa248d, type: 3}
+      propertyPath: _animationPort
+      value: 
+      objectReference: {fileID: 1773147084}
     - target: {fileID: 7096451725855692861, guid: 2a24e53284674de40abc2eb56efa248d, type: 3}
       propertyPath: 'Points.Array.data[0]'
       value: 

@@ -1,3 +1,4 @@
+using System;
 using Features.AI.Application;
 using Features.AI.Application.Attacks;
 using Features.AI.Domain;
@@ -18,21 +19,16 @@ namespace Features.Core.Installers
         [SerializeField] private EnemyTypeConfig _config;
         [SerializeField] private BulletView _bulletPrefab;
         [SerializeField] private Transform _poolRoot;
+        [SerializeField] private UnityEnemyPhysicsPort _physicsPort;
+        [SerializeField] private UnityEnemyAnimationPort _animationPort;
+        [SerializeField] private UnityEnemyPatrolPort _patrolPort;
+        [SerializeField] private EnemyView _enemyView;
 
         public override void Configure(IContainerBuilder builder)
         {
+            ResolveLocalDependencies();
+
             builder.Register<EnemyModel>(Lifetime.Scoped);
-
-            builder.RegisterInstance(_config);
-
-            builder.RegisterComponentInHierarchy<UnityEnemyPhysicsPort>()
-                   .As<IEnemyPhysicsPort>();
-
-            builder.RegisterComponentInHierarchy<UnityEnemyAnimationPort>()
-                   .As<IEnemyAnimationPort>();
-
-            builder.RegisterComponentInHierarchy<UnityEnemyPatrolPort>()
-                   .As<IEnemyPatrolPort>();
 
             builder.Register<EnemyMovementService>(Lifetime.Scoped);
             builder.Register<EnemyPerceptionService>(Lifetime.Scoped);
@@ -51,14 +47,55 @@ namespace Features.Core.Installers
                    .As<IFixedTickable>()
                    .AsSelf();
 
-            builder.RegisterComponentInHierarchy<EnemyView>();
+            builder.RegisterInstance(_config);
 
-            if (_config.hasPool)
+            builder.RegisterInstance(_physicsPort)
+                   .As<IEnemyPhysicsPort>();
+
+            builder.RegisterInstance(_animationPort)
+                   .As<IEnemyAnimationPort>();
+
+            builder.RegisterInstance(_patrolPort)
+                   .As<IEnemyPatrolPort>();
+
+            builder.RegisterInstance(_enemyView);
+            builder.RegisterBuildCallback(container =>
+            {
+                container.Inject(_enemyView);
+            });
+
+            if (_config.attackType == EnemyAttackType.Shooter || _config.hasPool)
             {
                 builder.RegisterInstance(
                     new BulletPool(_bulletPrefab, 10, _poolRoot)
                 ).As<IObjectPool<BulletView>>();
             }
+        }
+
+        private void ResolveLocalDependencies()
+        {
+            _physicsPort ??= GetComponentInChildren<UnityEnemyPhysicsPort>(true);
+            _animationPort ??= GetComponentInChildren<UnityEnemyAnimationPort>(true);
+            _patrolPort ??= GetComponentInChildren<UnityEnemyPatrolPort>(true);
+            _enemyView ??= GetComponentInChildren<EnemyView>(true);
+
+            if (_config == null)
+                throw new InvalidOperationException($"{nameof(EnemyLifetimeScope)} on {name} requires {nameof(_config)}.");
+
+            if (_physicsPort == null)
+                throw new InvalidOperationException($"{nameof(EnemyLifetimeScope)} on {name} requires {nameof(UnityEnemyPhysicsPort)} in children.");
+
+            if (_animationPort == null)
+                throw new InvalidOperationException($"{nameof(EnemyLifetimeScope)} on {name} requires {nameof(UnityEnemyAnimationPort)} in children.");
+
+            if (_patrolPort == null)
+                throw new InvalidOperationException($"{nameof(EnemyLifetimeScope)} on {name} requires {nameof(UnityEnemyPatrolPort)} in children.");
+
+            if (_enemyView == null)
+                throw new InvalidOperationException($"{nameof(EnemyLifetimeScope)} on {name} requires {nameof(EnemyView)} in children.");
+
+            if ((_config.attackType == EnemyAttackType.Shooter || _config.hasPool) && (_bulletPrefab == null || _poolRoot == null))
+                throw new InvalidOperationException($"{nameof(EnemyLifetimeScope)} on {name} requires pool references for shooter/pool enemies.");
         }
     }
 }

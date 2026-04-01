@@ -4,6 +4,13 @@ namespace Features.AI.Application.States
 {
     public sealed class AttackState : EnemyState
     {
+        private float _nextAttackTime;
+
+        public override void Enter()
+        {
+            _nextAttackTime = 0f;
+        }
+
         public override void Tick()
         {
             if (Ctx.Model.Target == null)
@@ -12,6 +19,14 @@ namespace Features.AI.Application.States
                     new IdleState().Init(Ctx));
                 return;
             }
+
+            if (Ctx.Model.IsAttacking)
+                return;
+
+            if (Time.time < _nextAttackTime)
+                return;
+
+            _nextAttackTime = Time.time + Ctx.Config.attackDelay;
 
             float distance = Vector2.Distance(
                 Ctx.Model.Target.position,

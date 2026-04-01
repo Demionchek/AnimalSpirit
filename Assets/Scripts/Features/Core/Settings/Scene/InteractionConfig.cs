@@ -11,6 +11,10 @@ namespace Features.Core.Settings.Scene
         public bool startDialogue;
         public int dialogueId;
 
+        [Header("Timeline")]
+        public bool startTimeline;
+        public int timelineId;
+
         [Header("Unlock Shape")]
         public bool unlockShape;
         public Shape shape;

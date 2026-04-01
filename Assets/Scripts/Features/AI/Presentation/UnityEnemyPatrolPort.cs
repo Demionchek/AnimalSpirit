@@ -7,11 +7,15 @@ namespace Features.AI.Presentation
     {
         [SerializeField] private PatrolPointsContainer _container;
 
-        public int Count => _container.Points.Length;
+        public int Count => _container != null ? _container.Points.Length : 0;
 
         public Vector2 GetPoint(int index)
         {
-            return _container.Points[index].position;
+            if (_container.Points.Length > 0)
+            {
+                return _container.Points[index].position;
+            }
+            return Vector2.zero;
         }
     }
 }

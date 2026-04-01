@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: FireLoopedEnemy
   m_EditorClassIdentifier: Assembly-CSharp::Features.Core.Settings.AI.EnemyTypeConfig
   speed: 0
-  stoppingDistance: 1
+  stoppingDistance: 2
   isHorizontal: 1
-  sightRange: 0
-  sightAngle: 0
+  sightRange: 2
+  sightAngle: 90
   detectionInterval: 0
   sightYOffset: 0
-  attackDelay: 0.3
+  attackDelay: 2
   attackDistance: 0
   attackXOffset: 0.15
   attackYOffset: 0.2
@@ -27,7 +27,7 @@ MonoBehaviour:
   reachedPointDistance: 0.1
   targetMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0

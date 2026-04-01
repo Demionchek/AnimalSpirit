@@ -68,6 +68,7 @@ namespace Features.Core.Installers
             //
             builder.RegisterMessageBroker<DialogueRequested>(options);
             builder.RegisterMessageBroker<DialogueFinished>(options);
+            builder.RegisterMessageBroker<CutsceneAction>(options);
             builder.RegisterMessageBroker<PlayerControlStateChanged>(options);
             builder.RegisterMessageBroker<PlayerDied>(options);
             builder.RegisterMessageBroker<PlayerRevived>(options);
@@ -134,18 +135,17 @@ namespace Features.Core.Installers
                    .As<IPlayerViewPort>();
             builder.RegisterComponentInHierarchy<PlayerInput>();
 
+            // //
+            // // AI
+            // //
+            // builder.RegisterComponentInHierarchy<UnityEnemyAnimationPort>()
+            //        .As<IEnemyAnimationPort>();
+            // builder.RegisterComponentInHierarchy<UnityEnemyPhysicsPort>()
+            //        .As<IEnemyPhysicsPort>();
             //
-            // AI
-            //
-
-            builder.RegisterComponentInHierarchy<UnityEnemyAnimationPort>()
-                   .As<IEnemyAnimationPort>();
-            builder.RegisterComponentInHierarchy<UnityEnemyPhysicsPort>()
-                   .As<IEnemyPhysicsPort>();
-
-            builder.Register<EnemyAnimationService>(Lifetime.Scoped);
-            builder.Register<EnemyPatrolService>(Lifetime.Scoped);
-            builder.Register<EnemyPerceptionService>(Lifetime.Scoped);
+            // builder.Register<EnemyAnimationService>(Lifetime.Scoped);
+            // builder.Register<EnemyPatrolService>(Lifetime.Scoped);
+            // builder.Register<EnemyPerceptionService>(Lifetime.Scoped);
 
             //
             // TIMELINE
@@ -154,8 +154,8 @@ namespace Features.Core.Installers
             builder.Register<CutsceneService>(Lifetime.Scoped);
             builder.Register<CutsceneFacade>(Lifetime.Scoped)
                    .As<IInitializable>()
+                   .As<IDisposable>()
                    .AsSelf();
-
 
             builder.RegisterComponentInHierarchy<UnityTimelinePort>()
                    .As<ICutscenePort>();

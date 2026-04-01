@@ -14,9 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Features.Core.Settings.Scene.InteractionConfig
   startDialogue: 0
   dialogueId: 1
+  startTimeline: 1
+  timelineId: 2
   unlockShape: 0
   shape: 0
   setCheckpoint: 0
   checkpointIndex: 0
   performAttack: 1
   triggerName: Attack
+  circleRadius: 0.1
+  xDistance: -0.15
+  yDistance: 0.1

@@ -36,7 +36,11 @@ namespace Features.AI.Presentation
             OnKilled();
         }
 
-        public void OnAttackFinished() => _facade.AttackFinished();
+        public void OnAttackFinished()
+        {
+            _facade?.AttackFinished();
+            fireGO?.SetActive(false);
+        }
 
         public void PerformAttack() => _facade.PerformAttack();
 
