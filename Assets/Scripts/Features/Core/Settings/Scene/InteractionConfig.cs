@@ -9,7 +9,7 @@ namespace Features.Core.Settings.Scene
     {
         [Header("Dialogue")]
         public bool startDialogue;
-        public int dialogueId;
+        public int[] dialogueId;
 
         [Header("Timeline")]
         public bool startTimeline;
@@ -31,5 +31,16 @@ namespace Features.Core.Settings.Scene
         public float circleRadius;
         public float xDistance;
         public float yDistance;
+
+        public int GetDialogueId(int index)
+        {
+            if (dialogueId == null || dialogueId.Length == 0)
+                return -1;
+
+            if (index < 0 || index >= dialogueId.Length)
+                return -1;
+
+            return dialogueId[index];
+        }
     }
 }

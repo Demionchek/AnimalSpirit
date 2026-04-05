@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Features.Core.Settings;
 using Features.Core.Settings.Scene;
+using Features.Cutscene.Infrastructure;
 using Features.Interactables.Application;
 using Features.Interactables.Infrastructure;
 using Interfaces;
@@ -18,58 +19,73 @@ namespace Features.Interactables.Presentation
         [SerializeField] private InteractionConfig config;
         [SerializeField] private float interactDelay = 0.5f;
         [SerializeField] private GameObject interactSign;
-        private SceneInteractionReferences sceneRefs;
-        private InteractableCharacterPhysicsPort physicsPort;
+        private SceneInteractionReferences _sceneRefs;
+        private InteractableCharacterPhysicsPort _physicsPort;
+        private InteractionActionFactory _factory;
+        private ICutscenePort _cutscenePort;
 
         private readonly List<IInteractionAction> _actions =
             new List<IInteractionAction>();
 
-        private Animator animator;
-
+        private Animator _animator;
         private float _lastInteractTime;
+        private int _dialogueActionIndex = -1;
+        private int _currentDialogueIndex;
 
         public InteractionConfig Config => config;
 
         [Inject]
         public void Construct(
-            InteractionActionFactory factory)
+            InteractionActionFactory factory,
+            ICutscenePort cutscenePort)
         {
+            _factory = factory;
+            _cutscenePort = cutscenePort;
+
             if (config == null)
             {
                 Debug.LogError("InteractionConfig missing", this);
                 return;
             }
 
-            animator = GetComponent<Animator>();
-            sceneRefs = GetComponent<SceneInteractionReferences>();
-            physicsPort = GetComponent<InteractableCharacterPhysicsPort>();
+            _animator = GetComponent<Animator>();
+            _sceneRefs = GetComponent<SceneInteractionReferences>();
+            _physicsPort = GetComponent<InteractableCharacterPhysicsPort>();
+
+            if (config.startTimeline)
+                _actions.Add(factory.CreateTimeline(cutscenePort,
+                    config.timelineId));
 
             if (config.startDialogue)
-                _actions.Add(factory.CreateDialogue(config.dialogueId));
+            {
+                _currentDialogueIndex = 0;
+                ReplaceDialogueAction(_currentDialogueIndex);
+            }
 
             if (config.unlockShape)
                 _actions.Add(factory.CreateUnlock(config.shape));
 
             if (config.setCheckpoint)
-                _actions.Add(factory.CreateCheckpoint(config.checkpointIndex));
+                _actions.Add(factory.CreateCheckpoint(
+                    config.checkpointIndex));
 
             if (config.performAttack)
                 _actions.Add(factory.CreateAttackAction(
-                    animator,
+                    _animator,
                     config.triggerName,
-                    physicsPort));
+                    _physicsPort));
 
-            if (sceneRefs.objectToActivate != null)
+            if (_sceneRefs.objectToActivate != null)
                 _actions.Add(factory.CreateActivate(
-                    sceneRefs.objectToActivate));
+                    _sceneRefs.objectToActivate));
 
-            if (sceneRefs.doorToOpen != null)
+            if (_sceneRefs.doorToOpen != null)
                 _actions.Add(factory.CreateDoor(
-                    sceneRefs.doorToOpen,
-                    sceneRefs.manualDoorOpen));
+                    _sceneRefs.doorToOpen,
+                    _sceneRefs.manualDoorOpen));
 
-            if (sceneRefs.audioSource != null && sceneRefs.audioClip != null)
-                _actions.Add(factory.CreateAudioSource(sceneRefs.audioSource, sceneRefs.audioClip));
+            if (_sceneRefs.audioSource != null && _sceneRefs.audioClip != null)
+                _actions.Add(factory.CreateAudioSource(_sceneRefs.audioSource, _sceneRefs.audioClip));
         }
 
         public void Interact()
@@ -83,6 +99,37 @@ namespace Features.Interactables.Presentation
 
             foreach (var action in _actions)
                 action.Execute();
+        }
+
+        public void SetDialogueIndex(int dialogueIndex)
+        {
+            if (config == null || _factory == null)
+                return;
+
+            _currentDialogueIndex = dialogueIndex;
+            ReplaceDialogueAction(_currentDialogueIndex);
+        }
+
+        private void ReplaceDialogueAction(int dialogueIndex)
+        {
+            var dialogueId = config.GetDialogueId(dialogueIndex);
+            if (dialogueId < 0)
+                return;
+
+            var dialogueAction = _factory.CreateDialogue(dialogueId);
+            if (_dialogueActionIndex >= 0 && _dialogueActionIndex < _actions.Count)
+            {
+                _actions[_dialogueActionIndex] = dialogueAction;
+                return;
+            }
+
+            _dialogueActionIndex = _actions.Count;
+            _actions.Add(dialogueAction);
+        }
+
+        public void AddTimelineAction(int index)
+        {
+            _actions.Insert(0,_factory.CreateTimeline(_cutscenePort ,index));
         }
     }
 }

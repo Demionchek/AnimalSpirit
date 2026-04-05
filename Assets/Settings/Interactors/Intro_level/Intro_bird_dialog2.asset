@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Intro_bird_dialog2
   m_EditorClassIdentifier: Assembly-CSharp::Features.Core.Settings.Scene.InteractionConfig
   startDialogue: 1
-  dialogueId: 2
+  dialogueId: 0200000003000000
+  startTimeline: 0
+  timelineId: 2
   unlockShape: 1
   shape: 2
   setCheckpoint: 1

@@ -13,8 +13,15 @@ MonoBehaviour:
   m_Name: Intro_dog_dialog
   m_EditorClassIdentifier: Assembly-CSharp::Features.Core.Settings.Scene.InteractionConfig
   startDialogue: 1
-  dialogueId: 1
+  dialogueId: 01000000
+  startTimeline: 0
+  timelineId: 0
   unlockShape: 0
   shape: 0
-  setCheckpoint: 0
+  setCheckpoint: 1
   checkpointIndex: 0
+  performAttack: 0
+  triggerName: 
+  circleRadius: 0
+  xDistance: 0
+  yDistance: 0

@@ -1,5 +1,6 @@
 using Features.Checkpoints.Application;
 using Features.Checkpoints.Domain;
+using Features.Cutscene.Infrastructure;
 using Features.Dialogue.Domain;
 using Features.Interactables.Infrastructure;
 using Features.Interactables.Presentation;
@@ -29,6 +30,9 @@ namespace Features.Interactables.Application
 
         public IInteractionAction CreateDialogue(int id)
             => new StartDialogueAction(id, _dialoguePublisher);
+
+        public IInteractionAction CreateTimeline(ICutscenePort port, int index) =>
+            new PlayTimelineAction(port, index);
 
         public IInteractionAction CreateUnlock(Shape shape)
             => new UnlockShapeAction(_player, shape);

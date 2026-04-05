@@ -1113,14 +1113,15 @@ MonoBehaviour:
     m_Events:
     - m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: AI.InteractableCharacter, Assembly-CSharp
-          m_MethodName: SwitchLine
+        - m_Target: {fileID: 1922741730066351072}
+          m_TargetAssemblyTypeName: Features.Interactables.Presentation.InteractableCharacter,
+            Assembly-CSharp
+          m_MethodName: SetDialogueIndex
           m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 3
+            m_IntArgument: 1
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
@@ -1148,6 +1149,31 @@ MonoBehaviour:
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 1
+          m_CallState: 2
+        - m_Target: {fileID: 1922741730066351072}
+          m_TargetAssemblyTypeName: Features.Interactables.Presentation.InteractableCharacter,
+            Assembly-CSharp
+          m_MethodName: AddTimelineAction
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 3
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+        - m_Target: {fileID: 1793157966}
+          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_MethodName: SetActive
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
           m_CallState: 2
 --- !u!1 &313136980
 GameObject:
@@ -1705,7 +1731,7 @@ Tilemap:
       - {fileID: 34302307, guid: ddf1f60281397334abefe0b93897af22, type: 3}
       - {fileID: 1467023356, guid: ddf1f60281397334abefe0b93897af22, type: 3}
       - {fileID: -873788599, guid: ddf1f60281397334abefe0b93897af22, type: 3}
-      m_AnimationSpeed: 10
+      m_AnimationSpeed: 10.000001
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 27, y: -3, z: 0}
@@ -4640,6 +4666,24 @@ Transform:
   - {fileID: 1798655995}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1752714124 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6179015931501245930, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
+  m_PrefabInstance: {fileID: 5936682251674269527}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1752714132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1752714124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 895ef5f37808457ca63c73d691c7947d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.Interactables.Presentation.InteractableCharacterPhysicsPort
+  _config: {fileID: 11400000, guid: 968098550c9e1e84ca843359237adc20, type: 2}
 --- !u!1 &1760687414
 GameObject:
   m_ObjectHideFlags: 0
@@ -6264,6 +6308,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Interactable_Bird_Friend
       objectReference: {fileID: 0}
+    - target: {fileID: 3773969997986650080, guid: 7f78c99201ef0e14b86f4ebd2229297d, type: 3}
+      propertyPath: config
+      value: 
+      objectReference: {fileID: 11400000, guid: e02bf730260eec44a8b55bb91c7b126f, type: 2}
     - target: {fileID: 8373293267181887988, guid: 7f78c99201ef0e14b86f4ebd2229297d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.807
@@ -6309,6 +6357,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f78c99201ef0e14b86f4ebd2229297d, type: 3}
+--- !u!114 &1922741730066351072 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3773969997986650080, guid: 7f78c99201ef0e14b86f4ebd2229297d, type: 3}
+  m_PrefabInstance: {fileID: 1922741730066351071}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3a507e28fdb4268a5140f83df1dd628, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.Interactables.Presentation.InteractableCharacter
 --- !u!114 &2077635586907644405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7226,7 +7285,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6179015931501245930, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1752714132}
   m_SourcePrefab: {fileID: 100100000, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
 --- !u!4 &6022692595348229238
 Transform:
