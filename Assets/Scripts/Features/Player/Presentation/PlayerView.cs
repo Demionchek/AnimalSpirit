@@ -8,12 +8,17 @@ using Interfaces;
 using MessagePipe;
 using UnityEngine;
 using VContainer;
+using Random = UnityEngine.Random;
 
 namespace Features.Player.Presentation
 {
     [RequireComponent(typeof(Rigidbody2D))]
     public sealed class PlayerView : MonoBehaviour, IPlayerViewPort, IHittable
     {
+        [Header("Audio")]
+        [SerializeField] private AudioClip[] _deathClips;
+        [SerializeField] private AudioClip[] _attackClips;
+
         public Vector2 Position => transform.position;
         public Vector2 CurrentVelocity => currentVelocity;
 
@@ -29,7 +34,9 @@ namespace Features.Player.Presentation
         private IDisposable _deathSub;
         private IDisposable _reviveSub;
         private IDisposable _groundedSub;
+        private IDisposable _barkSub;
         private Vector2 currentVelocity;
+        private AudioSource _audioSource;
 
         [Inject]
         public void Construct(
@@ -37,7 +44,8 @@ namespace Features.Player.Presentation
             GameSettings gameSettings,
             ISubscriber<PlayerDied> deathSub,
             ISubscriber<PlayerRevived> reviveSub,
-            ISubscriber<PlayerGroundedChanged> groundedSub)
+            ISubscriber<PlayerGroundedChanged> groundedSub,
+            ISubscriber<PlayerBarked> barkSub)
         {
             _facade = facade;
             _facade.BindView(this);
@@ -45,6 +53,7 @@ namespace Features.Player.Presentation
             _deathSub = deathSub.Subscribe(OnDeath);
             _reviveSub = reviveSub.Subscribe(OnRevive);
             _groundedSub = groundedSub.Subscribe(e => OnGroundedChanged(e.IsGrounded));
+            _barkSub = barkSub.Subscribe(OnBarked);
         }
 
         private void Awake()
@@ -59,6 +68,7 @@ namespace Features.Player.Presentation
             _rb = GetComponent<Rigidbody2D>();
             _capsule = GetComponent<CapsuleCollider2D>();
             _boxTrigger = GetComponent<BoxCollider2D>();
+            _audioSource = GetComponent<AudioSource>();
         }
 
 
@@ -115,10 +125,18 @@ namespace Features.Player.Presentation
 
         private void OnDeath(PlayerDied _)
         {
-
+            PlayRandomClip(_deathClips);
         }
 
         private void OnRevive(PlayerRevived _) { }
+
+        private void OnBarked(PlayerBarked e)
+        {
+            if (!e.IsDogForm)
+                return;
+
+            PlayRandomClip(_attackClips);
+        }
 
         private void OnCollisionStay2D(Collision2D collision)
         {
@@ -190,6 +208,17 @@ namespace Features.Player.Presentation
             _deathSub?.Dispose();
             _reviveSub?.Dispose();
             _groundedSub?.Dispose();
+            _barkSub?.Dispose();
+        }
+
+        private void PlayRandomClip(AudioClip[] clips)
+        {
+            if (_audioSource == null || clips == null || clips.Length == 0)
+                return;
+
+            var clip = clips[Random.Range(0, clips.Length)];
+            if (clip != null)
+                _audioSource.PlayOneShot(clip);
         }
     }
 }

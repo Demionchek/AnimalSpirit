@@ -9,6 +9,9 @@ namespace Features.AI.Presentation
     {
         [SerializeField] private Transform shootPoint;
         [SerializeField] private GameObject fireGO;
+        [Header("Audio")]
+        [SerializeField] private AudioClip[] _deathClips;
+        [SerializeField] private AudioClip[] _attackClips;
 
         private EnemyFacade _facade;
 
@@ -17,6 +20,7 @@ namespace Features.AI.Presentation
 
         private Collider2D _collider;
         private Rigidbody2D _rb;
+        private AudioSource _audioSource;
 
         [Inject]
         public void Construct(EnemyFacade facade)
@@ -28,6 +32,7 @@ namespace Features.AI.Presentation
         {
             _collider = GetComponent<Collider2D>();
             _rb = GetComponent<Rigidbody2D>();
+            _audioSource = GetComponent<AudioSource>();
         }
 
         public void Hit()
@@ -42,12 +47,28 @@ namespace Features.AI.Presentation
             fireGO?.SetActive(false);
         }
 
-        public void PerformAttack() => _facade.PerformAttack();
+        public void PerformAttack()
+        {
+            _facade.PerformAttack();
+            PlayRandomClip(_attackClips);
+        }
 
         private void OnKilled()
         {
             _collider.enabled = false;
             _rb.bodyType = RigidbodyType2D.Kinematic;
+
+            PlayRandomClip(_deathClips);
+        }
+
+        private void PlayRandomClip(AudioClip[] clips)
+        {
+            if (_audioSource == null || clips == null || clips.Length == 0)
+                return;
+
+            var clip = clips[Random.Range(0, clips.Length)];
+            if (clip != null)
+                _audioSource.PlayOneShot(clip);
         }
 
     }

@@ -255,7 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3a507e28fdb4268a5140f83df1dd628, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Features.Interactables.Presentation.InteractableCharacter
-  config: {fileID: 11400000, guid: db058b59805610e4c861c91fcdfc45ca, type: 2}
+  config: {fileID: 11400000, guid: e02bf730260eec44a8b55bb91c7b126f, type: 2}
   interactDelay: 0.5
   interactSign: {fileID: 7610847010022039945}
 --- !u!1 &7610847010022039945 stripped

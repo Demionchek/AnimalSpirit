@@ -367,6 +367,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -1705592011, guid: 3e1f53bb43e910944ae283b2bfb93c9b, type: 3}
+    - target: {fileID: 8652396378197414183, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
+      propertyPath: config
+      value: 
+      objectReference: {fileID: 11400000, guid: 84080aa55e050cd479f6f7a3ae793831, type: 2}
     m_RemovedComponents:
     - {fileID: 7761946952349302971, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
     m_RemovedGameObjects: []
@@ -384,6 +388,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6179015931501245930, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1383477267079096764}
+    - targetCorrespondingSourceObject: {fileID: 6179015931501245930, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3807413719546085753}
   m_SourcePrefab: {fileID: 100100000, guid: c032a400b4cc0bf46ac9a56e45d90016, type: 3}
 --- !u!82 &54901144896782884 stripped
 AudioSource:
@@ -420,7 +427,6 @@ MonoBehaviour:
   config: {fileID: 11400000, guid: 84080aa55e050cd479f6f7a3ae793831, type: 2}
   interactDelay: 0.5
   interactSign: {fileID: 3506275653614232251}
-  sceneRefs: {fileID: 1383477267079096764}
 --- !u!114 &1383477267079096764
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -438,3 +444,16 @@ MonoBehaviour:
   objectToActivate: {fileID: 0}
   audioSource: {fileID: 54901144896782884}
   audioClip: {fileID: 8300000, guid: 20ee1ba1721d1b04daf1f057f78e3bf4, type: 3}
+--- !u!114 &3807413719546085753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8882124355913758854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 895ef5f37808457ca63c73d691c7947d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.Interactables.Presentation.InteractableCharacterPhysicsPort
+  _config: {fileID: 11400000, guid: 84080aa55e050cd479f6f7a3ae793831, type: 2}

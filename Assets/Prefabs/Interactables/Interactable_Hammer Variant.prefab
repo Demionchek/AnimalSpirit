@@ -278,6 +278,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3168824584024183748, guid: 4f1e4af4fb4e58c4a9b6e239d7ea816c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8652396378197414183}
+    - targetCorrespondingSourceObject: {fileID: 3168824584024183748, guid: 4f1e4af4fb4e58c4a9b6e239d7ea816c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2820092910208079302}
   m_SourcePrefab: {fileID: 100100000, guid: 4f1e4af4fb4e58c4a9b6e239d7ea816c, type: 3}
 --- !u!4 &254427811198136234 stripped
 Transform:
@@ -422,4 +425,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Features.Interactables.Presentation.InteractableCharacter
   config: {fileID: 11400000, guid: 968098550c9e1e84ca843359237adc20, type: 2}
   interactDelay: 0.5
-  interactSign: {fileID: 0}
+  interactSign: {fileID: 2173875689287004119}
+--- !u!114 &2820092910208079302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6179015931501245930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 895ef5f37808457ca63c73d691c7947d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.Interactables.Presentation.InteractableCharacterPhysicsPort
+  _config: {fileID: 11400000, guid: 968098550c9e1e84ca843359237adc20, type: 2}

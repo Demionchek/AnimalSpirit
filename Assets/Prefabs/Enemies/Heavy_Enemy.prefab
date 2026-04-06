@@ -317,6 +317,10 @@ MonoBehaviour:
   _config: {fileID: 11400000, guid: 380588dda11f0b74b845988816f350bd, type: 2}
   _bulletPrefab: {fileID: 0}
   _poolRoot: {fileID: 0}
+  _physicsPort: {fileID: 2417039349925371383}
+  _animationPort: {fileID: 8975777017989046951}
+  _patrolPort: {fileID: 103286326463829827}
+  _enemyView: {fileID: 9141357265532697139}
 --- !u!114 &8975777017989046951
 MonoBehaviour:
   m_ObjectHideFlags: 0
