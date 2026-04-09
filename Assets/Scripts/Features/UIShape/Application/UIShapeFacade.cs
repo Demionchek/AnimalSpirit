@@ -4,7 +4,7 @@ using Features.UIShape.Presentation;
 using MessagePipe;
 using VContainer.Unity;
 
-namespace DefaultNamespace.Features.UIShape.Application
+namespace Features.UIShape.Application
 {
     public sealed class UIShapeFacade :
         IInitializable,

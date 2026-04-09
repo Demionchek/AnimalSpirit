@@ -10,10 +10,14 @@ namespace Features.AI.Application.Attacks
     public sealed class EnemyAttackFactory
     {
         private readonly MeleeAttack _melee;
+        private readonly IEnemyAnimationPort _animation;
 
-        public EnemyAttackFactory(MeleeAttack melee)
+        public EnemyAttackFactory(
+            MeleeAttack melee,
+            IEnemyAnimationPort animation)
         {
             _melee = melee;
+            _animation = animation;
         }
 
         public IEnemyAttack Create(
@@ -29,8 +33,12 @@ namespace Features.AI.Application.Attacks
                 EnemyAttackType.Shooter =>
                     new ShooterAttack(
                         pool ?? throw new InvalidOperationException("Shooter enemy requires a bullet pool registration."),
+                        _animation,
                         view != null
-                            ? view.ShootPoint
+                            ? view.ShootPointR
+                            : throw new InvalidOperationException("Shooter enemy requires EnemyView in the scene."),
+                        view != null
+                            ? view.ShootPointL
                             : throw new InvalidOperationException("Shooter enemy requires EnemyView in the scene.")),
 
                 EnemyAttackType.Flame =>

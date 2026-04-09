@@ -9,14 +9,20 @@ namespace Features.AI.Application.Attacks
     public sealed class ShooterAttack : IEnemyAttack
     {
         private readonly IObjectPool<BulletView> _pool;
-        private readonly Transform _shootPoint;
+        private readonly IEnemyAnimationPort _animation;
+        private readonly Transform _shootPointRight;
+        private readonly Transform _shootPointLeft;
 
         public ShooterAttack(
             IObjectPool<BulletView> pool,
-            Transform shootPoint)
+            IEnemyAnimationPort animation,
+            Transform shootPointRight,
+            Transform shootPointLeft)
         {
             _pool = pool;
-            _shootPoint = shootPoint;
+            _animation = animation;
+            _shootPointRight = shootPointRight;
+            _shootPointLeft = shootPointLeft;
         }
 
         public void Execute(EnemyModel model)
@@ -24,12 +30,18 @@ namespace Features.AI.Application.Attacks
             if (model.Target == null)
                 return;
 
+            Transform shootPoint =
+                _animation.IsFlipped ? _shootPointLeft : _shootPointRight;
+
+            if (shootPoint == null)
+                return;
+
             var bullet = _pool.Get();
 
-            bullet.transform.position = _shootPoint.position;
+            bullet.transform.position = shootPoint.position;
 
             Vector2 dir =
-                (model.Target.position - _shootPoint.position).normalized;
+                (model.Target.position - shootPoint.position).normalized;
 
             bullet.Fire(dir);
         }

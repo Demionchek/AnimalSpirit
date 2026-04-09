@@ -1,6 +1,7 @@
 using DefaultNamespace;
 using Features.Interactables.Infrastructure;
 using Features.Interactables.Presentation;
+using Features.Openers.Presentation;
 
 namespace Features.Interactables.Application
 {
@@ -21,7 +22,7 @@ namespace Features.Interactables.Application
         public void Execute()
         {
             if (_door != null)
-                _door.OpenManual(_condition);
+                _door.SetOpen(_condition);
         }
     }
 }

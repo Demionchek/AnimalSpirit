@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24e5d8689a4c4a7d9bd27bf05179bfbe, type: 3}
+  m_Name: Industrial Dialogue
+  m_EditorClassIdentifier: Assembly-CSharp::Features.Core.Settings.Scene.DialogueDatabase
+  Dialogues:
+  - Id: 0
+    Lines:
+    - you could squeeze thru this pipe if you were like me...
+  - Id: 1
+    Lines:
+    - key card required
+  - Id: 2
+    Lines:
+    - chekpoint!
+    - not sure what it means but be carefull!
+  - Id: 3
+    Lines:
+    - A keycard
+    - this should open the door above
+  - Id: 4
+    Lines:
+    - 'wow! You made it! '
+    - this factory is destroyed, but there is a lab ahead...
+    - i heard creepy rumors about it, please be carefull

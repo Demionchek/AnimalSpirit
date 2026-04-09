@@ -4,6 +4,7 @@ using Features.Cutscene.Infrastructure;
 using Features.Dialogue.Domain;
 using Features.Interactables.Infrastructure;
 using Features.Interactables.Presentation;
+using Features.Openers.Presentation;
 using Features.Player.Application;
 using Features.Player.Domain;
 using MessagePipe;

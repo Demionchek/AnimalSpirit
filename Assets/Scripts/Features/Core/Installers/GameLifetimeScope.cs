@@ -1,19 +1,9 @@
 using System;
-using DefaultNamespace.Features.Interactables.Domain;
-using DefaultNamespace.Features.UIShape.Application;
-using Features.AI.Application;
-using Features.AI.Infrastructure;
-using Features.AI.Presentation;
+using Features.UIShape.Application;
 using Features.Checkpoints.Application;
 using Features.Checkpoints.Domain;
 using Features.Checkpoints.Infrastructure;
 using Features.Checkpoints.Presentation;
-using Features.Core.ObjectPool.Application;
-using Features.Core.ObjectPool.Infrastructure;
-using Features.Core.ObjectPool.Presentation;
-using Features.Trigger.Application;
-using Features.Player.Application;
-using Features.Player.Presentation;
 using Features.Core.Settings;
 using Features.Core.Settings.Scene;
 using Features.Cutscene.Application;
@@ -26,8 +16,15 @@ using Features.Dialogue.Infrastructure;
 using Features.Dialogue.Presentation;
 using Features.Interactables.Application;
 using Features.Interactables.Presentation;
+using Features.Openers.Application;
+using Features.Openers.Domain;
+using Features.Openers.Infrastructure;
+using Features.Openers.Presentation;
 using Features.Player.Domain;
+using Features.Player.Application;
+using Features.Player.Presentation;
 using Features.Player.Infrastructure;
+using Features.Trigger.Application;
 using Features.Trigger.Domain;
 using Features.Trigger.Presentation;
 using Features.UIShape.Presentation;
@@ -45,9 +42,6 @@ namespace Features.Core.Installers
         [SerializeField] private GameSettings gameSettings;
         [SerializeField] private DialogueDatabase dialogueData;
         [SerializeField] private SceneShapeConfig sceneShapeConfig;
-        [Header("ObjectPool")]
-        [SerializeField] private BulletView bulletPrefab;
-        [SerializeField] private Transform poolRoot;
 
         public override void Configure(IContainerBuilder builder)
         {
@@ -82,6 +76,7 @@ namespace Features.Core.Installers
             builder.RegisterMessageBroker<CheckpointCallback>(options);
             builder.RegisterMessageBroker<CheckpointRequest>(options);
             builder.RegisterMessageBroker<CheckpointSetter>(options);
+            builder.RegisterMessageBroker<OpenerStateChanged>(options);
 
             //
             // UI
@@ -134,18 +129,6 @@ namespace Features.Core.Installers
                    .AsSelf()
                    .As<IPlayerViewPort>();
             builder.RegisterComponentInHierarchy<PlayerInput>();
-
-            // //
-            // // AI
-            // //
-            // builder.RegisterComponentInHierarchy<UnityEnemyAnimationPort>()
-            //        .As<IEnemyAnimationPort>();
-            // builder.RegisterComponentInHierarchy<UnityEnemyPhysicsPort>()
-            //        .As<IEnemyPhysicsPort>();
-            //
-            // builder.Register<EnemyAnimationService>(Lifetime.Scoped);
-            // builder.Register<EnemyPatrolService>(Lifetime.Scoped);
-            // builder.Register<EnemyPerceptionService>(Lifetime.Scoped);
 
             //
             // TIMELINE

@@ -1,6 +1,8 @@
+using Features.Checkpoints.Application;
 using Features.Cutscene.Application;
 using Features.Dialogue.Application;
 using Features.Interactables.Application;
+using Features.Openers.Application;
 using Features.Trigger.Domain;
 using UnityEngine;
 using VContainer;
@@ -13,7 +15,7 @@ namespace Features.Trigger.Application
 
         public WorldTriggerService(
             CutsceneService cutscene,
-   //         CheckpointService checkpoint,
+            CheckpointService checkpoint,
             DialogueFacade dialogue,
             IObjectResolver resolver)
         {
@@ -21,7 +23,7 @@ namespace Features.Trigger.Application
 
             _context = new WorldTriggerContext(
                 cutscene,
- //               checkpoint,
+                checkpoint,
                 door,
                 dialogue);
         }

@@ -45,13 +45,13 @@ namespace DefaultNamespace
             {
                 isActive = false;
                 timer = 0f;
-                animator.SetBool(AnimationController.ATTACK_S, false);
+                animator.SetBool(AnimationParams.ATTACK_S, false);
             }
             else if (!isActive && timer >= activeTime)
             {
                 isActive = true;
                 timer = 0f;
-                animator.SetBool(AnimationController.ATTACK_S, true);
+                animator.SetBool(AnimationParams.ATTACK_S, true);
                 hammerCollider.enabled = false;
             }
         }

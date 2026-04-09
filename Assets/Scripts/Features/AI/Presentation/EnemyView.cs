@@ -7,7 +7,8 @@ namespace Features.AI.Presentation
 {
     public sealed class EnemyView : MonoBehaviour, IHittable
     {
-        [SerializeField] private Transform shootPoint;
+        [SerializeField] private Transform shootPointR;
+        [SerializeField] private Transform shootPointL;
         [SerializeField] private GameObject fireGO;
         [Header("Audio")]
         [SerializeField] private AudioClip[] _deathClips;
@@ -16,7 +17,8 @@ namespace Features.AI.Presentation
         private EnemyFacade _facade;
 
         public GameObject FireGO => fireGO;
-        public Transform ShootPoint => shootPoint;
+        public Transform ShootPointR => shootPointR;
+        public Transform ShootPointL => shootPointL;
 
         private Collider2D _collider;
         private Rigidbody2D _rb;

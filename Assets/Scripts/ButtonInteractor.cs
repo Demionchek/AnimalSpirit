@@ -76,7 +76,7 @@ namespace DefaultNamespace
             if (newState != isActive)
             {
                 isActive = newState;
-                animator.SetBool(AnimationController.IS_ACTIVE_S, isActive);
+                animator.SetBool(AnimationParams.IS_ACTIVE_S, isActive);
             }
         }
 

@@ -42,12 +42,16 @@ GameObject:
   - component: {fileID: 3551256090304527123}
   - component: {fileID: 3028712179509557914}
   - component: {fileID: 5145679239385339996}
-  - component: {fileID: 4351640875690187630}
   - component: {fileID: 572550291998624623}
   - component: {fileID: 2266453951058114935}
-  - component: {fileID: 3109704903864321690}
   - component: {fileID: 534210883815758997}
-  m_Layer: 0
+  - component: {fileID: 638674558392061585}
+  - component: {fileID: 7043782149307776279}
+  - component: {fileID: 8412386174794594791}
+  - component: {fileID: 6627232117756486802}
+  - component: {fileID: 2068937960090328236}
+  - component: {fileID: 8296943549913140017}
+  m_Layer: 7
   m_Name: Enemy_shooter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,6 +77,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3028712179509557914
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -88,6 +93,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -109,9 +119,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 1391761042, guid: 8997ec558d82cec4c95eb9056b4d3fac, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -121,11 +133,10 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &5145679239385339996
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -139,28 +150,15 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4351640875690187630
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4511392326669906623}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7931af376474e6a96f8db706da0919f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isAttacking: 0
-  baseEnemy: {fileID: 0}
 --- !u!50 &572550291998624623
 Rigidbody2D:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -171,9 +169,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 2
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -193,6 +191,7 @@ CapsuleCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4511392326669906623}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -216,56 +215,11 @@ CapsuleCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0.20625}
   m_Size: {x: 0.25, y: 0.4125}
   m_Direction: 0
---- !u!114 &3109704903864321690
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4511392326669906623}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01256e4350fe4c0ebcf7ed894014e973, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 1
-  isRange: 1
-  startState: 4
-  sightRange: 2
-  sightAngle: 180
-  checkFrequency: 0.2
-  targetMask:
-    serializedVersion: 2
-    m_Bits: 256
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 1024
-  attackDelay: 0.5
-  canSeeTarget: 0
-  patrolPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  waitTimeAtPoint: 2
-  reachedPointDistance: 0.05
-  currentPointIndex: 0
-  isWaiting: 0
-  stoppingDistance: 1
-  canAttack: 0
-  target: {fileID: 0}
-  loopOverrideState: 0
-  overrideAIState: 0
-  audioSource: {fileID: 0}
-  attackSound: {fileID: 0}
-  deathSound: {fileID: 0}
-  currentAttackTime: 0
-  lastAttackTime: 0
-  bulletPrefab: {fileID: 110642126484020617, guid: 6e25903de88ab6b4daa97fa83c07a423, type: 3}
-  shootPosLeft: {fileID: 521793642026773291}
-  shootPosRight: {fileID: 129663927873775263}
 --- !u!82 &534210883815758997
 AudioSource:
   m_ObjectHideFlags: 0
@@ -276,7 +230,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: dae0da8c2d7815d4f805ceb9d726677e, type: 3}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: dae0da8c2d7815d4f805ceb9d726677e, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -362,6 +317,98 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &638674558392061585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4511392326669906623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94b5494d6fc3400493a7f301b751e596, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.Core.Installers.EnemyLifetimeScope
+  parentReference:
+    TypeName: 
+  autoRun: 1
+  autoInjectGameObjects: []
+  _config: {fileID: 11400000, guid: 2e321a5df10304b4d8bb41c55ccf4649, type: 2}
+  _bulletPrefab: {fileID: 8301318120092812052, guid: 6e25903de88ab6b4daa97fa83c07a423, type: 3}
+  _poolRoot: {fileID: 3551256090304527123}
+  _physicsPort: {fileID: 8412386174794594791}
+  _animationPort: {fileID: 8296943549913140017}
+  _patrolPort: {fileID: 6627232117756486802}
+  _enemyView: {fileID: 7043782149307776279}
+--- !u!114 &7043782149307776279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4511392326669906623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92fa2799aa76471d9ce81c0bb5a8b7e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.AI.Presentation.EnemyView
+  shootPointR: {fileID: 129663927873775263}
+  shootPointL: {fileID: 521793642026773291}
+  fireGO: {fileID: 0}
+  _deathClips: []
+  _attackClips: []
+--- !u!114 &8412386174794594791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4511392326669906623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19cb26e493f443deb980abd21f517990, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.AI.Presentation.UnityEnemyPhysicsPort
+--- !u!114 &6627232117756486802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4511392326669906623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b29268a71d324ce5a589fd897a5816e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.AI.Presentation.UnityEnemyPatrolPort
+  _container: {fileID: 2068937960090328236}
+--- !u!114 &2068937960090328236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4511392326669906623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e93c584c886441f8abdc4d78f1c86124, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.AI.Presentation.PatrolPointsContainer
+  Points:
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &8296943549913140017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4511392326669906623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc54658acf4c490299c3ae9b8cd289ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.AI.Presentation.UnityEnemyAnimationPort
 --- !u!1 &6850724420790574544
 GameObject:
   m_ObjectHideFlags: 0
