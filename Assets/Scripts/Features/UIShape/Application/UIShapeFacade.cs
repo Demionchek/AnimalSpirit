@@ -1,4 +1,5 @@
 using System;
+using Features.Core.Settings.Scene;
 using Features.Player.Domain;
 using Features.UIShape.Presentation;
 using MessagePipe;
@@ -11,6 +12,7 @@ namespace Features.UIShape.Application
         IDisposable
     {
         private readonly UIShapeView _view;
+        private readonly SceneShapeConfig _sceneConfig;
 
         private readonly ISubscriber<PlayerShapeChanged> _shapeChanged;
         private readonly ISubscriber<PlayerShapeUnlocked> _shapeUnlocked;
@@ -20,16 +22,22 @@ namespace Features.UIShape.Application
 
         public UIShapeFacade(
             UIShapeView view,
+            SceneShapeConfig sceneConfig,
             ISubscriber<PlayerShapeChanged> shapeChanged,
             ISubscriber<PlayerShapeUnlocked> shapeUnlocked)
         {
             _view = view;
+            _sceneConfig = sceneConfig;
             _shapeChanged = shapeChanged;
             _shapeUnlocked = shapeUnlocked;
         }
 
         public void Initialize()
         {
+            _view.SetInitialState(
+                _sceneConfig.unlockedShapes,
+                _sceneConfig.startShape);
+
             _subShapeChanged = _shapeChanged.Subscribe(e =>
             {
                 _view.SetShape(e.Shape);

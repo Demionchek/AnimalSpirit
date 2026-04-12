@@ -354,9 +354,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Features.AI.Presentation.EnemyView
   shootPointR: {fileID: 129663927873775263}
   shootPointL: {fileID: 521793642026773291}
-  fireGO: {fileID: 0}
+  fireGO: {fileID: 110642126484020617, guid: 6e25903de88ab6b4daa97fa83c07a423, type: 3}
   _deathClips: []
-  _attackClips: []
+  _attackClips:
+  - {fileID: 8300000, guid: dae0da8c2d7815d4f805ceb9d726677e, type: 3}
 --- !u!114 &8412386174794594791
 MonoBehaviour:
   m_ObjectHideFlags: 0

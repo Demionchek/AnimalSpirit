@@ -1,4 +1,5 @@
 using Features.Player.Domain;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Features.UIShape.Presentation
@@ -29,6 +30,20 @@ namespace Features.UIShape.Presentation
             foreach (var icon in icons)
             {
                 icon.SetSelected(icon.Shape == shape);
+            }
+        }
+
+        public void SetInitialState(IEnumerable<Shape> unlockedShapes, Shape selectedShape)
+        {
+            var unlocked = unlockedShapes != null
+                ? new HashSet<Shape>(unlockedShapes)
+                : new HashSet<Shape>();
+
+            foreach (var icon in icons)
+            {
+                bool isUnlocked = unlocked.Contains(icon.Shape);
+                icon.SetUnlocked(isUnlocked);
+                icon.SetSelected(isUnlocked && icon.Shape == selectedShape);
             }
         }
 

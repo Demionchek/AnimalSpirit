@@ -29,7 +29,7 @@ namespace Features.Openers.Application
 
             foreach (var opener in _openers)
             {
-                if (!opener.IsActive)
+                if (opener == null || !opener.IsActive)
                 {
                     _model.SetState(false);
                     return;

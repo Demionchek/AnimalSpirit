@@ -3,17 +3,17 @@ using System.Collections;
 using Pathfinding;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace Features.AI.Presentation
 {
+    [RequireComponent(typeof(AIDestinationSetter))]
     public class DestinationSetOnSight : MonoBehaviour
     {
-
         [Header("Vision Settings")]
-        [SerializeField] private float sightRange = 10f; // Радиус обзора
-        [SerializeField] [Range(0, 360)] private float sightAngle = 90f; // Угол обзора
-        [SerializeField] private float checkFrequency = 0.2f; // Частота проверок в секундах
-        [SerializeField] private LayerMask targetMask; // Маска целей
-        [SerializeField] private LayerMask obstacleMask; // Маска препятствий
+        [SerializeField] private float sightRange = 10f;
+        [SerializeField] [Range(0, 360)] private float sightAngle = 90f;
+        [SerializeField] private float checkFrequency = 0.2f;
+        [SerializeField] private LayerMask targetMask;
+        [SerializeField] private LayerMask obstacleMask;
         [SerializeField] private bool ignoreWalls = false;
         [SerializeField] private bool ignoreOutOfRange = false;
         [SerializeField] private bool respawnAfterEliminated = false;
@@ -25,17 +25,18 @@ namespace DefaultNamespace
 
         private Transform target;
         private bool canSeeTarget = false;
-        private AIDestinationSetter aiDestinationSetter;
+        [SerializeField] private AIDestinationSetter aiDestinationSetter;
         private SpriteRenderer spriteRenderer;
         private Transform homeTransform;
-       // private PlayerController playerController;
 
         public bool CanSeeTarget => canSeeTarget;
         public Transform Target => target;
 
         private void Start()
         {
-            aiDestinationSetter = GetComponent<AIDestinationSetter>();
+            if (aiDestinationSetter == null)
+                aiDestinationSetter = GetComponent<AIDestinationSetter>();
+
             spriteRenderer = GetComponent<SpriteRenderer>();
             homeTransform = Instantiate(new GameObject($"home pos {gameObject.name}")).transform;
             homeTransform.position = transform.position;
@@ -52,51 +53,24 @@ namespace DefaultNamespace
             }
         }
 
-        private void SetDestinationEnable() => aiDestinationSetter.enabled = true;
-
-        private void OnDisable()
-        {
-           // if (playerController != null)
-              //  playerController.OnRevive -= ResetOnRevive;
-        }
-
         private void ResetOnRevive()
         {
             transform.position = homeTransform.position;
             target = homeTransform;
-            aiDestinationSetter.target = target;
+            aiDestinationSetter.SetTarget(target);
         }
 
         private void DetectTarget()
         {
-            // Сбрасываем состояние перед проверкой
             canSeeTarget = false;
             target = null;
 
             Vector2 sightPoint = new Vector2(transform.position.x, transform.position.y);
 
-            // Ищем все цели в радиусе через SphereCast
             Collider2D[] targetsInViewRadius = Physics2D.OverlapCircleAll(sightPoint, sightRange, targetMask);
 
             foreach (Collider2D targetCollider in targetsInViewRadius)
             {
-
-                // if (playerController == null)
-                // {
-                //     if (targetCollider.TryGetComponent(out PlayerController player))
-                //     {
-                //         playerController = player;
-                //         playerController.OnRevive += ResetOnRevive;
-                //     }
-                // }
-                //
-                // if (!ignorePlayerShape && !canSeeTarget && playerController != null)
-                // {
-                //     if ( playerController.CurrentShape == PlayerController.Shape.Rat)
-                //     {
-                //         continue;
-                //     }
-                // }
 
                 Transform potentialTarget = targetCollider.transform;
                 Vector2 potentialTargetPos = new Vector2(potentialTarget.position.x, potentialTarget.position.y);
@@ -106,29 +80,27 @@ namespace DefaultNamespace
 
                 Vector2 sightDirection = spriteRenderer.flipX ? -transform.right : transform.right;
 
-                // Проверяем, находится ли цель в угле обзора
                 if (Vector2.Angle(sightDirection, directionToTarget) < sightAngle / 2)
                 {
                     float distanceToTarget = Vector2.Distance(sightPoint, potentialTargetPos);
 
                     sightPoint = new Vector2(transform.position.x, transform.position.y);
 
-                    // Делаем Raycast для проверки препятствий
                     RaycastHit2D hit = Physics2D.Raycast(sightPoint, directionToTarget, distanceToTarget, obstacleMask);
 
-                    // Если не попали в препятствие - цель видна
                     if (ignoreWalls || hit.collider == null)
                     {
                         target = potentialTarget;
-                        aiDestinationSetter.target = target;
+                        aiDestinationSetter.SetTarget(target);
                         canSeeTarget = true;
 
-                        break; // Выходим из цикла после обнаружения первой видимой цели
+                        break;
                     }
                 }
             }
 
-            if (!canSeeTarget && !ignoreOutOfRange) aiDestinationSetter.target = homeTransform;
+            if (!canSeeTarget && !ignoreOutOfRange)
+                aiDestinationSetter.SetTarget(homeTransform);
         }
     }
 }

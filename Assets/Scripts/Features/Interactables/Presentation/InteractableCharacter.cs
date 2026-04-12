@@ -19,6 +19,7 @@ namespace Features.Interactables.Presentation
         [SerializeField] private InteractionConfig config;
         [SerializeField] private float interactDelay = 0.5f;
         [SerializeField] private GameObject interactSign;
+        [SerializeField] private InteractionRequirementGate requirementGate;
         private SceneInteractionReferences _sceneRefs;
         private InteractableCharacterPhysicsPort _physicsPort;
         private InteractionActionFactory _factory;
@@ -94,6 +95,15 @@ namespace Features.Interactables.Presentation
                 return;
 
             _lastInteractTime = Time.time;
+
+            if (requirementGate != null && !requirementGate.IsSatisfied())
+            {
+                if (requirementGate.MissingDialogueId >= 0)
+                    _factory.CreateDialogue(requirementGate.MissingDialogueId)
+                            .Execute();
+
+                return;
+            }
 
             interactSign?.SetActive(false);
 

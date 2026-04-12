@@ -9,7 +9,7 @@ using VContainer.Unity;
 
 namespace Features.Openers.Application
 {
-    public sealed class DoorFacade : IInitializable, IDisposable
+    public sealed class DoorFacade : IInitializable, ITickable, IDisposable
     {
         private readonly DoorService _service;
         private readonly DoorModel _model;
@@ -46,6 +46,11 @@ namespace Features.Openers.Application
         public void SetOpen(bool open)
         {
             _service.SetManual(open);
+            _service.Evaluate();
+        }
+
+        public void Tick()
+        {
             _service.Evaluate();
         }
 

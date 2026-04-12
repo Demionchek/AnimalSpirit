@@ -16,10 +16,6 @@ using Features.Dialogue.Infrastructure;
 using Features.Dialogue.Presentation;
 using Features.Interactables.Application;
 using Features.Interactables.Presentation;
-using Features.Openers.Application;
-using Features.Openers.Domain;
-using Features.Openers.Infrastructure;
-using Features.Openers.Presentation;
 using Features.Player.Domain;
 using Features.Player.Application;
 using Features.Player.Presentation;
@@ -47,7 +43,6 @@ namespace Features.Core.Installers
         {
             var options = builder.RegisterMessagePipe();
             var hasInteractables = HasComponentInScene<InteractableCharacter>();
-            var hasDoors = HasComponentInScene<DoorView>();
             var hasWorldTriggers = HasComponentInScene<WorldTriggerView>();
 
             //
@@ -76,7 +71,6 @@ namespace Features.Core.Installers
             builder.RegisterMessageBroker<CheckpointCallback>(options);
             builder.RegisterMessageBroker<CheckpointRequest>(options);
             builder.RegisterMessageBroker<CheckpointSetter>(options);
-            builder.RegisterMessageBroker<OpenerStateChanged>(options);
 
             //
             // UI
@@ -168,15 +162,6 @@ namespace Features.Core.Installers
                    builder.RegisterComponentInHierarchy<InteractableCharacterPhysicsPort>();
             }
 
-            if (hasDoors)
-            {
-                   builder.Register<DoorModel>(Lifetime.Transient);
-                   builder.Register<DoorService>(Lifetime.Transient);
-
-                   builder.RegisterComponentInHierarchy<DoorView>()
-                          .AsSelf();
-            }
-
             //
             // TRIGGERS
             //
@@ -193,11 +178,6 @@ namespace Features.Core.Installers
             //
             builder.RegisterBuildCallback(container =>
             {
-                   if (hasDoors)
-                          foreach (var doors in Object.FindObjectsOfType<DoorView>(true))
-                                   container.Inject(doors);
-
-
                    if (hasWorldTriggers)
                             foreach (var trigger in Object.FindObjectsOfType<WorldTriggerView>(true))
                                    container.Inject(trigger);

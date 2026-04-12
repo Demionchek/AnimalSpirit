@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Features.Core.Settings.LayerSettings
   PlayerMask:
     serializedVersion: 2
-    m_Bits: 12544
+    m_Bits: 14592
   RatMask:
     serializedVersion: 2
     m_Bits: 4096

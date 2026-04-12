@@ -16,6 +16,7 @@ namespace Features.Player.Application
 
         private InputAction move, jump, bark, shapeDog, shapeBird, shapeRat;
         private readonly PlayerInputProvider _provider;
+        private bool _jumpHeld;
 
         public InputService(
             PlayerInputProvider playerInputProvider,
@@ -43,7 +44,11 @@ namespace Features.Player.Application
         {
             _movePub.Publish(new PlayerMoveInput(move.ReadValue<Vector2>()));
 
-            if (jump.WasPressedThisFrame())   _jumpPub.Publish(new PlayerJumpPressed());
+            bool isJumpPressed = jump.IsPressed();
+            if (isJumpPressed && !_jumpHeld)
+                _jumpPub.Publish(new PlayerJumpPressed());
+            _jumpHeld = isJumpPressed;
+
             if (bark.WasPressedThisFrame())   _barkPub.Publish(new PlayerBarkPressed());
             if (shapeDog.WasPressedThisFrame())  _shapePub.Publish(new PlayerShapeRequest(Shape.Dog));
             if (shapeBird.WasPressedThisFrame()) _shapePub.Publish(new PlayerShapeRequest(Shape.Bird));
