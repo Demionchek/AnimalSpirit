@@ -37,6 +37,7 @@ public class UnityEventDictionary
 
     public bool Contains(DialogType key)
     {
+        if (dictionary == null) return false;
         dictionary.TryGetValue(key, out var value);
         return value != null;
     }

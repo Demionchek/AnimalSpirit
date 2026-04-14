@@ -30,11 +30,11 @@ namespace AI.States
             if (isGrounded && distance > baseEnemy.stoppingDistance)
             {
                 direction.Normalize();
-                baseEnemy.rb.velocity = direction * baseEnemy.speed;
+                baseEnemy.rb.linearVelocity = direction * baseEnemy.speed;
             }
             else
             {
-                baseEnemy.rb.velocity = Vector2.zero;
+                baseEnemy.rb.linearVelocity = Vector2.zero;
 
                 if (!isGrounded)
                     baseEnemy.ChangeState<PatrolStateAI>();

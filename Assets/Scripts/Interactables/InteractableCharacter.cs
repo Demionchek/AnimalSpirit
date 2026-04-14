@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Zenject;
 
-namespace AI
+namespace Interactables
 {
     public class InteractableCharacter : MonoBehaviour, IInteractable
     {

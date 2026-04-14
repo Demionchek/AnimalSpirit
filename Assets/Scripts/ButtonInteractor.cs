@@ -3,13 +3,15 @@ using Interfaces;
 using UnityEngine;
 using System.Collections;
 using System.Linq;
+using UnityEngine.Events;
 
 namespace DefaultNamespace
 {
     public class ButtonInteractor : Opener
     {
         [SerializeField] private LayerMask[] interactLayers;
-        [SerializeField] private float checkInterval = 0.5f; // Интервал проверки в секундах
+        [SerializeField] private float checkInterval = 0.5f;
+        [SerializeField] private UnityEvent action;
 
         private int collidingObjectsCount = 0;
         private Animator animator;
@@ -78,6 +80,8 @@ namespace DefaultNamespace
                 isActive = newState;
                 animator.SetBool(AnimationController.IS_ACTIVE_S, isActive);
             }
+
+            action?.Invoke();
         }
 
         private bool IsLayerInInteractLayers(int layer)

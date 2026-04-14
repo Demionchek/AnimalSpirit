@@ -1,5 +1,4 @@
-using System;
-using AI;
+using Interactables;
 using Interfaces;
 using UnityEngine;
 using Zenject;

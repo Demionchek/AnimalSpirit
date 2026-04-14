@@ -36,7 +36,7 @@ namespace AI.States
             animatonController.GetSpriteRenderer().flipX = moveDirection.x < 0;
 
             // Двигаемся с помощью Rigidbody
-            baseEnemy.rb.velocity = moveDirection * baseEnemy.speed;
+            baseEnemy.rb.linearVelocity = moveDirection * baseEnemy.speed;
             baseEnemy.AnimationController.SetAnimatorFloat("Speed", 1);
 
             // Проверяем, достигли ли точки
@@ -49,7 +49,7 @@ namespace AI.States
         private IEnumerator WaitAtPoint()
         {
             baseEnemy.isWaiting = true;
-            baseEnemy.rb.velocity = Vector2.zero;
+            baseEnemy.rb.linearVelocity = Vector2.zero;
             baseEnemy.AnimationController.SetAnimatorFloat(AnimationController.SPEED_S, 0);
 
             yield return new WaitForSeconds(baseEnemy.waitTimeAtPoint);
