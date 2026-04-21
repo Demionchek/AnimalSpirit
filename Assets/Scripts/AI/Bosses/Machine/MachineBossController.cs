@@ -1,6 +1,7 @@
 using System.Collections;
 using Interfaces;
 using Interactables;
+using ObjectPool;
 using Player;
 using UnityEngine;
 
@@ -25,6 +26,7 @@ namespace AI.Bosses.Machine
 
         [Header("Rocket Attack")]
         [SerializeField] private MachineHomingRocket rocketPrefab;
+        [SerializeField] private int rocketPoolPreloadCount = 8;
         [SerializeField] private Transform[] rocketSpawnPoints;
         [SerializeField] private Transform[] rocketRisePoints;
 
@@ -38,6 +40,7 @@ namespace AI.Bosses.Machine
         private MachineMovingLaser activeVerticalLaser;
         private MachineMovingLaser activeHorizontalLaser;
         private Coroutine phaseRoutine;
+        private GameObjectPool rocketPool;
         private int health;
         private bool isDead;
         private bool cooldownInterrupted;
@@ -49,6 +52,11 @@ namespace AI.Bosses.Machine
             if (animationController == null)
             {
                 animationController = GetComponent<MachineAnimationController>();
+            }
+
+            if (rocketPrefab != null)
+            {
+                rocketPool = new GameObjectPool(rocketPrefab.gameObject, rocketPoolPreloadCount);
             }
 
             SetInteractionCharactersEnabled(false);
@@ -165,10 +173,23 @@ namespace AI.Bosses.Machine
 
         private void FireRocket()
         {
+            if (rocketPool == null) return;
+
             Transform spawnPoint = rocketSpawnPoints[Random.Range(0, rocketSpawnPoints.Length)];
             Transform risePoint = GetRocketRisePoint(spawnPoint);
 
-            MachineHomingRocket rocket = Instantiate(rocketPrefab, spawnPoint.position, spawnPoint.rotation);
+            GameObject rocketObject = rocketPool.Get();
+            rocketObject.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
+
+            MachineHomingRocket rocket = rocketObject.GetComponent<MachineHomingRocket>();
+            if (rocket == null)
+            {
+                Debug.LogWarning("MachineBossController: spawned rocket has no MachineHomingRocket component.");
+                rocketPool.Return(rocketObject);
+                return;
+            }
+
+            rocket.SetPool(rocketPool);
             rocket.Launch(player, risePoint != null ? risePoint.position : spawnPoint.position + Vector3.up);
 
             animationController?.TriggerRocket();
@@ -314,6 +335,7 @@ namespace AI.Bosses.Machine
             laserVerticalMoveDistanceRange.y = Mathf.Max(laserVerticalMoveDistanceRange.x, laserVerticalMoveDistanceRange.y);
             laserMoveSpeedRange.x = Mathf.Max(0.01f, laserMoveSpeedRange.x);
             laserMoveSpeedRange.y = Mathf.Max(laserMoveSpeedRange.x, laserMoveSpeedRange.y);
+            rocketPoolPreloadCount = Mathf.Max(0, rocketPoolPreloadCount);
         }
     }
 }

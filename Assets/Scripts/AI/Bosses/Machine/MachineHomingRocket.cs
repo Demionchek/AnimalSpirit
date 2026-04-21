@@ -1,4 +1,6 @@
+using System;
 using Interfaces;
+using ObjectPool;
 using Player;
 using UnityEngine;
 
@@ -13,6 +15,7 @@ namespace AI.Bosses.Machine
         [SerializeField] private float turnSpeed = 240f;
         [SerializeField] private float riseReachDistance = 0.1f;
         [SerializeField] private float lifeTime = 8f;
+        [SerializeField] private float homingTime;
 
         [Header("Explosion")]
         [SerializeField] private float explosionRadius = 1.5f;
@@ -22,8 +25,10 @@ namespace AI.Bosses.Machine
 
         private Rigidbody2D rb;
         private PlayerController player;
+        private GameObjectPool pool;
         private Vector2 riseTarget;
         private Vector2 flightDirection;
+        private float homingTimer;
         private float lifeTimer;
         private bool isRising = true;
         private bool isExploded;
@@ -34,6 +39,11 @@ namespace AI.Bosses.Machine
             flightDirection = transform.right.sqrMagnitude > 0.0001f ? (Vector2)transform.right : Vector2.right;
         }
 
+        public void SetPool(GameObjectPool rocketPool)
+        {
+            pool = rocketPool;
+        }
+
         public void Launch(PlayerController targetPlayer, Vector2 targetRisePoint)
         {
             player = targetPlayer;
@@ -41,6 +51,9 @@ namespace AI.Bosses.Machine
             isRising = true;
             isExploded = false;
             lifeTimer = 0f;
+            homingTimer = 0f;
+            rb.linearVelocity = Vector2.zero;
+            flightDirection = transform.right.sqrMagnitude > 0.0001f ? (Vector2)transform.right : Vector2.right;
         }
 
         private void FixedUpdate()
@@ -59,6 +72,11 @@ namespace AI.Bosses.Machine
                 MoveToRisePoint();
                 return;
             }
+            
+            if (homingTimer > 0f)
+            {
+                homingTimer -= Time.fixedDeltaTime;
+            }
 
             UpdateFlightDirection();
             rb.linearVelocity = flightDirection * flightSpeed;
@@ -73,6 +91,7 @@ namespace AI.Bosses.Machine
             if (direction.magnitude <= riseReachDistance)
             {
                 isRising = false;
+                homingTimer = homingTime;
                 flightDirection = transform.right.sqrMagnitude > 0.0001f ? (Vector2)transform.right : Vector2.right;
                 rb.linearVelocity = flightDirection * flightSpeed;
                 return;
@@ -87,8 +106,9 @@ namespace AI.Bosses.Machine
         {
             if (player == null) return;
 
-            bool canHome = player.CurrentShape == PlayerController.Shape.Bird ||
-                           player.CurrentShape == PlayerController.Shape.Dog;
+            bool canHome = homingTimer > 0f &&
+                           (player.CurrentShape == PlayerController.Shape.Bird ||
+                           player.CurrentShape == PlayerController.Shape.Dog);
 
             if (!canHome) return;
 
@@ -134,7 +154,8 @@ namespace AI.Bosses.Machine
 
             if (explosionVfxPrefab != null)
             {
-                Instantiate(explosionVfxPrefab, transform.position, Quaternion.identity);
+                GameObject vfx = Instantiate(explosionVfxPrefab, transform.position, Quaternion.identity);
+                Destroy(vfx, 1f);
             }
 
             Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, explosionRadius, explosionDamageMask);
@@ -144,6 +165,12 @@ namespace AI.Bosses.Machine
                 {
                     hittable.Hit();
                 }
+            }
+
+            if (pool != null)
+            {
+                pool.Return(gameObject);
+                return;
             }
 
             Destroy(gameObject);

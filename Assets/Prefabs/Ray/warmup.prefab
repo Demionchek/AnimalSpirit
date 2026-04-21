@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4449459400244605984
+--- !u!1 &1020183008125310526
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,38 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8641388409084785140}
-  - component: {fileID: 1831870651381878943}
+  - component: {fileID: 3693602117410537973}
+  - component: {fileID: 2945220534828738171}
   m_Layer: 0
-  m_Name: 2
+  m_Name: red_sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8641388409084785140
+--- !u!4 &3693602117410537973
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4449459400244605984}
+  m_GameObject: {fileID: 1020183008125310526}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -0.03500003, y: 0, z: 0}
-  m_LocalScale: {x: 0.4637879, y: 0.4637879, z: 0.46378803}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.02582, y: 0, z: 0}
+  m_LocalScale: {x: 0.052, y: 0.03, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5266511001552701145}
+  m_Father: {fileID: 2629919856161523453}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &1831870651381878943
+--- !u!212 &2945220534828738171
 SpriteRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4449459400244605984}
+  m_GameObject: {fileID: 1020183008125310526}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -79,19 +79,19 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 20
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 553e53bbef6339e4396a57fd13ba9d09, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 0b9063f31e780034483967e7dc20f1a3, type: 3}
+  m_Color: {r: 1, g: 0, b: 0, a: 0.56078434}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.68, y: 0.15}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!1 &6049124675563412435
+--- !u!1 &7117464157079758132
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -99,62 +99,27 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5266511001552701145}
-  - component: {fileID: 647882690240782416}
+  - component: {fileID: 2629919856161523453}
   m_Layer: 0
-  m_Name: Ray
+  m_Name: warmup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5266511001552701145
+--- !u!4 &2629919856161523453
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6049124675563412435}
+  m_GameObject: {fileID: 7117464157079758132}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 1.35499, y: -0.52677, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.00076, y: -0.0028, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8641388409084785140}
+  - {fileID: 3693602117410537973}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
---- !u!114 &647882690240782416
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6049124675563412435}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f2f697910bd43feba0dce8d85c4b7a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::VFX.SpriteLaser2D
-  startPoint: {fileID: 5266511001552701145}
-  useTransformRight: 1
-  customDirection: {x: 1, y: 0}
-  startSegmentPrefab: {fileID: 7708535356570818802, guid: ef29b2aea5a3bda4ab67ebdc30eaa76c, type: 3}
-  middleSegmentPrefab: {fileID: 3634110944231331136, guid: ddb866541e147494a85ca69d6c218790, type: 3}
-  endSegmentPrefab: {fileID: 7689511018515355288, guid: f9d8c26ac5b7a684cb4c56cbfb8a9548, type: 3}
-  segmentSpacing: 0.15
-  maxDistance: 8
-  startOffset: 0
-  endSegmentOffset: 0
-  lastSegmentOffset: 0.1
-  wallMask:
-    serializedVersion: 2
-    m_Bits: 1025
-  rebuildEveryFrame: 0
-  opener: {fileID: 0}
-  usePeriodicToggle: 0
-  toggleInterval: 1
-  startEnabled: 1
-  warmupDelay: 0.5
-  warmupSegmentPrefab: {fileID: 7117464157079758132, guid: daa5b49a245683c4994e49e65b5bffbd, type: 3}
-  warmupSegmentSpacing: 0.05
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -63,6 +63,10 @@ namespace AI.Bosses.Machine
         private IEnumerator MoveRoutine(float distance, float speed)
         {
             yield return new WaitForSeconds(delay);
+            while (laser != null && laser.IsWarmupActive)
+            {
+                yield return null;
+            }
 
             Vector3 axis = wallOrientation == WallOrientation.Vertical ? Vector3.up : Vector3.right;
             float direction = Random.value < 0.5f ? -1f : 1f;
@@ -73,6 +77,9 @@ namespace AI.Bosses.Machine
                 transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
                 yield return null;
             }
+
+            yield return  new WaitForSeconds(delay);
+            laser?.DisableRay();
 
             transform.position = targetPosition;
             moveRoutine = null;

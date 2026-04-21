@@ -33,20 +33,32 @@ namespace VFX
         [SerializeField] private float toggleInterval = 1f;
         [SerializeField] private bool startEnabled = true;
 
+        [Header("Warmup")]
+        [SerializeField] private float warmupDelay = 0f;
+        [SerializeField] private GameObject warmupSegmentPrefab;
+        [SerializeField] private float warmupSegmentSpacing = 0.35f;
+
         private readonly List<GameObject> middleSegments = new();
+        private readonly List<GameObject> warmupSegments = new();
         private GameObject startSegment;
         private GameObject endSegment;
         private bool isLaserEnabled;
+        private bool isWarmupActive;
         private float toggleTimer;
+        private float warmupTimer;
+
+        public bool IsWarmupActive => isWarmupActive;
 
         private void OnEnable()
         {
-            isLaserEnabled = usePeriodicToggle ? startEnabled : false;
             toggleTimer = 0f;
+            isWarmupActive = false;
+            isLaserEnabled = false;
+            warmupTimer = 0f;
 
-            if (isLaserEnabled)
+            if (usePeriodicToggle || startEnabled)
             {
-                Rebuild();
+                EnableRay();
             }
             else
             {
@@ -59,7 +71,7 @@ namespace VFX
             bool blockedByOpener = opener != null && opener.isActive;
             if (blockedByOpener)
             {
-                if (isLaserEnabled)
+                if (isLaserEnabled || isWarmupActive)
                 {
                     DisableRay();
                 }
@@ -67,12 +79,18 @@ namespace VFX
                 return;
             }
 
-            if (!isLaserEnabled) return;
-
             if (usePeriodicToggle)
             {
                 UpdatePeriodicToggle();
             }
+
+            if (isWarmupActive)
+            {
+                UpdateWarmup();
+                return;
+            }
+
+            if (!isLaserEnabled) return;
 
             if (rebuildEveryFrame)
             {
@@ -97,11 +115,31 @@ namespace VFX
                 endSegment.SetActive(false);
             }
 
+            for (int i = 0; i < warmupSegments.Count; i++)
+            {
+                if (warmupSegments[i] != null)
+                {
+                    warmupSegments[i].SetActive(false);
+                }
+            }
+
             isLaserEnabled = false;
+            isWarmupActive = false;
+            warmupTimer = 0f;
         }
 
         public void EnableRay()
         {
+            if (ShouldUseWarmup())
+            {
+                isLaserEnabled = false;
+                isWarmupActive = true;
+                warmupTimer = warmupDelay;
+                RebuildWarmup();
+                return;
+            }
+
+            isWarmupActive = false;
             isLaserEnabled = true;
             Rebuild();
         }
@@ -120,25 +158,18 @@ namespace VFX
 
         public void Rebuild()
         {
-            Vector3 origin = startPoint != null ? startPoint.position : transform.position;
-            Vector2 direction = GetDirection();
-
-            if (direction.sqrMagnitude < 0.0001f)
+            if (!TryGetRayData(out Vector3 origin, out Vector2 direction, out float safeLength, out Quaternion rotation))
             {
-                direction = Vector2.right;
+                DisableWarmupSegments();
+                return;
             }
-
-            RaycastHit2D hit = Physics2D.Raycast(origin, direction, maxDistance, wallMask);
-            float laserLength = hit.collider != null ? hit.distance : maxDistance;
-            float safeLength = Mathf.Max(0f, laserLength);
-
-            Quaternion rotation = Quaternion.FromToRotation(Vector3.right, direction);
 
             Vector3 startPosition = origin + (Vector3)(direction * startOffset);
             Vector3 endPosition = origin + (Vector3)(direction * Mathf.Max(startOffset, safeLength - endSegmentOffset));
 
             PlaceOrCreate(ref startSegment, startSegmentPrefab, startPosition, rotation);
             PlaceOrCreate(ref endSegment, endSegmentPrefab, endPosition, rotation);
+            DisableWarmupSegments();
 
             int middleCount = GetMiddleCount(safeLength);
             EnsureMiddleCount(middleCount);
@@ -150,6 +181,46 @@ namespace VFX
                 middleSegments[i].transform.SetPositionAndRotation(segmentPosition, rotation);
                 middleSegments[i].SetActive(true);
                 currentDistance += segmentSpacing;
+            }
+        }
+
+        private void RebuildWarmup()
+        {
+            if (!TryGetRayData(out Vector3 origin, out Vector2 direction, out float safeLength, out Quaternion rotation))
+            {
+                DisableWarmupSegments();
+                return;
+            }
+
+            if (startSegment != null)
+            {
+                startSegment.SetActive(false);
+            }
+
+            if (endSegment != null)
+            {
+                endSegment.SetActive(false);
+            }
+
+            for (int i = 0; i < middleSegments.Count; i++)
+            {
+                if (middleSegments[i] != null)
+                {
+                    middleSegments[i].SetActive(false);
+                }
+            }
+
+            float spacing = warmupSegmentSpacing > 0f ? warmupSegmentSpacing : segmentSpacing;
+            int warmupCount = GetSegmentCount(safeLength, spacing, 0f);
+            EnsureWarmupCount(warmupCount);
+
+            float currentDistance = startOffset;
+            for (int i = 0; i < warmupCount; i++)
+            {
+                Vector3 segmentPosition = origin + (Vector3)(direction * currentDistance);
+                warmupSegments[i].transform.SetPositionAndRotation(segmentPosition, rotation);
+                warmupSegments[i].SetActive(true);
+                currentDistance += spacing;
             }
         }
 
@@ -175,6 +246,23 @@ namespace VFX
             }
 
             return Mathf.FloorToInt((middleEnd - middleStart) / segmentSpacing) + 1;
+        }
+
+        private int GetSegmentCount(float length, float spacing, float endOffset)
+        {
+            if (spacing <= 0f)
+            {
+                return 0;
+            }
+
+            float fillStart = startOffset;
+            float fillEnd = length - endOffset;
+            if (fillEnd < fillStart)
+            {
+                return 0;
+            }
+
+            return Mathf.FloorToInt((fillEnd - fillStart) / spacing) + 1;
         }
 
         private void EnsureMiddleCount(int requiredCount)
@@ -225,6 +313,86 @@ namespace VFX
             segmentObject.SetActive(true);
         }
 
+        private void EnsureWarmupCount(int requiredCount)
+        {
+            if (warmupSegmentPrefab == null)
+            {
+                DisableWarmupSegments();
+                return;
+            }
+
+            while (warmupSegments.Count < requiredCount)
+            {
+                GameObject segment = Instantiate(warmupSegmentPrefab, transform);
+                warmupSegments.Add(segment);
+            }
+
+            for (int i = 0; i < warmupSegments.Count; i++)
+            {
+                if (warmupSegments[i] != null)
+                {
+                    warmupSegments[i].SetActive(i < requiredCount);
+                }
+            }
+        }
+
+        private void DisableWarmupSegments()
+        {
+            for (int i = 0; i < warmupSegments.Count; i++)
+            {
+                if (warmupSegments[i] != null)
+                {
+                    warmupSegments[i].SetActive(false);
+                }
+            }
+        }
+
+        private bool TryGetRayData(out Vector3 origin, out Vector2 direction, out float safeLength, out Quaternion rotation)
+        {
+            origin = startPoint != null ? startPoint.position : transform.position;
+            direction = GetDirection();
+
+            if (direction.sqrMagnitude < 0.0001f)
+            {
+                direction = Vector2.right;
+            }
+
+            RaycastHit2D hit = Physics2D.Raycast(origin, direction, maxDistance, wallMask);
+            float laserLength = hit.collider != null ? hit.distance : maxDistance;
+            safeLength = Mathf.Max(0f, laserLength);
+            rotation = Quaternion.FromToRotation(Vector3.right, direction);
+            return true;
+        }
+
+        private bool ShouldUseWarmup()
+        {
+            return warmupDelay > 0f && warmupSegmentPrefab != null;
+        }
+
+        private void UpdateWarmup()
+        {
+            if (!isWarmupActive)
+            {
+                return;
+            }
+
+            warmupTimer -= Time.deltaTime;
+
+            if (rebuildEveryFrame)
+            {
+                RebuildWarmup();
+            }
+
+            if (warmupTimer > 0f)
+            {
+                return;
+            }
+
+            isWarmupActive = false;
+            isLaserEnabled = true;
+            Rebuild();
+        }
+
         private void UpdatePeriodicToggle()
         {
             if (toggleInterval <= 0f)
@@ -248,15 +416,14 @@ namespace VFX
                 return;
             }
 
-            isLaserEnabled = !isLaserEnabled;
-
-            if (isLaserEnabled)
+            bool currentlyActive = isLaserEnabled || isWarmupActive;
+            if (currentlyActive)
             {
-                Rebuild();
+                DisableRay();
             }
             else
             {
-                DisableRay();
+                EnableRay();
             }
         }
 
@@ -277,6 +444,14 @@ namespace VFX
                 if (middleSegments[i] != null)
                 {
                     middleSegments[i].SetActive(false);
+                }
+            }
+
+            for (int i = 0; i < warmupSegments.Count; i++)
+            {
+                if (warmupSegments[i] != null)
+                {
+                    warmupSegments[i].SetActive(false);
                 }
             }
         }
