@@ -53,6 +53,7 @@ namespace Interactables
         private float lastTime;
         private float currentTime;
         private bool canInteract = true;
+        private bool isInteractionEnabled = true;
 
         private bool isFlip;
         private bool wasActivated;
@@ -68,7 +69,7 @@ namespace Interactables
 
         private void Update()
         {
-            if (currentTime - lastTime > lastTime + interactDelay)
+            if (currentTime - lastTime > interactDelay)
             {
                 canInteract = true;
             }
@@ -80,6 +81,8 @@ namespace Interactables
 
         public void Interact()
         {
+            if (!isInteractionEnabled || !canInteract) return;
+
             lastTime = Time.time;
             canInteract = false;
             interactSign.SetActive(false);
@@ -122,6 +125,16 @@ namespace Interactables
                     if (InteractSound_2 != null)
                         audioSource.PlayOneShot(InteractSound_2);
                 }
+            }
+        }
+
+        public void SetInteractionEnabled(bool isEnabled)
+        {
+            isInteractionEnabled = isEnabled;
+
+            if (interactSign != null)
+            {
+                interactSign.SetActive(isEnabled);
             }
         }
 

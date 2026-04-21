@@ -30,7 +30,7 @@ namespace AI
             {
                 yield return new WaitForSeconds(0.5f);
 
-                if (AnimationController.isAttacking) continue;
+                if (AnimController.isAttacking) continue;
 
                 if (isDead) break;
 
@@ -62,7 +62,7 @@ namespace AI
 
         public void OnAttack()
         {
-            bool isFlip = AnimationController.GetSpriteRenderer().flipX;
+            bool isFlip = AnimController.GetSpriteRenderer().flipX;
             Vector2 origin = transform.position + new Vector3(0, 0.15f, 0);
             float radius = 0.2f;
             float hitDistance = attackDistance - radius;
@@ -111,7 +111,7 @@ namespace AI
         {
             if (!Application.isPlaying) return;
 
-            bool isFlip = AnimationController.GetSpriteRenderer().flipX;
+            bool isFlip = AnimController.GetSpriteRenderer().flipX;
             Vector2 origin = transform.position + new Vector3(0, 0.15f, 0);
             float radius = 0.2f;
             float hitDistance = attackDistance - radius;

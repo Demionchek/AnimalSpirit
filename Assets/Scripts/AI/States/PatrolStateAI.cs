@@ -37,7 +37,7 @@ namespace AI.States
 
             // Двигаемся с помощью Rigidbody
             baseEnemy.rb.linearVelocity = moveDirection * baseEnemy.speed;
-            baseEnemy.AnimationController.SetAnimatorFloat("Speed", 1);
+            baseEnemy.AnimController.SetAnimatorFloat("Speed", 1);
 
             // Проверяем, достигли ли точки
             if (Vector2.Distance(baseEnemy.rb.position, targetPosition) < baseEnemy.reachedPointDistance)
@@ -50,7 +50,7 @@ namespace AI.States
         {
             baseEnemy.isWaiting = true;
             baseEnemy.rb.linearVelocity = Vector2.zero;
-            baseEnemy.AnimationController.SetAnimatorFloat(AnimationController.SPEED_S, 0);
+            baseEnemy.AnimController.SetAnimatorFloat(AnimationController.SPEED_S, 0);
 
             yield return new WaitForSeconds(baseEnemy.waitTimeAtPoint);
 

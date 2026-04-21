@@ -33,6 +33,7 @@ namespace Player
         [SerializeField] private Collider2D interactCollider_L;
 
         [Header("Other Settings")]
+        [SerializeField] private LayerMask damageMask;
         [SerializeField] private RandomSoundPlayer randomWoofPlayer;
         [SerializeField] private bool ignoreDamage = false;
 
@@ -430,8 +431,9 @@ namespace Player
 
         private void OnCollisionEnter2D(Collision2D other)
         {
-            if (other.collider.gameObject.layer == LayerMask.NameToLayer("Enemy") ||
-                other.collider.gameObject.layer == LayerMask.NameToLayer("Bullet"))
+            bool isInMask = (damageMask.value & (1 << other.gameObject.layer)) != 0;
+
+            if (isInMask)
             {
                 if (!isDead)
                     Hit();
@@ -468,8 +470,9 @@ namespace Player
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.gameObject.layer == LayerMask.NameToLayer("Enemy") ||
-                other.gameObject.layer == LayerMask.NameToLayer("Bullet"))
+            bool isInMask = (damageMask.value & (1 << other.gameObject.layer)) != 0;
+
+            if (isInMask)
             {
                 if (!isDead)
                     Hit();

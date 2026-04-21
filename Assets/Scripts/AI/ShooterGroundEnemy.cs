@@ -63,7 +63,7 @@ namespace AI
             if (target == null) return;
 
             GameObject bullet = pool.Get();
-            bullet.transform.position = AnimationController.GetSpriteRenderer().flipX ? shootPosLeft.position : shootPosRight.position;
+            bullet.transform.position = AnimController.GetSpriteRenderer().flipX ? shootPosLeft.position : shootPosRight.position;
             Vector2 targetPosition = new Vector2(target.transform.position.x, target.transform.position.y + 0.15f);
             // Направление к цели
             Vector2 direction = targetPosition - (Vector2)bullet.transform.position;

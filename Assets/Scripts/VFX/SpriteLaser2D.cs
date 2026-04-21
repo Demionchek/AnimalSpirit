@@ -18,7 +18,8 @@ namespace VFX
         [SerializeField] private float segmentSpacing = 0.35f;
         [SerializeField] private float maxDistance = 8f;
         [SerializeField] private float startOffset = 0f;
-        [SerializeField] private float endOffset = 0f;
+        [SerializeField] private float endSegmentOffset = 0f;
+        [SerializeField] private float lastSegmentOffset = 0f;
 
         [Header("Collision")]
         [SerializeField] private LayerMask wallMask;
@@ -40,7 +41,7 @@ namespace VFX
 
         private void OnEnable()
         {
-            isLaserEnabled = usePeriodicToggle ? startEnabled : true;
+            isLaserEnabled = usePeriodicToggle ? startEnabled : false;
             toggleTimer = 0f;
 
             if (isLaserEnabled)
@@ -66,12 +67,14 @@ namespace VFX
                 return;
             }
 
+            if (!isLaserEnabled) return;
+
             if (usePeriodicToggle)
             {
                 UpdatePeriodicToggle();
             }
 
-            if (isLaserEnabled && rebuildEveryFrame)
+            if (rebuildEveryFrame)
             {
                 Rebuild();
             }
@@ -97,6 +100,24 @@ namespace VFX
             isLaserEnabled = false;
         }
 
+        public void EnableRay()
+        {
+            isLaserEnabled = true;
+            Rebuild();
+        }
+
+        public void SetRayEnabled(bool isEnabled)
+        {
+            if (isEnabled)
+            {
+                EnableRay();
+            }
+            else
+            {
+                DisableRay();
+            }
+        }
+
         public void Rebuild()
         {
             Vector3 origin = startPoint != null ? startPoint.position : transform.position;
@@ -114,7 +135,7 @@ namespace VFX
             Quaternion rotation = Quaternion.FromToRotation(Vector3.right, direction);
 
             Vector3 startPosition = origin + (Vector3)(direction * startOffset);
-            Vector3 endPosition = origin + (Vector3)(direction * Mathf.Max(startOffset, safeLength - endOffset));
+            Vector3 endPosition = origin + (Vector3)(direction * Mathf.Max(startOffset, safeLength - endSegmentOffset));
 
             PlaceOrCreate(ref startSegment, startSegmentPrefab, startPosition, rotation);
             PlaceOrCreate(ref endSegment, endSegmentPrefab, endPosition, rotation);
@@ -146,7 +167,7 @@ namespace VFX
         private int GetMiddleCount(float length)
         {
             float middleStart = startOffset + segmentSpacing;
-            float middleEnd = length - endOffset;
+            float middleEnd = length - lastSegmentOffset;
 
             if (middleEnd <= middleStart || segmentSpacing <= 0f)
             {

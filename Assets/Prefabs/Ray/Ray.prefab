@@ -141,12 +141,17 @@ MonoBehaviour:
   customDirection: {x: 1, y: 0}
   startSegmentPrefab: {fileID: 7708535356570818802, guid: ef29b2aea5a3bda4ab67ebdc30eaa76c, type: 3}
   middleSegmentPrefab: {fileID: 3634110944231331136, guid: ddb866541e147494a85ca69d6c218790, type: 3}
-  endSegmentPrefab: {fileID: 3634110944231331136, guid: ddb866541e147494a85ca69d6c218790, type: 3}
-  segmentSpacing: 0.18
+  endSegmentPrefab: {fileID: 7689511018515355288, guid: f9d8c26ac5b7a684cb4c56cbfb8a9548, type: 3}
+  segmentSpacing: 0.15
   maxDistance: 8
   startOffset: 0
-  endOffset: 0
+  endSegmentOffset: 0
+  lastSegmentOffset: 0.1
   wallMask:
     serializedVersion: 2
     m_Bits: 1025
   rebuildEveryFrame: 0
+  opener: {fileID: 0}
+  usePeriodicToggle: 0
+  toggleInterval: 1
+  startEnabled: 1

@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Animations;
 using Player;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace AI
 {
@@ -51,7 +53,7 @@ namespace AI
         public Transform target;
         public Rigidbody2D rb { get; protected set; }
         public CapsuleCollider2D capsule { get; protected set; }
-        public EnemyAnimationController AnimationController { get; protected set; }
+        public EnemyAnimationController AnimController { get; protected set; }
         [Header("StateOverride")]
         [SerializeField] public bool loopOverrideState = false;
         [SerializeField] protected AIState overrideAIState;
@@ -64,15 +66,34 @@ namespace AI
         [HideInInspector] public float currentAttackTime = 0f;
         [HideInInspector] public float lastAttackTime = 0f;
 
+        [Space(5)]
+        [Header("Friendly NPC")]
+        [SerializeField] protected bool isFriendlyNpc = false;
+        [SerializeField] protected Transform designatedEnemyTarget;
+        [SerializeField] protected Transform fallbackTarget;
+        [SerializeField] protected float fallbackActionDistance = 0.3f;
+        [SerializeField] protected bool invokeFallbackActionOnlyOnce = true;
+        [SerializeField] protected UnityEvent onFallbackTargetReached;
+
         private static float SIGHT_OFFSET = 0.1f;
         private static float TARGET_OFFSET = 0.1f;
+        protected bool isInitialized = false;
+        private bool fallbackActionInvoked = false;
 
         protected virtual void Init()
         {
-            AnimationController = GetComponent<EnemyAnimationController>();
+            if (isInitialized) return;
+
+            AnimController = GetComponent<EnemyAnimationController>();
             rb = GetComponent<Rigidbody2D>();
             capsule = GetComponent<CapsuleCollider2D>();
             createdStates = new List<BaseStateAI>();
+            isInitialized = true;
+        }
+
+        public void Initialize()
+        {
+            Init();
         }
 
         public virtual void ActivateSpecial( bool isActive) { }
@@ -93,6 +114,11 @@ namespace AI
 
         private void CanAttack()
         {
+            canAttack = false;
+
+            if (target == null)
+                return;
+
             Vector2 direction = target.position - transform.position;
             float distance = direction.magnitude;
 
@@ -107,6 +133,11 @@ namespace AI
             // Сбрасываем состояние перед проверкой
             canSeeTarget = false;
             target = null;
+
+            if (TryUseDesignatedEnemyTarget())
+            {
+                return;
+            }
 
             Vector2 sightPoint = new Vector2(transform.position.x, transform.position.y - SIGHT_OFFSET);
 
@@ -127,7 +158,7 @@ namespace AI
                 Vector2 potentialTargetPos = new Vector2(potentialTarget.position.x, potentialTarget.position.y + TARGET_OFFSET);
                 Vector2 directionToTarget = (potentialTargetPos - sightPoint).normalized;
 
-                Vector2 sightDirection = AnimationController.GetSpriteRenderer().flipX ? -transform.right : transform.right;
+                Vector2 sightDirection = AnimController.GetSpriteRenderer().flipX ? -transform.right : transform.right;
 
                 // Проверяем, находится ли цель в угле обзора
                 if (Vector2.Angle(sightDirection, directionToTarget) < sightAngle / 2)
@@ -149,6 +180,82 @@ namespace AI
                     }
                 }
             }
+
+            if (!canSeeTarget && isFriendlyNpc && fallbackTarget != null)
+            {
+                target = fallbackTarget;
+            }
+        }
+
+        protected Transform GetCombatTarget()
+        {
+            if (designatedEnemyTarget != null)
+                return designatedEnemyTarget;
+
+            if (canSeeTarget && target != null && target != fallbackTarget)
+                return target;
+
+            return null;
+        }
+
+        protected Transform GetFallbackTarget()
+        {
+            return fallbackTarget;
+        }
+
+        protected bool TryInvokeFallbackAction()
+        {
+            if (fallbackTarget == null)
+                return false;
+
+            float distance = Vector2.Distance(transform.position, fallbackTarget.position);
+            if (distance > fallbackActionDistance)
+                return false;
+
+            if (invokeFallbackActionOnlyOnce && fallbackActionInvoked)
+                return true;
+
+            onFallbackTargetReached?.Invoke();
+            fallbackActionInvoked = true;
+            return true;
+        }
+
+        public void ResetFallbackAction()
+        {
+            fallbackActionInvoked = false;
+        }
+
+        public void SetDesignatedEnemyTarget(Transform enemyTarget)
+        {
+            designatedEnemyTarget = enemyTarget;
+        }
+
+        public void SetFallbackTarget(Transform moveTarget)
+        {
+            fallbackTarget = moveTarget;
+            fallbackActionInvoked = false;
+        }
+
+        private bool TryUseDesignatedEnemyTarget()
+        {
+            if (designatedEnemyTarget == null)
+                return false;
+
+            target = designatedEnemyTarget;
+            canSeeTarget = true;
+            return true;
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.gameObject.layer == LayerMask.NameToLayer("Laser"))
+            {
+                if (!isDead)
+                {
+                    isDead = true;
+                    AnimController.SetAnimatorTrigger(AnimationController.IS_DEAD_S);
+                }
+            }
         }
 
         #region State switch and creation
@@ -168,7 +275,7 @@ namespace AI
             // creates and enters the new state
             currState = CreateState<T>();
             currState.baseEnemy = this;
-            currState.animatonController = AnimationController;
+            currState.animatonController = AnimController;
             currState.prevState = previousState;
             currState.EnterState();
         }
