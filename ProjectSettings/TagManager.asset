@@ -24,8 +24,8 @@ TagManager:
   - Bird
   - Laser
   - BackSolid
-  - 
-  - 
+  - Hittable
+  - Friend
   - 
   - 
   - 

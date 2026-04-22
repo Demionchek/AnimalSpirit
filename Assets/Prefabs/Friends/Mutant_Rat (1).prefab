@@ -11,7 +11,11 @@ GameObject:
   - component: {fileID: 6624737347836659011}
   - component: {fileID: 8938140137794775269}
   - component: {fileID: 8970462059949986342}
-  m_Layer: 0
+  - component: {fileID: 4823400045162731752}
+  - component: {fileID: 7698240432913396386}
+  - component: {fileID: 4336961906096661717}
+  - component: {fileID: 6845367712023988213}
+  m_Layer: 17
   m_Name: Mutant_Rat (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,3 +118,151 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4823400045162731752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47321291088305321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7931af376474e6a96f8db706da0919f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Animations.EnemyAnimationController
+  isAttacking: 0
+  baseEnemy: {fileID: 0}
+--- !u!50 &7698240432913396386
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47321291088305321}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!70 &4336961906096661717
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47321291088305321}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0.08}
+  m_Size: {x: 0.37, y: 0.16}
+  m_Direction: 1
+--- !u!114 &6845367712023988213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47321291088305321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e832e654baeb9524f9c73a19106bf685, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AI.FriendlyNpcEnemy
+  speed: 0.5
+  isRange: 0
+  startState: 1
+  deathMask:
+    serializedVersion: 2
+    m_Bits: 0
+  sightRange: 2
+  sightAngle: 90
+  checkFrequency: 0.2
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 2176
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 33792
+  attackDelay: 1
+  canSeeTarget: 0
+  patrolPoints: []
+  waitTimeAtPoint: 2
+  reachedPointDistance: 0.1
+  currentPointIndex: 0
+  isWaiting: 0
+  stoppingDistance: 1
+  canAttack: 0
+  target: {fileID: 0}
+  loopOverrideState: 0
+  overrideAIState: 0
+  audioSource: {fileID: 0}
+  attackSound: {fileID: 0}
+  deathSound: {fileID: 0}
+  currentAttackTime: 0
+  lastAttackTime: 0
+  isFriendlyNpc: 1
+  designatedEnemyTarget: {fileID: 0}
+  fallbackTarget: {fileID: 0}
+  fallbackActionDistance: 0.3
+  invokeFallbackActionOnlyOnce: 1
+  onFallbackTargetReached:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 47321291088305321}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  attackRadius: 0.25
+  attackDistanceMin: 0.5
+  attackDistanceMax: 0.7
+  fallSpeed: 3
+  wallCheckDistance: 0.2
+  groundNormalMinY: 0.35

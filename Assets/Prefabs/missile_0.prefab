@@ -124,7 +124,7 @@ MonoBehaviour:
     m_Bits: 12544
   explodeOnContactMask:
     serializedVersion: 2
-    m_Bits: 13569
+    m_Bits: 13568
 --- !u!1 &7896884098379373932
 GameObject:
   m_ObjectHideFlags: 0

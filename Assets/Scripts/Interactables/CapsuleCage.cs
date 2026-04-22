@@ -70,11 +70,11 @@ namespace Interactables
                 yield return null;
             }
 
+            _collider2D.enabled = false;
             Vector3 finalPosition = startLocalPosition;
             finalPosition.y = startLocalPosition.y + curve.Evaluate(1f) * _moveYDelta;
-            _prisoner.position = finalPosition;
+            _prisoner.localPosition = finalPosition;
             _moveCoroutine = null;
-            _collider2D.enabled = false;
 
             friendlyNpc?.Activate();
         }

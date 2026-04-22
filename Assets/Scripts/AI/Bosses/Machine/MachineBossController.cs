@@ -1,9 +1,13 @@
 using System.Collections;
+using System.Collections.Generic;
 using Interfaces;
 using Interactables;
 using ObjectPool;
 using Player;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 
 namespace AI.Bosses.Machine
 {
@@ -11,6 +15,7 @@ namespace AI.Bosses.Machine
     {
         [Header("Health")]
         [SerializeField] private int maxHealth = 10;
+        [SerializeField] private MachineBossHealthUI healthUI;
 
         [Header("Phases")]
         [SerializeField] private float attackPhaseDuration = 12f;
@@ -23,6 +28,10 @@ namespace AI.Bosses.Machine
         [SerializeField] private PlayerController player;
         [SerializeField] private MachineAnimationController animationController;
         [SerializeField] private InteractableCharacter[] interactionCharacters;
+        [FormerlySerializedAs("light2D")] [SerializeField] private Light2D[] lights2D;
+        [SerializeField] private Color attackColor;
+        [SerializeField] private Color cooldownColor;
+        [SerializeField] private GameObject cooldownEffect;
 
         [Header("Rocket Attack")]
         [SerializeField] private MachineHomingRocket rocketPrefab;
@@ -44,6 +53,9 @@ namespace AI.Bosses.Machine
         private int health;
         private bool isDead;
         private bool cooldownInterrupted;
+        private readonly List<InteractableCharacter> availableInteractionCharacters = new List<InteractableCharacter>();
+        private readonly List<InteractableCharacter> activeCooldownCharacters = new List<InteractableCharacter>();
+        private readonly Dictionary<InteractableCharacter, UnityAction> interactionCharacterListeners = new Dictionary<InteractableCharacter, UnityAction>();
 
         private void Awake()
         {
@@ -59,7 +71,8 @@ namespace AI.Bosses.Machine
                 rocketPool = new GameObjectPool(rocketPrefab.gameObject, rocketPoolPreloadCount);
             }
 
-            SetInteractionCharactersEnabled(false);
+            ResetInteractionCharacterPool();
+            RefreshHealthUi();
         }
 
         private void OnEnable()
@@ -79,6 +92,7 @@ namespace AI.Bosses.Machine
             }
 
             StopLasers();
+            DisableActiveCooldownCharacters();
         }
 
         public void Hit()
@@ -86,6 +100,7 @@ namespace AI.Bosses.Machine
             if (isDead) return;
 
             health = Mathf.Max(health - 1, 0);
+            RefreshHealthUi();
 
             if (health <= 0)
             {
@@ -117,7 +132,9 @@ namespace AI.Bosses.Machine
 
         private IEnumerator AttackPhase()
         {
-            SetInteractionCharactersEnabled(false);
+            DisableActiveCooldownCharacters();
+            SwitchColorLights(attackColor);
+            cooldownEffect.SetActive(false);
 
             float phaseTime = 0f;
             float attackTimer = 0f;
@@ -142,7 +159,10 @@ namespace AI.Bosses.Machine
         {
             StopLasers();
             cooldownInterrupted = false;
-            SetInteractionCharactersEnabled(true);
+            EnableRandomCooldownCharacters();
+            SwitchColorLights(cooldownColor);
+            cooldownEffect.SetActive(true);
+
 
             float timer = 0f;
             while (!isDead && !cooldownInterrupted && timer < cooldownDuration)
@@ -151,7 +171,108 @@ namespace AI.Bosses.Machine
                 yield return null;
             }
 
-            SetInteractionCharactersEnabled(false);
+            DisableActiveCooldownCharacters();
+        }
+
+        private void SwitchColorLights(Color color)
+        {
+            if (lights2D.Length > 0)
+            {
+                foreach (var light2D in lights2D)
+                {
+                    light2D.color = color;
+                }
+            }
+        }
+
+        private void EnableRandomCooldownCharacters()
+        {
+            DisableActiveCooldownCharacters();
+
+            if (availableInteractionCharacters.Count == 0)
+            {
+                return;
+            }
+
+            int minCount = Mathf.Min(2, availableInteractionCharacters.Count);
+            int maxCount = Mathf.Min(3, availableInteractionCharacters.Count);
+            int targetCount = Random.Range(minCount, maxCount + 1);
+
+            List<InteractableCharacter> selectionPool = new List<InteractableCharacter>(availableInteractionCharacters);
+            for (int i = 0; i < targetCount && selectionPool.Count > 0; i++)
+            {
+                int index = Random.Range(0, selectionPool.Count);
+                InteractableCharacter character = selectionPool[index];
+                selectionPool.RemoveAt(index);
+
+                if (character == null)
+                {
+                    continue;
+                }
+
+                activeCooldownCharacters.Add(character);
+                character.SetCondition(true);
+                character.SetInteractionEnabled(true);
+            }
+        }
+
+        private void DisableActiveCooldownCharacters()
+        {
+            for (int i = 0; i < activeCooldownCharacters.Count; i++)
+            {
+                InteractableCharacter character = activeCooldownCharacters[i];
+                if (character == null)
+                {
+                    continue;
+                }
+
+                character.SetCondition(false);
+                character.SetInteractionEnabled(false);
+            }
+
+            activeCooldownCharacters.Clear();
+        }
+
+        private void OnInteractionCharacterInteracted(InteractableCharacter character)
+        {
+            if (character == null)
+            {
+                return;
+            }
+
+            if (activeCooldownCharacters.Remove(character))
+            {
+                availableInteractionCharacters.Remove(character);
+                character.SetCondition(false);
+                character.SetInteractionEnabled(false);
+            }
+
+            EndCooldown();
+        }
+
+        private void ResetInteractionCharacterPool()
+        {
+            availableInteractionCharacters.Clear();
+            activeCooldownCharacters.Clear();
+            interactionCharacterListeners.Clear();
+
+            if (interactionCharacters == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < interactionCharacters.Length; i++)
+            {
+                InteractableCharacter character = interactionCharacters[i];
+                if (character == null)
+                {
+                    continue;
+                }
+
+                availableInteractionCharacters.Add(character);
+                character.SetCondition(false);
+                character.SetInteractionEnabled(false);
+            }
         }
 
         private void DoRandomAttack()
@@ -277,28 +398,50 @@ namespace AI.Bosses.Machine
 
         private void SubscribeInteractionCharacters()
         {
-            if (interactionCharacters == null) return;
+            ResetInteractionCharacterPool();
+
+            if (interactionCharacters == null)
+            {
+                return;
+            }
 
             for (int i = 0; i < interactionCharacters.Length; i++)
             {
-                if (interactionCharacters[i] != null)
+                InteractableCharacter character = interactionCharacters[i];
+                if (character == null)
                 {
-                    interactionCharacters[i].OnInteract.AddListener(EndCooldown);
+                    continue;
                 }
+
+                UnityAction listener = () => OnInteractionCharacterInteracted(character);
+                interactionCharacterListeners[character] = listener;
+                character.OnInteract.AddListener(listener);
             }
         }
 
         private void UnsubscribeInteractionCharacters()
         {
-            if (interactionCharacters == null) return;
+            if (interactionCharacters == null)
+            {
+                interactionCharacterListeners.Clear();
+                return;
+            }
 
             for (int i = 0; i < interactionCharacters.Length; i++)
             {
-                if (interactionCharacters[i] != null)
+                InteractableCharacter character = interactionCharacters[i];
+                if (character == null)
                 {
-                    interactionCharacters[i].OnInteract.RemoveListener(EndCooldown);
+                    continue;
+                }
+
+                if (interactionCharacterListeners.TryGetValue(character, out UnityAction listener))
+                {
+                    character.OnInteract.RemoveListener(listener);
                 }
             }
+
+            interactionCharacterListeners.Clear();
         }
 
         private void StopLasers()
@@ -312,9 +455,11 @@ namespace AI.Bosses.Machine
         private void Die()
         {
             isDead = true;
+            RefreshHealthUi();
             StopLasers();
-            SetInteractionCharactersEnabled(false);
+            DisableActiveCooldownCharacters();
             animationController?.TriggerDeath();
+            cooldownEffect.SetActive(false);
 
             if (phaseRoutine != null)
             {
@@ -326,6 +471,7 @@ namespace AI.Bosses.Machine
         private void OnValidate()
         {
             maxHealth = Mathf.Max(1, maxHealth);
+            health = Mathf.Clamp(health, 0, maxHealth);
             attackPhaseDuration = Mathf.Max(0f, attackPhaseDuration);
             cooldownDuration = Mathf.Max(0f, cooldownDuration);
             minAttackDelay = Mathf.Max(0.01f, minAttackDelay);
@@ -336,6 +482,12 @@ namespace AI.Bosses.Machine
             laserMoveSpeedRange.x = Mathf.Max(0.01f, laserMoveSpeedRange.x);
             laserMoveSpeedRange.y = Mathf.Max(laserMoveSpeedRange.x, laserMoveSpeedRange.y);
             rocketPoolPreloadCount = Mathf.Max(0, rocketPoolPreloadCount);
+            RefreshHealthUi();
+        }
+
+        private void RefreshHealthUi()
+        {
+            healthUI?.SetHealth(health, maxHealth);
         }
     }
 }

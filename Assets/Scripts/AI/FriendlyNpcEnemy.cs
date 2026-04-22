@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using Animations;
 using Interfaces;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace AI
 {
@@ -9,12 +11,20 @@ namespace AI
     {
         [Header("Friendly Combat")]
         [SerializeField] private float attackRadius = 0.25f;
-        [SerializeField] private float attackDistance = 0.35f;
+        [SerializeField] private float attackDistanceMin = 0.5f;
+        [SerializeField] private float attackDistanceMax = 0.7f;
+        [Header("Friendly Movement")]
+        [SerializeField] private float fallSpeed = 3f;
+        [SerializeField] private float wallCheckDistance = 0.2f;
+        [SerializeField] private float groundNormalMinY = 0.35f;
         private bool isActivated = false;
+        private float attackDistance = 0.5f;
+        private readonly ContactPoint2D[] groundContacts = new ContactPoint2D[16];
 
         public void Activate()
         {
             isActivated = true;
+            attackDistance = Random.Range(attackDistanceMin, attackDistanceMax);
             Initialize();
             StartCoroutine(DetectionRoutine());
         }
@@ -39,9 +49,9 @@ namespace AI
 
             if (combatTarget != null)
             {
-                MoveToTarget(combatTarget, stoppingDistance, true);
+                MoveToTarget(combatTarget, attackDistance, true);
 
-                if (Vector2.Distance(transform.position, combatTarget.position) <= stoppingDistance &&
+                if (Mathf.Abs(transform.position.x - combatTarget.position.x) <= attackDistance &&
                     currentAttackTime > lastAttackTime + attackDelay)
                 {
                     AttackTarget();
@@ -57,36 +67,93 @@ namespace AI
 
                 if (TryInvokeFallbackAction())
                 {
-                    rb.linearVelocity = Vector2.zero;
+                    rb.linearVelocity = GetGroundAwareIdleVelocity();
                     AnimController.SetAnimatorFloat(AnimationController.SPEED_S, 0f);
                 }
 
                 return;
             }
 
-            rb.linearVelocity = Vector2.zero;
+            rb.linearVelocity = GetGroundAwareIdleVelocity();
             AnimController.SetAnimatorFloat(AnimationController.SPEED_S, 0f);
         }
 
         private void MoveToTarget(Transform moveTarget, float stopDistance, bool updateCanAttack)
         {
-            Vector2 direction = moveTarget.position - transform.position;
-            float distance = direction.magnitude;
+            float deltaX = moveTarget.position.x - transform.position.x;
+            float horizontalDistance = Mathf.Abs(deltaX);
+            bool isOnSolid = IsOnSolid();
+            Vector2 fallVelocity = isOnSolid ? Vector2.zero : Vector2.down * fallSpeed;
 
-            if (distance <= stopDistance)
+            if (horizontalDistance <= stopDistance)
             {
-                rb.linearVelocity = Vector2.zero;
+                rb.linearVelocity = fallVelocity;
                 AnimController.SetAnimatorFloat(AnimationController.SPEED_S, 0f);
                 if (updateCanAttack) canAttack = true;
                 return;
             }
 
-            direction.Normalize();
-            rb.linearVelocity = direction * speed;
-            AnimController.SetAnimatorFloat(AnimationController.SPEED_S, 1f);
-            AnimController.GetSpriteRenderer().flipX = direction.x < 0f;
+            Vector2 horizontalDirection = new Vector2(Mathf.Sign(deltaX), 0f);
+            Vector2 moveVelocity = horizontalDirection * speed;
+
+            if (TryGetWallHit(horizontalDirection, out RaycastHit2D wallHit))
+            {
+                Vector2 wallTangent = Vector2.Perpendicular(wallHit.normal).normalized;
+                if (Vector2.Dot(wallTangent, horizontalDirection) < 0f)
+                {
+                    wallTangent = -wallTangent;
+                }
+
+                moveVelocity = Vector3.Project(moveVelocity, wallTangent);
+            }
+
+            Vector2 finalVelocity = moveVelocity + fallVelocity;
+            rb.linearVelocity = finalVelocity;
+            AnimController.SetAnimatorFloat(AnimationController.SPEED_S, finalVelocity.sqrMagnitude > 0.0001f ? 1f : 0f);
+            AnimController.GetSpriteRenderer().flipX = horizontalDirection.x < 0f;
 
             if (updateCanAttack) canAttack = false;
+        }
+
+        private bool IsOnSolid()
+        {
+            ContactFilter2D filter = new ContactFilter2D
+            {
+                useLayerMask = true,
+                layerMask = obstacleMask,
+                useTriggers = false
+            };
+
+            int contactsCount = capsule.GetContacts(filter, groundContacts);
+            for (int i = 0; i < contactsCount; i++)
+            {
+                if (groundContacts[i].normal.y >= groundNormalMinY)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private Vector2 GetGroundAwareIdleVelocity()
+        {
+            return IsOnSolid() ? Vector2.zero : Vector2.down * fallSpeed;
+        }
+
+        private bool TryGetWallHit(Vector2 direction, out RaycastHit2D hit)
+        {
+            if (direction.sqrMagnitude < 0.0001f)
+            {
+                hit = default;
+                return false;
+            }
+
+            Vector2 castDirection = direction.normalized;
+            Vector2 origin = (Vector2)capsule.bounds.center + castDirection * (capsule.bounds.extents.x + 0.01f);
+            float rayLength = wallCheckDistance + 0.01f;
+            hit = Physics2D.Raycast(origin, castDirection, rayLength, obstacleMask);
+            return hit.collider != null && hit.collider != capsule;
         }
 
         private void AttackTarget()

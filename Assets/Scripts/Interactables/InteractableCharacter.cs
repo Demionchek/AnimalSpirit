@@ -2,15 +2,18 @@ using System;
 using System.Collections;
 using DefaultNamespace;
 using Interfaces;
+using NUnit.Framework.Constraints;
 using Player;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering.Universal;
 using Zenject;
 
 namespace Interactables
 {
     public class InteractableCharacter : MonoBehaviour, IInteractable
     {
+        [SerializeField] private bool isCondition = false;
         [SerializeField] private bool canAttack = false;
         [SerializeField] private bool canHit = false;
         [SerializeField] private float hitDistance = 0.2f;
@@ -31,6 +34,7 @@ namespace Interactables
         [SerializeField] private PlayerController.Shape targetShape;
         [SerializeField] private DoorInteractor doorInteractor;
         [SerializeField] private GameObject objToActivate;
+        [SerializeField] private Light2D light2D;
         public bool doorCondition = false;
         [Space(5)]
         [Header("Audio")]
@@ -57,6 +61,7 @@ namespace Interactables
 
         private bool isFlip;
         private bool wasActivated;
+        private bool isConditionMet = false;
 
         public UnityEvent OnInteract;
 
@@ -65,6 +70,8 @@ namespace Interactables
             animator = GetComponent<Animator>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             audioSource = GetComponent<AudioSource>();
+
+            if(!isCondition) isConditionMet = true;
         }
 
         private void Update()
@@ -79,9 +86,19 @@ namespace Interactables
             currentTime = Time.time;
         }
 
+        public void SetCondition(bool condition)
+        {
+            isConditionMet = condition;
+
+            if (light2D != null)
+            {
+                light2D.enabled = condition;
+            }
+        }
+
         public void Interact()
         {
-            if (!isInteractionEnabled || !canInteract) return;
+            if (!isInteractionEnabled || !canInteract || !isConditionMet) return;
 
             lastTime = Time.time;
             canInteract = false;

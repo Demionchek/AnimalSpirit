@@ -23,7 +23,7 @@ namespace AI
         [SerializeField] public float speed;
         [SerializeField] private bool isRange = false;
         [SerializeField] AIState startState = AIState.idle;
-
+        [SerializeField] private LayerMask deathMask;
         [Space(5)]
         [Header("Spotting")]
         [SerializeField] private float sightRange = 2f;
@@ -248,7 +248,7 @@ namespace AI
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.gameObject.layer == LayerMask.NameToLayer("Laser"))
+            if ((deathMask.value & ( 1 << other.gameObject.layer)) != 0)
             {
                 if (!isDead)
                 {
