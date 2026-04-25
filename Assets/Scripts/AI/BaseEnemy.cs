@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using AI.States;
 using Animations;
 using Player;
 using UnityEngine;
@@ -253,7 +254,8 @@ namespace AI
                 if (!isDead)
                 {
                     isDead = true;
-                    AnimController.SetAnimatorTrigger(AnimationController.IS_DEAD_S);
+                    AnimController.SetAnimatorTrigger(AnimationController.IS_DEAD_ALT_S);
+                    ChangeState<DeathState>();
                 }
             }
         }

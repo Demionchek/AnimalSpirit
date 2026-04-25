@@ -78,7 +78,29 @@ namespace AI.Bosses.Machine
         private void OnEnable()
         {
             SubscribeInteractionCharacters();
+        }
+
+        public void Init()
+        {
+            if (isDead || !isActiveAndEnabled || phaseRoutine != null)
+            {
+                return;
+            }
+
+            healthUI?.gameObject.SetActive(true);
+
             phaseRoutine = StartCoroutine(PhaseLoop());
+        }
+
+        public void SetHealthUi(MachineBossHealthUI bossHealthUi)
+        {
+            healthUI = bossHealthUi;
+            RefreshHealthUi();
+        }
+
+        public void SetPlayer(PlayerController playerController)
+        {
+            player = playerController;
         }
 
         private void OnDisable()

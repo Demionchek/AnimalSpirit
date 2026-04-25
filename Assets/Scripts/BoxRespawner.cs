@@ -19,9 +19,14 @@ namespace DefaultNamespace
         {
             if (other.gameObject.layer == LayerMask.NameToLayer("Laser"))
             {
-                if (destroyEffect != null) Instantiate(destroyEffect, transform.position, Quaternion.identity);
+                if (destroyEffect != null)
+                {
+                    GameObject effect = Instantiate(destroyEffect, transform.position, Quaternion.identity);
+                    Destroy(effect, 1f);
+                }
                 transform.position = respawnPos.position;
                 rb.linearVelocity = Vector2.zero;
+
             }
         }
     }

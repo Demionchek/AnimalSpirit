@@ -16,12 +16,14 @@ namespace Interactables
         private Animator  _animator;
         private Collider2D _collider2D;
         private Coroutine _moveCoroutine;
+        private AudioSource _audioSource;
         private bool isOpen = false;
 
         private void Awake()
         {
             _animator = GetComponent<Animator>();
             _collider2D = GetComponent<Collider2D>();
+            _audioSource = GetComponent<AudioSource>();
         }
 
         public void Open()
@@ -31,6 +33,7 @@ namespace Interactables
             isOpen = true;
 
             _animator.SetTrigger(AnimationController.IS_OPEN_S);
+            _audioSource.Play();
 
             if (_moveCoroutine != null)
             {

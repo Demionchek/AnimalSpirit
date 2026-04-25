@@ -11,6 +11,7 @@ public class TriggerMovement : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Collider2D triggerCollider;
 
+    private AudioSource _audioSource;
     private Vector2 startPosition;
     private Vector2 targetPosition;
     private bool isMoving = false;
@@ -27,6 +28,8 @@ public class TriggerMovement : MonoBehaviour
 
         if (spriteRenderer != null)
             spriteRenderer.enabled = false;
+
+        _audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -50,6 +53,7 @@ public class TriggerMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            _audioSource?.Play();
             triggerCollider.enabled = false;
             StartMovement();
         }

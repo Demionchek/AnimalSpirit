@@ -19,7 +19,7 @@ namespace Interactables
         [SerializeField] private float hitDistance = 0.2f;
         [Space(5)]
         [SerializeField] private bool hasDialog = false;
-        [SerializeField] private DialogType dialogType;
+        [SerializeField] public DialogType dialogType;
         [Space(5)]
         [SerializeField] private bool unlocksShape = false;
         [SerializeField] private PlayerController.Shape shape;
@@ -102,7 +102,7 @@ namespace Interactables
 
             lastTime = Time.time;
             canInteract = false;
-            interactSign.SetActive(false);
+            interactSign?.SetActive(false);
             if (afterSign != null && !wasActivated)
             {
                 wasActivated = true;

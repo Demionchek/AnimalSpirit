@@ -60,6 +60,7 @@ namespace Player
         public bool isDead {get; private set;}
         private bool isFlip = false;
         private bool isEnoughtSpaceForShape = false;
+        public bool canMove = true;
 
         private LayerMask ratMask;
         private LayerMask dogMask;
@@ -67,6 +68,7 @@ namespace Player
 
         [Inject]
         private CheckPoints checkPoints;
+
 
         public enum Shape { Dog, Rat, Bird }
         public Shape CurrentShape { get; private set; } = Shape.Dog;
@@ -80,6 +82,7 @@ namespace Player
         private Vector2 effectorVelocity = Vector2.zero;
 
         public event Action OnRevive;
+        public event Action OnDeath;
         public event Action<Shape> OnShapeUnlocked;
         public event Action<Shape> OnShapeChanged;
 
@@ -163,6 +166,8 @@ namespace Player
         {
             CurrentSpeed = CurrentShape == Shape.Dog ? dogSpeed : ratSpeed;
 
+            if (!canMove) CurrentSpeed = 0;
+
             // Проверяем, есть ли стена перед игроком в направлении движения
             bool isWallInFront = false;
             if (Mathf.Abs(inputHandler.MoveInput.x) > 0.1f)
@@ -192,6 +197,15 @@ namespace Player
 
         private void HandleFlyingMovement()
         {
+            float flySpeed = birdFlySpeed;
+            float ascendSpeed = birdAscendSpeed;
+
+            if (!canMove)
+            {
+                flySpeed = 0;
+                ascendSpeed = 0;
+            }
+
             rb.linearVelocity = new Vector2(
                 inputHandler.MoveInput.x * birdFlySpeed,
                 inputHandler.MoveInput.y * birdAscendSpeed
@@ -413,6 +427,7 @@ namespace Player
             playerAnimationController.SetTrigger(AnimationController.IS_DEAD_S);
             isDead = true;
             rb.gravityScale = 1;
+            OnDeath?.Invoke();
 
             StartCoroutine(ReviveCoroutine());
         }

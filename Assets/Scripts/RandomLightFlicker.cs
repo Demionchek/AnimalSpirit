@@ -9,6 +9,8 @@ public class RandomLightFlicker : MonoBehaviour
     [SerializeField] private float maxFrequency = 2f;
     [SerializeField] private float minDelay = 0.05f;
     [SerializeField] private float maxDelay = 0.2f;
+    [SerializeField] private AudioClip[] OnClip = null;
+    [SerializeField] private AudioClip[] OffClip = null;
 
     [Header("Активация")]
     [SerializeField] private bool useTriggerActivation = false;
@@ -18,6 +20,7 @@ public class RandomLightFlicker : MonoBehaviour
     [SerializeField] private bool startEnabled = true;
     [SerializeField] private bool isFlickering = false;
 
+    private AudioSource _audioSource;
     private Light2D light2D;
     private float nextFlickerTime;
     private float flickerEndTime;
@@ -27,6 +30,7 @@ public class RandomLightFlicker : MonoBehaviour
     private void Awake()
     {
         light2D = GetComponent<Light2D>();
+        _audioSource = GetComponent<AudioSource>();
 
         if (light2D == null)
         {
@@ -61,6 +65,12 @@ public class RandomLightFlicker : MonoBehaviour
             if (Time.time >= nextFlickerTime)
             {
                 StartFlickerSequence();
+
+                if (OffClip.Length != 0)
+                {
+                    int randomIndex = Random.Range(0, OffClip.Length);
+                    _audioSource.PlayOneShot(OffClip[randomIndex]);
+                }
             }
         }
         else
@@ -69,6 +79,12 @@ public class RandomLightFlicker : MonoBehaviour
             if (Time.time >= flickerEndTime)
             {
                 EndFlickerSequence();
+
+                if (OnClip.Length != 0)
+                {
+                    int randomIndex = Random.Range(0, OnClip.Length);
+                    _audioSource.PlayOneShot(OnClip[randomIndex]);
+                }
             }
         }
     }

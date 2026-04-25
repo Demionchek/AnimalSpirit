@@ -25,13 +25,7 @@ public class YPositionToValue : MonoBehaviour
             isPlayerInside = true;
             playerTransform = other.transform;
             playerController = player;
-            playerController.OnRevive += SetToDefault;
-            Debug.Log("Player entered the collider");
-
-            if (audioSource != null && !audioSource.isPlaying)
-            {
-                StartCoroutine(SoundEnableSmoothly());
-            }
+            //playerController.OnRevive += SetToDefault;
         }
     }
 
@@ -52,7 +46,6 @@ public class YPositionToValue : MonoBehaviour
         if (other.TryGetComponent(out PlayerController player))
         {
             isPlayerInside = false;
-            Debug.Log("Player exited the collider");
         }
     }
 

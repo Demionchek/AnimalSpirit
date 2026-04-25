@@ -149,7 +149,7 @@ MonoBehaviour:
   lastSegmentOffset: 0.1
   wallMask:
     serializedVersion: 2
-    m_Bits: 1025
+    m_Bits: 263169
   rebuildEveryFrame: 0
   opener: {fileID: 0}
   usePeriodicToggle: 0

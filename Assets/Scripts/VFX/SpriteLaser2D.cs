@@ -44,6 +44,7 @@ namespace VFX
         private GameObject endSegment;
         private bool isLaserEnabled;
         private bool isWarmupActive;
+        private bool wasBlockedByOpener;
         private float toggleTimer;
         private float warmupTimer;
 
@@ -54,6 +55,7 @@ namespace VFX
             toggleTimer = 0f;
             isWarmupActive = false;
             isLaserEnabled = false;
+            wasBlockedByOpener = false;
             warmupTimer = 0f;
 
             if (usePeriodicToggle || startEnabled)
@@ -76,7 +78,17 @@ namespace VFX
                     DisableRay();
                 }
 
+                wasBlockedByOpener = true;
                 return;
+            }
+
+            if (wasBlockedByOpener)
+            {
+                wasBlockedByOpener = false;
+                if (!isLaserEnabled && !isWarmupActive)
+                {
+                    EnableRay();
+                }
             }
 
             if (usePeriodicToggle)
@@ -90,7 +102,7 @@ namespace VFX
                 return;
             }
 
-            if (!isLaserEnabled) return;
+            if (!isLaserEnabled || blockedByOpener) return;
 
             if (rebuildEveryFrame)
             {

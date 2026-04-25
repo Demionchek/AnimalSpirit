@@ -245,12 +245,15 @@ MonoBehaviour:
   speed: 1
   isRange: 1
   startState: 4
+  deathMask:
+    serializedVersion: 2
+    m_Bits: 0
   sightRange: 2
   sightAngle: 180
   checkFrequency: 0.2
   targetMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 8448
   obstacleMask:
     serializedVersion: 2
     m_Bits: 1024

@@ -222,7 +222,7 @@ MonoBehaviour:
     m_Bits: 2176
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 33792
+    m_Bits: 295936
   attackDelay: 1
   canSeeTarget: 0
   patrolPoints: []

@@ -23,6 +23,7 @@ namespace DefaultNamespace
             boxCollider2D = GetComponent<BoxCollider2D>();
             audioSource = GetComponent<AudioSource>();
             wasOpen = AreAllOpenersActive(); // Инициализируем начальное состояние
+            UpdateDoorState(wasOpen);
         }
 
         private void Update()
@@ -41,6 +42,8 @@ namespace DefaultNamespace
 
         private bool AreAllOpenersActive()
         {
+            if (openers == null || openers.Length == 0) return false;
+
             foreach (var opener in openers)
             {
                 if (opener == null || !opener.isActive)
