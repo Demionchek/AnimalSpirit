@@ -273,7 +273,7 @@ MonoBehaviour:
   overrideAIState: 0
   audioSource: {fileID: 0}
   attackSound: {fileID: 0}
-  deathSound: {fileID: 0}
+  deathSound: {fileID: 8300000, guid: 03036b21bcc868c4eb2b1238cdbd70e3, type: 3}
   currentAttackTime: 0
   lastAttackTime: 0
   isFriendlyNpc: 0

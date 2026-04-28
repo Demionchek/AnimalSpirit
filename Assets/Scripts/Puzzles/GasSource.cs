@@ -10,11 +10,13 @@ namespace Puzzles
         [SerializeField] private bool isActive = true;
         [SerializeField] private SpriteRenderer gasSprite;
         [SerializeField] private Collider2D gasCollider;
+        private AudioSource audioSource;
 
         public bool IsActive => isActive;
 
         private void Start()
         {
+            audioSource = GetComponent<AudioSource>();
             UpdateVisuals();
         }
 
@@ -38,6 +40,9 @@ namespace Puzzles
 
             if (gasCollider != null)
                 gasCollider.enabled = isActive;
+            
+            if (audioSource != null)
+                audioSource.enabled = isActive;
         }
 
         private void OnTriggerEnter2D(Collider2D other)

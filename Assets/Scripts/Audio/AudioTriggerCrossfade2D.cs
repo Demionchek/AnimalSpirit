@@ -123,22 +123,22 @@ namespace DefaultNamespace
 
         private void ApplyEnterPlaybackAction()
         {
-            if (toSource == null || fromSource == null)
-            {
-                return;
-            }
+            // if (toSource == null || fromSource == null)
+            // {
+            //     return;
+            // }
 
             switch (enterPlaybackAction)
             {
                 case EnterPlaybackAction.None:
                     break;
                 case EnterPlaybackAction.PlayBoth:
-                    if (!toSource.isPlaying) toSource.Play();
-                    if (!fromSource.isPlaying) fromSource.Play();
+                    if (toSource != null && !toSource.isPlaying) toSource?.Play();
+                    if (fromSource != null && !fromSource.isPlaying) fromSource?.Play();
                     break;
                 case EnterPlaybackAction.StopBoth:
-                    toSource.Stop();
-                    fromSource.Stop();
+                    toSource?.Stop();
+                    fromSource?.Stop();
                     break;
                 case EnterPlaybackAction.ToggleBoth:
                     TogglePlayback(toSource);
@@ -182,14 +182,16 @@ namespace DefaultNamespace
 
         private IEnumerator CrossfadeRoutine(bool isToActive)
         {
-            if (toSource == null || fromSource == null)
-            {
-                yield break;
-            }
+            // if (toSource == null || fromSource == null)
+            // {
+            //     yield break;
+            // }
 
             var duration = Mathf.Max(0.01f, fadeDuration);
-            var startFromVolume = toSource.volume;
-            var startToVolume = fromSource.volume;
+            var startFromVolume = 0f;
+            var startToVolume = 0f;
+            if (toSource != null) startFromVolume = toSource.volume;
+            if (fromSource != null) startToVolume = fromSource.volume;
             var targetFromVolume = isToActive ? 0f : 1f;
             var targetToVolume = isToActive ? 1f : 0f;
 
@@ -218,22 +220,22 @@ namespace DefaultNamespace
 
                 elapsed += Time.deltaTime;
                 var t = Mathf.Clamp01(elapsed / duration);
-                toSource.volume = Mathf.Lerp(startFromVolume, targetFromVolume, t);
-                fromSource.volume = Mathf.Lerp(startToVolume, targetToVolume, t);
+                if (toSource != null) toSource.volume = Mathf.Lerp(startFromVolume, targetFromVolume, t);
+                if (fromSource != null) fromSource.volume = Mathf.Lerp(startToVolume, targetToVolume, t);
                 yield return null;
             }
 
-            toSource.volume = targetFromVolume;
-            fromSource.volume = targetToVolume;
+            if (toSource != null) toSource.volume = targetFromVolume;
+            if (fromSource != null)fromSource.volume = targetToVolume;
 
             if (stopFromSourceAfterFade && isToActive)
             {
-                toSource.Stop();
+                toSource?.Stop();
             }
 
             if (stopFromSourceAfterFade && !isToActive)
             {
-                fromSource.Stop();
+                fromSource?.Stop();
             }
         }
     }

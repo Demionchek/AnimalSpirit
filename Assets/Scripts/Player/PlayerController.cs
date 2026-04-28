@@ -112,6 +112,8 @@ namespace Player
             }
             Debug.LogWarning($"Форма {shapeToUnlock} не найдена в настройках!");
         }
+        
+        public void SetCanMove(bool canMove) => this.canMove = canMove;
 
         private void Update()
         {

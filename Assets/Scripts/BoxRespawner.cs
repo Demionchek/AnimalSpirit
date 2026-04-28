@@ -17,6 +17,8 @@ namespace DefaultNamespace
 
         private void OnTriggerEnter2D(Collider2D other)
         {
+            if (respawnPos == null) return;
+            
             if (other.gameObject.layer == LayerMask.NameToLayer("Laser"))
             {
                 if (destroyEffect != null)
