@@ -17,7 +17,14 @@ namespace DefaultNamespace
         Dialog_2,
         Dialog_3,
         Dialog_4,
-        Dialog_5
+        Dialog_5,
+        Dialog_6,
+        Dialog_7,
+        Dialog_8,
+        Dialog_9,
+        Dialog_10,
+        Dialog_11,
+        Dialog_12
     }
 
     public class DialogueSystem : MonoBehaviour
