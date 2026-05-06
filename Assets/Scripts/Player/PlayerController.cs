@@ -37,6 +37,14 @@ namespace Player
         [SerializeField] private RandomSoundPlayer randomWoofPlayer;
         [SerializeField] private bool ignoreDamage = false;
 
+        [Header("Additional Health")]
+        [SerializeField] private int maxAdditionalHealth = 1;
+        [SerializeField] private bool activateAdditionalHealthOnStart = false;
+        [SerializeField] private GameObject additionalHealthVfx;
+        [SerializeField] private float additionalHealthInvulnerabilityTime = 1f;
+        [SerializeField] private float invulnerabilityBlinkInterval = 0.1f;
+        [SerializeField, Range(0f, 1f)] private float invulnerabilityBlinkAlpha = 0.35f;
+
         [Inject]
         private InputHandler inputHandler;
         [Inject]
@@ -56,11 +64,18 @@ namespace Player
         private Rigidbody2D rb;
         private CapsuleCollider2D capsuleCollider;
         private BoxCollider2D boxTriggerCollider;
+        private SpriteRenderer spriteRenderer;
         private PlayerAnimationController playerAnimationController;
         public bool isDead {get; private set;}
         private bool isFlip = false;
         private bool isEnoughtSpaceForShape = false;
         public bool canMove = true;
+        private bool isInvulnerable = false;
+        private bool isAdditionalHealthActivated = false;
+        private int currentAdditionalHealth = 0;
+        private Coroutine invulnerabilityCoroutine;
+        private Color spriteColorBeforeInvulnerability;
+        private bool isSpriteBlinking = false;
 
         private LayerMask ratMask;
         private LayerMask dogMask;
@@ -78,11 +93,15 @@ namespace Player
         public bool IsGrounded { get; private set; }
         public float CurrentSpeed { get; private set; }
         public Vector2 Velocity => rb.linearVelocity;
+        public bool IsAdditionalHealthActivated => isAdditionalHealthActivated;
+        public int CurrentAdditionalHealth => currentAdditionalHealth;
+        public int MaxAdditionalHealth => Mathf.Max(1, maxAdditionalHealth);
 
         private Vector2 effectorVelocity = Vector2.zero;
 
         public event Action OnRevive;
         public event Action OnDeath;
+        public event Action<int, int, bool> OnAdditionalHealthChanged;
         public event Action<Shape> OnShapeUnlocked;
         public event Action<Shape> OnShapeChanged;
 
@@ -91,11 +110,21 @@ namespace Player
             rb = GetComponent<Rigidbody2D>();
             capsuleCollider = GetComponent<CapsuleCollider2D>();
             boxTriggerCollider = GetComponent<BoxCollider2D>();
+            spriteRenderer = GetComponent<SpriteRenderer>();
             playerAnimationController = GetComponent<PlayerAnimationController>();
 
             // Инициализация начальной формы
             CurrentShape = startingShape;
             ChangeShape(startingShape);
+
+            if (activateAdditionalHealthOnStart)
+            {
+                ActivateAdditionalHealth();
+            }
+            else
+            {
+                RefreshAdditionalHealthState();
+            }
         }
 
         public void UnlockShape(Shape shapeToUnlock)
@@ -424,7 +453,12 @@ namespace Player
 
         public void Hit()
         {
-            if (isDead || dialogueSystem.isDialogRunning || ignoreDamage) return;
+            if (isDead || dialogueSystem.isDialogRunning || ignoreDamage || isInvulnerable) return;
+
+            if (TryConsumeAdditionalHealth())
+            {
+                return;
+            }
 
             playerAnimationController.SetTrigger(AnimationController.IS_DEAD_S);
             isDead = true;
@@ -442,8 +476,135 @@ namespace Player
             transform.position = checkPoints.CurrentCheckPoint.position;
             playerAnimationController.SetTrigger(AnimationController.REVIVE_S);
             ChangeShape(CurrentShape);
+            RestoreAdditionalHealthOnRevive();
 
             OnRevive?.Invoke();
+        }
+
+        public void ActivateAdditionalHealth()
+        {
+            isAdditionalHealthActivated = true;
+            currentAdditionalHealth = MaxAdditionalHealth;
+            RefreshAdditionalHealthState();
+        }
+
+        public void DeactivateAdditionalHealth()
+        {
+            isAdditionalHealthActivated = false;
+            currentAdditionalHealth = 0;
+            StopInvulnerability();
+            RefreshAdditionalHealthState();
+        }
+
+        private bool TryConsumeAdditionalHealth()
+        {
+            if (!isAdditionalHealthActivated || currentAdditionalHealth <= 0)
+            {
+                return false;
+            }
+
+            currentAdditionalHealth = Mathf.Max(0, currentAdditionalHealth - 1);
+            RefreshAdditionalHealthState();
+            StartAdditionalHealthInvulnerability();
+            return true;
+        }
+
+        private void RestoreAdditionalHealthOnRevive()
+        {
+            if (!isAdditionalHealthActivated)
+            {
+                RefreshAdditionalHealthState();
+                return;
+            }
+
+            currentAdditionalHealth = MaxAdditionalHealth;
+            RefreshAdditionalHealthState();
+        }
+
+        private void RefreshAdditionalHealthState()
+        {
+            if (additionalHealthVfx != null)
+            {
+                additionalHealthVfx.SetActive(isAdditionalHealthActivated && currentAdditionalHealth > 0);
+            }
+
+            OnAdditionalHealthChanged?.Invoke(currentAdditionalHealth, MaxAdditionalHealth, isAdditionalHealthActivated);
+        }
+
+        private void StartAdditionalHealthInvulnerability()
+        {
+            StopInvulnerability();
+
+            if (additionalHealthInvulnerabilityTime <= 0f)
+            {
+                return;
+            }
+
+            invulnerabilityCoroutine = StartCoroutine(AdditionalHealthInvulnerabilityCoroutine());
+        }
+
+        private IEnumerator AdditionalHealthInvulnerabilityCoroutine()
+        {
+            isInvulnerable = true;
+            spriteColorBeforeInvulnerability = spriteRenderer != null ? spriteRenderer.color : Color.white;
+            isSpriteBlinking = spriteRenderer != null;
+
+            float elapsedTime = 0f;
+            float blinkTimer = 0f;
+            bool isBlinkDimmed = false;
+
+            while (elapsedTime < additionalHealthInvulnerabilityTime)
+            {
+                elapsedTime += Time.deltaTime;
+                blinkTimer += Time.deltaTime;
+
+                if (blinkTimer >= Mathf.Max(0.02f, invulnerabilityBlinkInterval))
+                {
+                    blinkTimer = 0f;
+                    isBlinkDimmed = !isBlinkDimmed;
+                    SetInvulnerabilityBlink(isBlinkDimmed);
+                }
+
+                yield return null;
+            }
+
+            isInvulnerable = false;
+            RestoreInvulnerabilityBlink();
+            invulnerabilityCoroutine = null;
+        }
+
+        private void StopInvulnerability()
+        {
+            if (invulnerabilityCoroutine != null)
+            {
+                StopCoroutine(invulnerabilityCoroutine);
+                invulnerabilityCoroutine = null;
+            }
+
+            isInvulnerable = false;
+            RestoreInvulnerabilityBlink();
+        }
+
+        private void SetInvulnerabilityBlink(bool isDimmed)
+        {
+            if (spriteRenderer == null)
+            {
+                return;
+            }
+
+            Color color = spriteColorBeforeInvulnerability;
+            color.a = isDimmed ? invulnerabilityBlinkAlpha : spriteColorBeforeInvulnerability.a;
+            spriteRenderer.color = color;
+        }
+
+        private void RestoreInvulnerabilityBlink()
+        {
+            if (spriteRenderer != null && isSpriteBlinking)
+            {
+                spriteRenderer.color = spriteColorBeforeInvulnerability;
+            }
+
+            isSpriteBlinking = false;
         }
 
         private void OnCollisionEnter2D(Collision2D other)

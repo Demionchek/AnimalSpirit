@@ -12,9 +12,11 @@ namespace DefaultNamespace
     {
         [SerializeField] private bool isActiveOnStart;
         [SerializeField] private bool triggerOnDeath;
+        [SerializeField] private float maxHeightToTriggerOnDeath = -1;
         [SerializeField] private UnityEvent onTriggerEnter2D;
         [SerializeField] private UnityEvent onEventTrigger;
-
+        [SerializeField] private bool _oneShot = false;
+        private bool _isTriggered = false; 
         private PlayerController _playerController;
 
         private void Awake()
@@ -28,12 +30,15 @@ namespace DefaultNamespace
 
         private void OnPlayerRevive()
         {
-            onEventTrigger?.Invoke();
+            if (_playerController.transform.position.y < maxHeightToTriggerOnDeath)
+                onEventTrigger?.Invoke();
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
+            if (_isTriggered && _oneShot) return;   
             onTriggerEnter2D?.Invoke();
+            _isTriggered = true;
         }
 
         private void OnDestroy()

@@ -5,8 +5,9 @@ using UnityEngine.Rendering.Universal;
 
 public class YPositionToValue : MonoBehaviour
 {
-    public float minY; // Самая низкая точка (значение 1)
-    public float maxY; // Самая высокая точка (значение 0)
+    public float minY;
+    public float maxY; 
+    public float minValue = -0.1f; 
 
     public Light2D globalLight;
     public Light2D playerLight;
@@ -60,8 +61,8 @@ public class YPositionToValue : MonoBehaviour
             normalizedValue = Mathf.Clamp01(normalizedValue);
 
             Debug.Log("Current value: " + normalizedValue);
-
-            if (globalLight != null) globalLight.intensity = normalizedValue;
+            
+            if (globalLight != null && globalLight.intensity > minValue) globalLight.intensity = normalizedValue;
 
             if (playerLight != null) playerLight.intensity = 1 - normalizedValue;
         }
@@ -77,6 +78,6 @@ public class YPositionToValue : MonoBehaviour
     {
         if (globalLight != null) globalLight.intensity = 1;
 
-        if (playerLight != null) playerLight.intensity = 0;
+        if (playerLight != null) playerLight.intensity = minValue;
     }
 }

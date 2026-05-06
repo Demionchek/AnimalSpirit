@@ -118,7 +118,7 @@ MonoBehaviour:
   riseReachDistance: 0.1
   lifeTime: 8
   homingTime: 1
-  explosionRadius: 1
+  explosionRadius: 0.5
   explosionVfxPrefab: {fileID: 7777578651436711692, guid: c40de6503c7bbdc4fb6e8f630bc3275e, type: 3}
   explosionDamageMask:
     serializedVersion: 2
@@ -147,7 +147,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 0.54019547
   MaxDistance: 5
   Pan2D: 0
   rolloffMode: 2

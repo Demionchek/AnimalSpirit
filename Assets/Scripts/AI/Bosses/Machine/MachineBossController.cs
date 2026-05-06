@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
+using Zenject;
 
 namespace AI.Bosses.Machine
 {
@@ -16,6 +17,8 @@ namespace AI.Bosses.Machine
         [Header("Health")]
         [SerializeField] private int maxHealth = 10;
         [SerializeField] private MachineBossHealthUI healthUI;
+        [Header("OnDeath")]
+        [SerializeField] private UnityEvent onDeathTrigger;
 
         [Header("Phases")]
         [SerializeField] private float attackPhaseDuration = 12f;
@@ -23,6 +26,22 @@ namespace AI.Bosses.Machine
         [SerializeField] private float maxAttackDelay = 2.5f;
         [SerializeField] private float minAttackDelay = 0.7f;
         [SerializeField] private bool startInAttackPhase = true;
+        
+        [Header("Dynamic Difficulty")]
+        [SerializeField] private bool useDynamicDifficulty = true;
+        [SerializeField] private AnimationCurve difficultyByHealth = AnimationCurve.Linear(0f, 1f, 1f, 0f);
+        [SerializeField] private float attackPhaseDurationAtLowHealth = 16f;
+        [SerializeField] private float cooldownDurationAtLowHealth = 3f;
+        [SerializeField] private bool allowAttackPhaseShorterThanBase = false;
+        [SerializeField] private Vector2 laserVerticalMoveDistanceRangeAtLowHealth = new Vector2(2f, 4f);
+        [SerializeField] private Vector2 laserHorizontalMoveDistanceRangeAtLowHealth = new Vector2(2f, 4f);
+        [SerializeField] private Vector2 laserMoveSpeedRangeAtLowHealth = new Vector2(2f, 5f);
+        [SerializeField, Range(0f, 1f)] private float rocketAttackChanceAtFullHealth = 0.5f;
+        [SerializeField, Range(0f, 1f)] private float rocketAttackChanceAtLowHealth = 0.35f;
+        [SerializeField] private Vector2Int cooldownCharactersCountAtFullHealth = new Vector2Int(2, 3);
+        [SerializeField] private Vector2Int cooldownCharactersCountAtLowHealth = new Vector2Int(1, 2);
+        [SerializeField] private int cooldownInteractionsRequiredAtFullHealth = 1;
+        [SerializeField] private int cooldownInteractionsRequiredAtLowHealth = 1;
 
         [Header("References")]
         [SerializeField] private PlayerController player;
@@ -53,9 +72,12 @@ namespace AI.Bosses.Machine
         private int health;
         private bool isDead;
         private bool cooldownInterrupted;
+        private int cooldownInteractionsRemaining;
         private readonly List<InteractableCharacter> availableInteractionCharacters = new List<InteractableCharacter>();
         private readonly List<InteractableCharacter> activeCooldownCharacters = new List<InteractableCharacter>();
         private readonly Dictionary<InteractableCharacter, UnityAction> interactionCharacterListeners = new Dictionary<InteractableCharacter, UnityAction>();
+        
+        [Inject] private TimelineManager timelineManager;
 
         private void Awake()
         {
@@ -160,8 +182,9 @@ namespace AI.Bosses.Machine
 
             float phaseTime = 0f;
             float attackTimer = 0f;
+            float currentAttackPhaseDuration = GetCurrentAttackPhaseDuration();
 
-            while (!isDead && phaseTime < attackPhaseDuration)
+            while (!isDead && phaseTime < currentAttackPhaseDuration)
             {
                 phaseTime += Time.deltaTime;
                 attackTimer += Time.deltaTime;
@@ -184,10 +207,11 @@ namespace AI.Bosses.Machine
             EnableRandomCooldownCharacters();
             SwitchColorLights(cooldownColor);
             cooldownEffect.SetActive(true);
-
+            cooldownInteractionsRemaining = GetCurrentCooldownInteractionsRequired();
 
             float timer = 0f;
-            while (!isDead && !cooldownInterrupted && timer < cooldownDuration)
+            float currentCooldownDuration = GetCurrentCooldownDuration();
+            while (!isDead && !cooldownInterrupted && timer < currentCooldownDuration)
             {
                 timer += Time.deltaTime;
                 yield return null;
@@ -216,8 +240,9 @@ namespace AI.Bosses.Machine
                 return;
             }
 
-            int minCount = Mathf.Min(2, availableInteractionCharacters.Count);
-            int maxCount = Mathf.Min(3, availableInteractionCharacters.Count);
+            Vector2Int countRange = GetCurrentCooldownCharacterCountRange();
+            int minCount = Mathf.Clamp(countRange.x, 0, availableInteractionCharacters.Count);
+            int maxCount = Mathf.Clamp(countRange.y, minCount, availableInteractionCharacters.Count);
             int targetCount = Random.Range(minCount, maxCount + 1);
 
             List<InteractableCharacter> selectionPool = new List<InteractableCharacter>(availableInteractionCharacters);
@@ -269,7 +294,11 @@ namespace AI.Bosses.Machine
                 character.SetInteractionEnabled(false);
             }
 
-            EndCooldown();
+            cooldownInteractionsRemaining = Mathf.Max(0, cooldownInteractionsRemaining - 1);
+            if (cooldownInteractionsRemaining <= 0)
+            {
+                EndCooldown();
+            }
         }
 
         private void ResetInteractionCharacterPool()
@@ -304,7 +333,8 @@ namespace AI.Bosses.Machine
 
             if (!canRocket && !canLaser) return;
 
-            if (canRocket && (!canLaser || Random.value < 0.5f))
+            float rocketChance = GetCurrentRocketAttackChance();
+            if (canRocket && (!canLaser || Random.value < rocketChance))
             {
                 FireRocket();
             }
@@ -378,11 +408,12 @@ namespace AI.Bosses.Machine
             }
 
             float minDistance = laser.WallOrientationValue == MachineMovingLaser.WallOrientation.Vertical ?
-                laserVerticalMoveDistanceRange.x : laserHorizontalMoveDistanceRange.x;
+                GetCurrentLaserVerticalMoveDistanceRange().x : GetCurrentLaserHorizontalMoveDistanceRange().x;
             float maxDistance = laser.WallOrientationValue == MachineMovingLaser.WallOrientation.Vertical ?
-                laserVerticalMoveDistanceRange.y : laserHorizontalMoveDistanceRange.y;
+                GetCurrentLaserVerticalMoveDistanceRange().y : GetCurrentLaserHorizontalMoveDistanceRange().y;
             float distance = Random.Range(minDistance, maxDistance);
-            float speed = Random.Range(laserMoveSpeedRange.x, laserMoveSpeedRange.y);
+            Vector2 speedRange = GetCurrentLaserMoveSpeedRange();
+            float speed = Random.Range(speedRange.x, speedRange.y);
             laser.Activate(distance, speed);
             return laser;
         }
@@ -401,8 +432,74 @@ namespace AI.Bosses.Machine
         {
             if (maxHealth <= 0) return minAttackDelay;
 
-            float damageProgress = 1f - (float)health / maxHealth;
-            return Mathf.Lerp(maxAttackDelay, minAttackDelay, damageProgress);
+            return Mathf.Lerp(maxAttackDelay, minAttackDelay, GetDifficultyProgressByHealth());
+        }
+
+        private float GetCurrentAttackPhaseDuration()
+        {
+            float duration = Mathf.Lerp(attackPhaseDuration, attackPhaseDurationAtLowHealth, GetDifficultyProgressByHealth());
+            if (!allowAttackPhaseShorterThanBase)
+            {
+                duration = Mathf.Max(attackPhaseDuration, duration);
+            }
+
+            return duration;
+        }
+
+        private float GetCurrentCooldownDuration()
+        {
+            return Mathf.Lerp(cooldownDuration, cooldownDurationAtLowHealth, GetDifficultyProgressByHealth());
+        }
+
+        private float GetCurrentRocketAttackChance()
+        {
+            return Mathf.Lerp(rocketAttackChanceAtFullHealth, rocketAttackChanceAtLowHealth, GetDifficultyProgressByHealth());
+        }
+
+        private int GetCurrentCooldownInteractionsRequired()
+        {
+            float value = Mathf.Lerp(cooldownInteractionsRequiredAtFullHealth, cooldownInteractionsRequiredAtLowHealth, GetDifficultyProgressByHealth());
+            return Mathf.Max(1, Mathf.RoundToInt(value));
+        }
+
+        private Vector2Int GetCurrentCooldownCharacterCountRange()
+        {
+            float progress = GetDifficultyProgressByHealth();
+            int min = Mathf.RoundToInt(Mathf.Lerp(cooldownCharactersCountAtFullHealth.x, cooldownCharactersCountAtLowHealth.x, progress));
+            int max = Mathf.RoundToInt(Mathf.Lerp(cooldownCharactersCountAtFullHealth.y, cooldownCharactersCountAtLowHealth.y, progress));
+            return new Vector2Int(min, Mathf.Max(min, max));
+        }
+
+        private Vector2 GetCurrentLaserVerticalMoveDistanceRange()
+        {
+            return Vector2.Lerp(laserVerticalMoveDistanceRange, laserVerticalMoveDistanceRangeAtLowHealth, GetDifficultyProgressByHealth());
+        }
+
+        private Vector2 GetCurrentLaserHorizontalMoveDistanceRange()
+        {
+            return Vector2.Lerp(laserHorizontalMoveDistanceRange, laserHorizontalMoveDistanceRangeAtLowHealth, GetDifficultyProgressByHealth());
+        }
+
+        private Vector2 GetCurrentLaserMoveSpeedRange()
+        {
+            return Vector2.Lerp(laserMoveSpeedRange, laserMoveSpeedRangeAtLowHealth, GetDifficultyProgressByHealth());
+        }
+
+        private float GetDifficultyProgressByHealth()
+        {
+            if (maxHealth <= 0)
+            {
+                return 1f;
+            }
+
+            float health01 = Mathf.Clamp01((float)health / maxHealth);
+            float damageProgress = 1f - health01;
+            if (!useDynamicDifficulty || difficultyByHealth == null || difficultyByHealth.length == 0)
+            {
+                return damageProgress;
+            }
+
+            return Mathf.Clamp01(difficultyByHealth.Evaluate(health01));
         }
 
         private void SetInteractionCharactersEnabled(bool isEnabled)
@@ -480,7 +577,8 @@ namespace AI.Bosses.Machine
             RefreshHealthUi();
             StopLasers();
             DisableActiveCooldownCharacters();
-            animationController?.TriggerDeath();
+            onDeathTrigger?.Invoke();
+            //animationController?.TriggerDeath(); controlled with timeline
             cooldownEffect.SetActive(false);
 
             if (phaseRoutine != null)
@@ -496,13 +594,30 @@ namespace AI.Bosses.Machine
             health = Mathf.Clamp(health, 0, maxHealth);
             attackPhaseDuration = Mathf.Max(0f, attackPhaseDuration);
             cooldownDuration = Mathf.Max(0f, cooldownDuration);
+            attackPhaseDurationAtLowHealth = Mathf.Max(0f, attackPhaseDurationAtLowHealth);
+            cooldownDurationAtLowHealth = Mathf.Max(0f, cooldownDurationAtLowHealth);
             minAttackDelay = Mathf.Max(0.01f, minAttackDelay);
             maxAttackDelay = Mathf.Max(minAttackDelay, maxAttackDelay);
 
             laserVerticalMoveDistanceRange.x = Mathf.Max(0f, laserVerticalMoveDistanceRange.x);
             laserVerticalMoveDistanceRange.y = Mathf.Max(laserVerticalMoveDistanceRange.x, laserVerticalMoveDistanceRange.y);
+            laserVerticalMoveDistanceRangeAtLowHealth.x = Mathf.Max(0f, laserVerticalMoveDistanceRangeAtLowHealth.x);
+            laserVerticalMoveDistanceRangeAtLowHealth.y = Mathf.Max(laserVerticalMoveDistanceRangeAtLowHealth.x, laserVerticalMoveDistanceRangeAtLowHealth.y);
+            laserHorizontalMoveDistanceRange.x = Mathf.Max(0f, laserHorizontalMoveDistanceRange.x);
+            laserHorizontalMoveDistanceRange.y = Mathf.Max(laserHorizontalMoveDistanceRange.x, laserHorizontalMoveDistanceRange.y);
+            laserHorizontalMoveDistanceRangeAtLowHealth.x = Mathf.Max(0f, laserHorizontalMoveDistanceRangeAtLowHealth.x);
+            laserHorizontalMoveDistanceRangeAtLowHealth.y = Mathf.Max(laserHorizontalMoveDistanceRangeAtLowHealth.x, laserHorizontalMoveDistanceRangeAtLowHealth.y);
             laserMoveSpeedRange.x = Mathf.Max(0.01f, laserMoveSpeedRange.x);
             laserMoveSpeedRange.y = Mathf.Max(laserMoveSpeedRange.x, laserMoveSpeedRange.y);
+            laserMoveSpeedRangeAtLowHealth.x = Mathf.Max(0.01f, laserMoveSpeedRangeAtLowHealth.x);
+            laserMoveSpeedRangeAtLowHealth.y = Mathf.Max(laserMoveSpeedRangeAtLowHealth.x, laserMoveSpeedRangeAtLowHealth.y);
+
+            cooldownCharactersCountAtFullHealth.x = Mathf.Max(0, cooldownCharactersCountAtFullHealth.x);
+            cooldownCharactersCountAtFullHealth.y = Mathf.Max(cooldownCharactersCountAtFullHealth.x, cooldownCharactersCountAtFullHealth.y);
+            cooldownCharactersCountAtLowHealth.x = Mathf.Max(0, cooldownCharactersCountAtLowHealth.x);
+            cooldownCharactersCountAtLowHealth.y = Mathf.Max(cooldownCharactersCountAtLowHealth.x, cooldownCharactersCountAtLowHealth.y);
+            cooldownInteractionsRequiredAtFullHealth = Mathf.Max(1, cooldownInteractionsRequiredAtFullHealth);
+            cooldownInteractionsRequiredAtLowHealth = Mathf.Max(1, cooldownInteractionsRequiredAtLowHealth);
             rocketPoolPreloadCount = Mathf.Max(0, rocketPoolPreloadCount);
             RefreshHealthUi();
         }

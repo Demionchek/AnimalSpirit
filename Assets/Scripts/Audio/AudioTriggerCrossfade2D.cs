@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Player;
 using UnityEngine;
@@ -44,13 +45,18 @@ namespace DefaultNamespace
         private PlayerController _currentPlayer;
         private bool _isPlayerInside;
         private bool _isToSourceActive;
+        private Collider2D _collider;
+
+        private void Awake()
+        {
+            _collider =  GetComponent<Collider2D>();
+        }
 
         private void Reset()
         {
-            var trigger = GetComponent<Collider2D>();
-            if (trigger != null)
+            if (_collider != null)
             {
-                trigger.isTrigger = true;
+                _collider.isTrigger = true;
             }
         }
 
@@ -59,6 +65,12 @@ namespace DefaultNamespace
             var player = other.GetComponentInParent<PlayerController>();
             if (player == null)
             {
+                return;
+            }
+            
+            if (_isTriggered && oneShot)
+            {
+                _collider.enabled = false;
                 return;
             }
 
@@ -111,6 +123,8 @@ namespace DefaultNamespace
                 return;
             }
 
+            if (_isTriggered && oneShot) return;
+            
             _isPlayerInside = false;
             _currentPlayer = null;
         }
@@ -195,12 +209,12 @@ namespace DefaultNamespace
             var targetFromVolume = isToActive ? 0f : 1f;
             var targetToVolume = isToActive ? 1f : 0f;
 
-            if (!fromSource.isPlaying)
+            if (fromSource != null && !fromSource.isPlaying)
             {
                 fromSource.Play();
             }
 
-            if (!toSource.isPlaying)
+            if (toSource != null && !toSource.isPlaying)
             {
                 toSource.Play();
             }
@@ -230,12 +244,12 @@ namespace DefaultNamespace
 
             if (stopFromSourceAfterFade && isToActive)
             {
-                toSource?.Stop();
+                if (toSource != null) toSource?.Stop();
             }
 
             if (stopFromSourceAfterFade && !isToActive)
             {
-                fromSource?.Stop();
+                if (fromSource != null) fromSource?.Stop();
             }
         }
     }

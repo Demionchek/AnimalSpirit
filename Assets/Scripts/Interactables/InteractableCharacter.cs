@@ -35,6 +35,7 @@ namespace Interactables
         [SerializeField] private DoorInteractor doorInteractor;
         [SerializeField] private GameObject objToActivate;
         [SerializeField] private Light2D light2D;
+        [SerializeField] private Transform homePosition;
         public bool doorCondition = false;
         [Space(5)]
         [Header("Audio")]
@@ -201,6 +202,8 @@ namespace Interactables
         {
             dialogType = (DialogType)lineIndex;
         }
+        
+        public void TeleportHome() => transform.position = homePosition.position;
 
         private void OnDrawGizmos()
         {
