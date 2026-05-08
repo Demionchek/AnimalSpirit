@@ -7,7 +7,8 @@ public class YPositionToValue : MonoBehaviour
 {
     public float minY;
     public float maxY; 
-    public float minValue = -0.1f; 
+    public float minValue = -0.1f;
+    public bool enableMusic = false;
 
     public Light2D globalLight;
     public Light2D playerLight;
@@ -47,6 +48,8 @@ public class YPositionToValue : MonoBehaviour
         if (other.TryGetComponent(out PlayerController player))
         {
             isPlayerInside = false;
+            
+            if (enableMusic)  audioSource.Play();
         }
     }
 

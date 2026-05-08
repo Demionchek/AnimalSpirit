@@ -143,6 +143,8 @@ namespace Player
         }
         
         public void SetCanMove(bool canMove) => this.canMove = canMove;
+        
+        public void SetInvincible(bool invincible) => this.ignoreDamage = invincible;
 
         private void Update()
         {

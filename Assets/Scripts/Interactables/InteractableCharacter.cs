@@ -97,6 +97,11 @@ namespace Interactables
             }
         }
 
+        public void SetDoorCondition(bool condition)
+        {
+            doorCondition = condition;
+        }
+
         public void Interact()
         {
             if (!isInteractionEnabled || !canInteract || !isConditionMet) return;

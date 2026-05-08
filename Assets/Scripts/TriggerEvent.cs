@@ -36,6 +36,9 @@ namespace DefaultNamespace
 
         private void OnTriggerEnter2D(Collider2D other)
         {
+            LayerMask layerMask = LayerMask.GetMask("Player", "Bird", "Rat");
+            if ((layerMask.value & (1 << other.gameObject.layer)) == 0) return;
+            
             if (_isTriggered && _oneShot) return;   
             onTriggerEnter2D?.Invoke();
             _isTriggered = true;

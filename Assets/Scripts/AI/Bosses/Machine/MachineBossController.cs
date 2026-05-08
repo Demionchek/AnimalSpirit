@@ -6,6 +6,7 @@ using ObjectPool;
 using Player;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Playables;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
 using Zenject;
@@ -61,6 +62,7 @@ namespace AI.Bosses.Machine
         [Header("Laser Attack")]
         [SerializeField] private MachineMovingLaser[] verticalWallLasers;
         [SerializeField] private MachineMovingLaser[] horizontalWallLasers;
+        [SerializeField, Range(0f, 1f)] private float dualLaserHealthThreshold = 0.75f;
         [SerializeField] private Vector2 laserVerticalMoveDistanceRange = new Vector2(1f, 3f);
         [SerializeField] private Vector2 laserHorizontalMoveDistanceRange = new Vector2(1f, 3f);
         [SerializeField] private Vector2 laserMoveSpeedRange = new Vector2(1f, 3f);
@@ -73,6 +75,9 @@ namespace AI.Bosses.Machine
         private bool isDead;
         private bool cooldownInterrupted;
         private int cooldownInteractionsRemaining;
+        private int nextVerticalLaserIndex;
+        private int nextHorizontalLaserIndex;
+        private bool useVerticalLaserForSingleAttack = true;
         private readonly List<InteractableCharacter> availableInteractionCharacters = new List<InteractableCharacter>();
         private readonly List<InteractableCharacter> activeCooldownCharacters = new List<InteractableCharacter>();
         private readonly Dictionary<InteractableCharacter, UnityAction> interactionCharacterListeners = new Dictionary<InteractableCharacter, UnityAction>();
@@ -124,6 +129,9 @@ namespace AI.Bosses.Machine
         {
             player = playerController;
         }
+
+        public void SetOnDeathTimeline(PlayableDirector playableDirector) =>
+            onDeathTrigger.AddListener(playableDirector.Play);
 
         private void OnDisable()
         {
@@ -388,20 +396,63 @@ namespace AI.Bosses.Machine
         {
             StopLasers();
 
-            activeVerticalLaser = ActivateRandomLaser(verticalWallLasers);
-            activeHorizontalLaser = ActivateRandomLaser(horizontalWallLasers);
+            bool canUseVertical = HasAnyLaser(verticalWallLasers);
+            bool canUseHorizontal = HasAnyLaser(horizontalWallLasers);
+            if (!canUseVertical && !canUseHorizontal)
+            {
+                return;
+            }
+
+            bool useDualLaserMode = GetHealthNormalized() <= dualLaserHealthThreshold;
+            if (useDualLaserMode)
+            {
+                activeVerticalLaser = ActivateNextLaser(verticalWallLasers, ref nextVerticalLaserIndex);
+                activeHorizontalLaser = ActivateNextLaser(horizontalWallLasers, ref nextHorizontalLaserIndex);
+            }
+            else
+            {
+                bool useVertical = canUseVertical;
+                if (canUseVertical && canUseHorizontal)
+                {
+                    useVertical = useVerticalLaserForSingleAttack;
+                    useVerticalLaserForSingleAttack = !useVerticalLaserForSingleAttack;
+                }
+
+                if (useVertical)
+                {
+                    activeVerticalLaser = ActivateNextLaser(verticalWallLasers, ref nextVerticalLaserIndex);
+                }
+                else
+                {
+                    activeHorizontalLaser = ActivateNextLaser(horizontalWallLasers, ref nextHorizontalLaserIndex);
+                }
+            }
 
             animationController?.TriggerLaser();
         }
 
-        private MachineMovingLaser ActivateRandomLaser(MachineMovingLaser[] lasers)
+        private MachineMovingLaser ActivateNextLaser(MachineMovingLaser[] lasers, ref int nextIndex)
         {
             if (lasers == null || lasers.Length == 0)
             {
                 return null;
             }
 
-            MachineMovingLaser laser = lasers[Random.Range(0, lasers.Length)];
+            MachineMovingLaser laser = null;
+            int checkedCount = 0;
+            while (checkedCount < lasers.Length)
+            {
+                int candidateIndex = nextIndex % lasers.Length;
+                nextIndex = (nextIndex + 1) % lasers.Length;
+                checkedCount++;
+
+                if (lasers[candidateIndex] != null)
+                {
+                    laser = lasers[candidateIndex];
+                    break;
+                }
+            }
+
             if (laser == null)
             {
                 return null;
@@ -502,6 +553,16 @@ namespace AI.Bosses.Machine
             return Mathf.Clamp01(difficultyByHealth.Evaluate(health01));
         }
 
+        private float GetHealthNormalized()
+        {
+            if (maxHealth <= 0)
+            {
+                return 0f;
+            }
+
+            return Mathf.Clamp01((float)health / maxHealth);
+        }
+
         private void SetInteractionCharactersEnabled(bool isEnabled)
         {
             if (interactionCharacters == null) return;
@@ -598,6 +659,7 @@ namespace AI.Bosses.Machine
             cooldownDurationAtLowHealth = Mathf.Max(0f, cooldownDurationAtLowHealth);
             minAttackDelay = Mathf.Max(0.01f, minAttackDelay);
             maxAttackDelay = Mathf.Max(minAttackDelay, maxAttackDelay);
+            dualLaserHealthThreshold = Mathf.Clamp01(dualLaserHealthThreshold);
 
             laserVerticalMoveDistanceRange.x = Mathf.Max(0f, laserVerticalMoveDistanceRange.x);
             laserVerticalMoveDistanceRange.y = Mathf.Max(laserVerticalMoveDistanceRange.x, laserVerticalMoveDistanceRange.y);

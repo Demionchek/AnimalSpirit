@@ -1,5 +1,6 @@
 using Player;
 using UnityEngine;
+using UnityEngine.Playables;
 using Zenject;
 
 namespace AI.Bosses.Machine
@@ -15,6 +16,7 @@ namespace AI.Bosses.Machine
 
         [Header("Dependencies")]
         [SerializeField] private MachineBossHealthUI bossHealthUI;
+        [SerializeField] private PlayableDirector deathTimeline;
 
         [Inject] private PlayerController playerController;
 
@@ -61,11 +63,11 @@ namespace AI.Bosses.Machine
             MachineBossController boss = spawnedBossObj.GetComponentInChildren<MachineBossController>();
             boss.SetPlayer(playerController);
             boss.SetHealthUi(bossHealthUI);
-
-            if (autoInitBoss)
-            {
-                boss.Init();
-            }
+            boss.SetOnDeathTimeline(deathTimeline);
+            // if (autoInitBoss)
+            // {
+            //     boss.Init();
+            // }
 
             hasSpawned = true;
         }
